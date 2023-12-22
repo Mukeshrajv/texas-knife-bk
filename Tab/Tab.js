@@ -54,6 +54,9 @@ const Tab = () => {
       options={{
          tabBarIcon:({focused})=>(
              <View>
+               <View style={{backgroundColor:'#FF0000',borderRadius:50,width:15,height:15}}>
+                 <Text style={{color:"#ffffff",textAlign:"center",fontSize:10}}>0</Text>
+               </View>
                  <Image
                  source={require('../assets/images/cart.png')}
                  resizeMode='contain'

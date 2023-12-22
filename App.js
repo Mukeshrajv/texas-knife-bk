@@ -10,7 +10,7 @@ import Login from './components/Login page/Login';
 export default function App() {
   return (
     <Provider store={store}>
-      <Login/>
+    <MainPage/>
        <StatusBar style="auto" />
     </Provider>
   
