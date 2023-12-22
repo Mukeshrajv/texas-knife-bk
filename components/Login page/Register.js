@@ -3,7 +3,7 @@ import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity } fr
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { getuserdata } from '../../Slice/loginSlice';
-const Login = () => {
+const Register = () => {
   const dispatch = useDispatch();
 
   const [email, setEmail] = useState('');
@@ -212,4 +212,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Login
+export default Register

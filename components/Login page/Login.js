@@ -3,6 +3,7 @@ import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity } fr
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { getuserdata } from '../../Slice/loginSlice';
+
 const Login = () => {
   const dispatch = useDispatch();
 
@@ -31,6 +32,10 @@ const Login = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(apiUrl);
+        if(response){
+          nav
+
+        }
         dispatch(getuserdata(response.data.data[0]))
         //   console.log('API Response:', response.data.data[0]);
 
