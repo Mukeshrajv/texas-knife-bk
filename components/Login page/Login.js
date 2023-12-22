@@ -32,10 +32,7 @@ const Login = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(apiUrl);
-        if(response){
-          nav
-
-        }
+        
         dispatch(getuserdata(response.data.data[0]))
         //   console.log('API Response:', response.data.data[0]);
 

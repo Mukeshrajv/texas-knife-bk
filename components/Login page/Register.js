@@ -5,12 +5,15 @@ import { useDispatch } from 'react-redux';
 import { getuserdata } from '../../Slice/loginSlice';
 const Register = () => {
   const dispatch = useDispatch();
-
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [nameError,setNameError]=useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
+
+  const encodedUsername = encodeURIComponent(name);
   const encodedEmail = encodeURIComponent(email);
   const encodedPassword = encodeURIComponent(password);
 
@@ -27,7 +30,7 @@ const Register = () => {
     }
 
 
-    const apiUrl = 'https://trackappt.desss-portfolio.com/dynamic/dynamicapi.php?action=read&table=mobile_app_users&email=' + encodedEmail + '&password=' + encodedPassword;
+    const apiUrl = 'https://trackappt.desss-portfolio.com/dynamic/dynamicapi.php?action=create&table=mobile_app_users&name='+encodedUsername+'&email='+encodedEmail+'&password='+encodedPassword;
     const fetchData = async () => {
       try {
         const response = await axios.get(apiUrl);
@@ -41,8 +44,10 @@ const Register = () => {
 
 
     fetchData();
+    setName('')
     setEmail('')
     setPassword('')
+    setNameError('')
     setEmailError('')
     setPasswordError('')
   };
@@ -56,10 +61,32 @@ const Register = () => {
         </View>
         <View style={{ marginBottom: 15 }}>
 
+        <View style={styles.form_container}>
+            <Text style={styles.label}>Name</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter Name"
+              onChangeText={text => setName(text)}
+              value={name}
+              onBlur={() => {
+                if (!name) {
+                  setNameError('Please enter your name');
+                } 
+                else {
+                  setNameError('');
+                }
+              }}
+            />
+
+            <View style={styles.error_message}>
+
+              <Text style={{ fontSize: 12, color: 'red', textTransform: 'capitalize' }}> {nameError}</Text>
+            </View>
+          </View>
+
           {/* email */}
           <View style={styles.form_container}>
             <Text style={styles.label}>Email</Text>
-
             <TextInput
               style={styles.input}
               placeholder="Enter email"
@@ -109,19 +136,41 @@ const Register = () => {
             </View>
           </View>
 
+          <View style={styles.form_container}>
+            <Text style={styles.label}>Re-Enter Password</Text>
+
+            <TextInput
+              style={styles.input}
+              placeholder="Enter password"
+              value={password}
+              onChangeText={text => setPassword(text)}
+              onBlur={() => {
+                if (!password) {
+                  setPasswordError('Please enter your password');
+                } else if (password.length < 6) {
+                  setPasswordError('password should be minimum 6 characters');
+                }
+                else {
+                  setPasswordError('');
+                }
+              }}
+            />
+            <View style={styles.error_message}>
+              {/* <Image style={{width:15,height:15,marginRight:10}} source={require('../../assets/images/error.png')}/> */}
+              <Text style={{ fontSize: 12, color: 'red', textTransform: 'capitalize', }}>{passwordError}</Text>
+            </View>
+          </View>
         </View>
-        <View style={styles.forgotpassword}>
-          <TouchableOpacity><Text>Forgot Password?</Text></TouchableOpacity>
-        </View>
+      
         <TouchableOpacity style={styles.btn} onPress={() => handleSubmit()}>
-          <Text style={styles.btn_text}>Login</Text>
+          <Text style={styles.btn_text}>SignUp</Text>
         </TouchableOpacity>
 
 
         <View style={styles.donthave}>
           <Text>Don't have an account</Text>
           <TouchableOpacity >
-            <Text style={styles.signuptxt} >Sign Up</Text>
+            <Text style={styles.signuptxt} >Login</Text>
           </TouchableOpacity>
         </View>
       </View>

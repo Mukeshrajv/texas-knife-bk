@@ -16,14 +16,7 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <Provider store={store}>
-      <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name='login' component={Login} />
-        <Stack.Screen name='register' component={Register}/>
-        <Stack.Screen name='main' component={MainPage}/>
-      </Stack.Navigator>
-      
-      </NavigationContainer>
+     <Register/>
        <StatusBar style="auto" />
     </Provider>
   
