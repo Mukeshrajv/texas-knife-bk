@@ -110,7 +110,6 @@ const Login = () => {
               <Text style={{ fontSize: 12, color: 'red', textTransform: 'capitalize', }}>{passwordError}</Text>
             </View>
           </View>
-
         </View>
         <View style={styles.forgotpassword}>
           <TouchableOpacity><Text>Forgot Password?</Text></TouchableOpacity>
@@ -118,7 +117,6 @@ const Login = () => {
         <TouchableOpacity style={styles.btn} onPress={() => handleSubmit()}>
           <Text style={styles.btn_text}>Login</Text>
         </TouchableOpacity>
-
 
         <View style={styles.donthave}>
           <Text>Don't have an account</Text>

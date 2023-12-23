@@ -8,18 +8,17 @@ import Login from './components/Login page/Login';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Register from './components/Login page/Register';
-
-
+import Cart from './components/Login page/Cart';
+import ProductDetail from './components/Login page/ProductDetail';
 
 const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <Provider store={store}>
-     <Register/>
+     <ProductDetail/>
        <StatusBar style="auto" />
     </Provider>
-  
   );
 }
 
