@@ -16,7 +16,7 @@ import ProductDetail from './components/Login page/ProductDetail';
 export default function App() {
   return (
     <Provider store={store}>
-     <ProductDetail/>
+         <MainPage/>
        <StatusBar style="auto" />
     </Provider>
   );
