@@ -11,7 +11,7 @@ import Register from './components/Login page/Register';
 import Cart from './components/Login page/Cart';
 import ProductDetail from './components/Login page/ProductDetail';
 
-const Stack = createStackNavigator();
+// const Stack = createStackNavigator();
 
 export default function App() {
   return (
