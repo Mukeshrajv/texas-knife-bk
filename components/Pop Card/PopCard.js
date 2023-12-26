@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Text, Image, View, Button, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
-const ProductDetail = ({ Navigation }) => {
+const PopCard = ({ Navigation }) => {
     return (
         <View style={styles.ProductDetail}>
             <View style={styles.ProductDetail_container}>
@@ -77,4 +77,4 @@ const styles = StyleSheet.create({
         fontSize: 20,
     }
 });
-export default ProductDetail
+export default PopCard

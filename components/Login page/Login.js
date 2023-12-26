@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { getuserdata } from '../../Slice/loginSlice';
 
-const Login = () => {
+const Login = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const [email, setEmail] = useState('');
@@ -34,7 +34,9 @@ const Login = () => {
         const response = await axios.get(apiUrl);
         
         dispatch(getuserdata(response.data.data[0]))
-        //   console.log('API Response:', response.data.data[0]);
+           console.log('API Response:', response.data.data[0]);
+           navigation.navigate('mainpage')
+
 
       } catch (error) {
         console.error('Error fetching data:', error);
