@@ -4,10 +4,12 @@ import Home from '../components/Home';
 import Cart from '../components/Cart';
 import Profile from '../components/Profile';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+// import { NavigationContainer } from '@react-navigation/native';
 
 const Tab = () => {
     const Tabs=createBottomTabNavigator();
   return (
+    
     <Tabs.Navigator
     screenOptions={{
      headerShown:false,
