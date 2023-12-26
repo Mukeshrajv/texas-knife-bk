@@ -16,17 +16,27 @@ const Category = () => {
    <View style={styles.category}>
    <Text style={styles.header}>Catagories</Text>
     <View style={styles.category_container}>
+        {
+            <FlatList
+            data={categoriesList}
+            keyExtractor={i=>i.id}
+            numColumns={2}
+            renderItem={({item})=>{
+             return(
+                <TouchableOpacity keyExtractor key={item.id} style={styles.category_list}>
+                <View style={styles.image_container}>
+                 <Image style={{width:'100%',height:'100%'}} source={require('../../assets/images/FeatureProductImage/f_product-3.png')}/>
+                </View>
+                <View style={styles.category_name_conatiner}>
+                   <Text style={styles.category_names}>{item.categoryName}</Text>
+                </View>
+              </TouchableOpacity>
 
-       {categoriesList.map((item)=>(
-        <TouchableOpacity key={item.id} style={styles.category_list}>
-        <View style={styles.image_container}>
-         <Image style={{width:'100%',height:'100%'}} source={require('../../assets/images/FeatureProductImage/f_product-3.png')}/>
-        </View>
-        <View style={styles.category_name_conatiner}>
-           <Text style={styles.category_names}>{item.categoryName}</Text>
-        </View>
-      </TouchableOpacity>
-  ))}
+             )
+            }}
+            />
+        }
+
 
    {/* <TouchableOpacity style={styles.category_list}>
      <View style={styles.image_container}>
@@ -58,7 +68,9 @@ header:{
 category_container:{
     // backgroundColor:'yellow',
     flexDirection:'row',
-    flexWrap:'wrap'
+    height:290,
+    // flexWrap:'wrap',
+
 },
 category_list:{
     margin:15,
@@ -66,7 +78,8 @@ category_list:{
     width:150,
     padding:5,
     flexDirection:'row',
-    borderRadius:10
+    borderRadius:10,
+    
 },
 image_container:{
     width:60,
