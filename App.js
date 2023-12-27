@@ -3,11 +3,12 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
- import MainPage from './Mainpage/MainPage';
+
 import Login from './components/Login page/Login';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Register from './components/Login page/Register';
+import Tab from './Tab/Tab';
 
 
 
@@ -23,7 +24,7 @@ export default function App() {
         }}>
           <Stack.Screen name="login" component={Login}   />
           <Stack.Screen name="register" component={Register}/>
-          <Stack.Screen name="mainpage" component={MainPage}/>
+          <Stack.Screen name="tab" component={Tab}/>
         </Stack.Navigator>
       </NavigationContainer>
   

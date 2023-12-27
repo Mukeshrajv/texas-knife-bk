@@ -35,7 +35,7 @@ const Login = ({ navigation }) => {
         
         dispatch(getuserdata(response.data.data[0]))
            console.log('API Response:', response.data.data[0]);
-           navigation.navigate('mainpage')
+           navigation.navigate('tab');
 
 
       } catch (error) {
