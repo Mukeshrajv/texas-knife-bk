@@ -39,6 +39,7 @@ const Register = ({ navigation }) => {
 
       } catch (error) {
         console.error('Error fetching data:', error);
+     
       }
     };
 

@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity,ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity,ActivityIndicator,ToastAndroid, Platform, AlertIOS } from 'react-native';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { getuserdata } from '../../Slice/loginSlice';
 import Loader from '../Sub-components/Loader';
+import Toast from 'react-native-toast-message';
+
+
 
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -18,7 +21,18 @@ const Login = ({ navigation }) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-
+ const ShowToast=()=>{
+  Toast.show({
+    type: 'success', // or 'error' or 'info'
+    position: 'bottom',
+    text1: 'Hello',
+    text2: 'This is a success toast',
+    visibilityTime: 3000, // milliseconds
+    autoHide: true,
+    topOffset: 30,
+    bottomOffset: 40,
+  });
+ }
 
   const handleSubmit = () => {
     if (!password) {
@@ -37,13 +51,16 @@ const Login = ({ navigation }) => {
           navigation.navigate('tab');
           dispatch(getuserdata(response.data.data[0]))
           console.log('API Response:', response.data.data[0]);
-          setIsLoading(false);
+          setIsLoading(false)
         }
        
 
       } catch (error) {
         console.error('Error fetching data:', error);
-        setIsLoading(flase);
+        setIsLoading(false);
+        console.log("Invalid user detail");
+
+      
 
       }
     };
@@ -69,13 +86,13 @@ const Login = ({ navigation }) => {
          <View style={styles.logincontainer}>
 
          <View style={styles.logo}>
-           <Image style={{ width: 100, height: 100 }} source={require('../../assets/images/TEXASnewlogo.png')} />
+           <Image style={{ width: 100, height: 100 }} source={require('../../assets/images/TEXASnewlogo.png')}  />
          </View>
          <View style={{ marginBottom: 15 }}>
  
            {/* email */}
            <View style={styles.form_container}>
-             <Text style={styles.label}>Email</Text>
+             <Text style={styles.label} onPress={()=>ShowToast()}>Email</Text>
  
              <TextInput
                style={styles.input}
