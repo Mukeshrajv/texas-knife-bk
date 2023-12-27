@@ -108,6 +108,8 @@ if(name.length == 0 && password.length == 0 && email.length == 0 && reenter.leng
     // setEmailError('')
     // setPasswordError('')
     // setReenterError('')
+
+   
   };
 
   return (
