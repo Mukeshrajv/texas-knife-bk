@@ -2,7 +2,7 @@ import React from 'react'
 import { View,Text,StyleSheet,Image,TouchableOpacity} from 'react-native'
 import { useSelector } from 'react-redux'
 
-const Profile = () => {
+const Profile = ({ navigation }) => {
   return (
    <View style={styles.profile}>
 
@@ -11,7 +11,7 @@ const Profile = () => {
   <View style={styles.logout_container}>
     <View style={styles.logout_btn_opacity}>
     <TouchableOpacity >
-       <Text style={styles.logout_btn}>Logout</Text>
+       <Text style={styles.logout_btn} onPress={()=>navigation.navigate('login')}>Logout</Text>
     </TouchableOpacity>
     </View>
    
@@ -20,7 +20,7 @@ const Profile = () => {
     
 
      <View style={styles.profile_header_container}>
-      <Text style={styles.profile_header}>Profile</Text>
+      <Text style={styles.profile_header} >Profile</Text>
      </View>
 
      <View style={styles.image_container}>

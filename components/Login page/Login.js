@@ -17,7 +17,7 @@ const Login = ({ navigation }) => {
 
 
 
-  const handleSubmit = () => {
+  const handleSubmit = ({ navigation }) => {
     if (!password) {
       setPasswordError('Please enter your password');
     } else if (password.length < 6) {
@@ -123,7 +123,7 @@ const Login = ({ navigation }) => {
         <View style={styles.donthave}>
           <Text>Don't have an account</Text>
           <TouchableOpacity >
-            <Text style={styles.signuptxt} >Sign Up</Text>
+            <Text style={styles.signuptxt} onPress={()=>navigation.navigate('register')} >Sign Up</Text>
           </TouchableOpacity>
         </View>
       </View>
