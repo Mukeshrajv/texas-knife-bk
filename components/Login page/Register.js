@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { getuserdata } from '../../Slice/loginSlice';
@@ -23,39 +23,93 @@ const Register = ({ navigation }) => {
 
 
   const handleSubmit = () => {
-    if (!password) {
-      setPasswordError('Please enter your password');
-    } else if (password.length < 6) {
-      setPasswordError('password should be minimum 6 characters');
-    }
-    else {
-      setPasswordError('');
-    }
+    // if (!password) {
+    //   setPasswordError('Please enter your password');
+    // } else if (password.length < 6) {
+    //   setPasswordError('password should be minimum 6 characters');
+    // }
+    // else {
+    //   setPasswordError('');
+    // }
 
+    // if (!email) {
+    //   setEmailError('Please enter your email');
+    // } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    //   setEmailError('Invalid email format');
+    // }
+    // else {
+    //   setEmailError('');
+    // }
+//api validation
 
-    const apiUrl = 'https://trackappt.desss-portfolio.com/dynamic/dynamicapi.php?action=create&table=mobile_app_users&name='+encodedUsername+'&email='+encodedEmail+'&password='+encodedPassword;
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(apiUrl);
-        dispatch(getuserdata(response.data.data[0]))
-        //   console.log('API Response:', response.data.data[0]);
-
-      } catch (error) {
-        console.error('Error fetching data:', error);
      
-      }
-    };
+if(name.length == 0 && password.length == 0 && email.length == 0 && reenter.length == 0){
+  setNameError('Please enter your name');
+  setEmailError('Please enter your email');
+  setPasswordError('Please enter your password');
+  setReenterError("password's didn't match");
+}else if(name&&password&&email&&reenter){
+  const apiUrl = 'https://trackappt.desss-portfolio.com/dynamic/dynamicapi.php?action=create&table=mobile_app_users&name='+encodedUsername+'&email='+encodedEmail+'&password='+encodedPassword;
+  console.log(encodedUsername);
+  console.log(encodedEmail);
+  console.log(encodedPassword);
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(apiUrl);
+      navigation.navigate('login');
+      dispatch(getuserdata(response.data.data[0]))
+      //   console.log('API Response:', response.data.data[0]);
+    //  if (response){
+    //   Alert.alert('REGISTER SUCCESSFULLY');
+    //  }else{
+    //   Alert.alert('REGISTER SUCCESSFULLY');
+    //  }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
 
-    fetchData();
-    setName('')
-    setEmail('')
-    setPassword('')
-    setReenter('')
-    setNameError('')
-    setEmailError('')
-    setPasswordError('')
-    setReenterError('')
+  fetchData();
+  setName('')
+  setEmail('')
+  setPassword('')
+  setReenter('')
+  setNameError('')
+  setEmailError('')
+  setPasswordError('')
+  setReenterError('')
+}
+
+
+    // const apiUrl = 'https://trackappt.desss-portfolio.com/dynamic/dynamicapi.php?action=create&table=mobile_app_users&name='+encodedUsername+'&email='+encodedEmail+'&password='+encodedPassword;
+    // const fetchData = async () => {
+    //   try {
+    //     const response = await axios.get(apiUrl);
+    //     dispatch(getuserdata(response.data.data[0]))
+    //     //   console.log('API Response:', response.data.data[0]);
+    //   //  if (response){
+    //   //   Alert.alert('REGISTER SUCCESSFULLY');
+    //   //  }else{
+    //   //   Alert.alert('REGISTER SUCCESSFULLY');
+    //   //  }
+    //   } catch (error) {
+    //     console.error('Error fetching data:', error);
+    //   }
+    // };
+
+
+    // fetchData();
+    // setName('')
+    // setEmail('')
+    // setPassword('')
+    // setReenter('')
+    // setNameError('')
+    // setEmailError('')
+    // setPasswordError('')
+    // setReenterError('')
+
+   
   };
 
   return (
@@ -102,6 +156,7 @@ const Register = ({ navigation }) => {
                   setEmailError('Please enter your email');
                 } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
                   setEmailError('Invalid email format');
+                  setEmail('');
                 }
                 else {
                   setEmailError('');
@@ -129,6 +184,7 @@ const Register = ({ navigation }) => {
                   setPasswordError('Please enter your password');
                 } else if (password.length < 6) {
                   setPasswordError('password should be minimum 6 characters');
+                  setPassword('');
                 }
                 else {
                   setPasswordError('');
@@ -141,7 +197,7 @@ const Register = ({ navigation }) => {
           </View>
 
           <View style={styles.form_container}>
-            <Text style={styles.label}>Re-Enter Password</Text>
+            <Text style={styles.label}>Confirm Password</Text>
 
             <TextInput
               style={styles.input}
@@ -151,8 +207,9 @@ const Register = ({ navigation }) => {
               onBlur={() => {
                 if (!reenter) {
                   setReenterError('Please enter your password');
-                } else if (reenter.length < 6) {
-                  setReenterError('password should be minimum 6 characters');
+                } else if (reenter != password) {
+                  setReenterError("password's didn't match");
+                  setReenter('');
                 }
                 else {
                   setReenterError('');
