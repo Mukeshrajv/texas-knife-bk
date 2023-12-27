@@ -3,14 +3,17 @@ import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity } fr
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { getuserdata } from '../../Slice/loginSlice';
+
 const Register = ({ navigation }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [reenter,setReenter]=useState('');
   const [nameError,setNameError]=useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [reenterError,setReenterError]=useState('');
 
 
   const encodedUsername = encodeURIComponent(name);
@@ -47,9 +50,11 @@ const Register = ({ navigation }) => {
     setName('')
     setEmail('')
     setPassword('')
+    setReenter('')
     setNameError('')
     setEmailError('')
     setPasswordError('')
+    setReenterError('')
   };
 
   return (
@@ -60,7 +65,6 @@ const Register = ({ navigation }) => {
           <Image style={{ width: 100, height: 100 }} source={require('../../assets/images/TEXASnewlogo.png')} />
         </View>
         <View style={{ marginBottom: 15 }}>
-
         <View style={styles.form_container}>
             <Text style={styles.label}>Name</Text>
             <TextInput
@@ -131,7 +135,6 @@ const Register = ({ navigation }) => {
               }}
             />
             <View style={styles.error_message}>
-              {/* <Image style={{width:15,height:15,marginRight:10}} source={require('../../assets/images/error.png')}/> */}
               <Text style={{ fontSize: 12, color: 'red', textTransform: 'capitalize', }}>{passwordError}</Text>
             </View>
           </View>
@@ -142,22 +145,21 @@ const Register = ({ navigation }) => {
             <TextInput
               style={styles.input}
               placeholder="Enter password"
-              value={password}
-              onChangeText={text => setPassword(text)}
+              value={reenter}
+              onChangeText={text => setReenter(text)}
               onBlur={() => {
-                if (!password) {
-                  setPasswordError('Please enter your password');
-                } else if (password.length < 6) {
-                  setPasswordError('password should be minimum 6 characters');
+                if (!reenter) {
+                  setReenterError('Please enter your password');
+                } else if (reenter.length < 6) {
+                  setReenterError('password should be minimum 6 characters');
                 }
                 else {
-                  setPasswordError('');
+                  setReenterError('');
                 }
               }}
             />
             <View style={styles.error_message}>
-              {/* <Image style={{width:15,height:15,marginRight:10}} source={require('../../assets/images/error.png')}/> */}
-              <Text style={{ fontSize: 12, color: 'red', textTransform: 'capitalize', }}>{passwordError}</Text>
+              <Text style={{ fontSize: 12, color: 'red', textTransform: 'capitalize', }}>{reenterError}</Text>
             </View>
           </View>
         </View>
