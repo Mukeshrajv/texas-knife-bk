@@ -3,7 +3,8 @@ import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity } fr
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { getuserdata } from '../../Slice/loginSlice';
-const Register = (navigation) => {
+
+const Register = ({ navigation }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -21,7 +22,7 @@ const Register = (navigation) => {
 
 
 
-  const handleSubmit = ({ navigation }) => {
+  const handleSubmit = () => {
     if (!password) {
       setPasswordError('Please enter your password');
     } else if (password.length < 6) {
