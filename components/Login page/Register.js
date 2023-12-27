@@ -19,7 +19,7 @@ const Register = () => {
 
 
 
-  const handleSubmit = () => {
+  const handleSubmit = ({ navigation }) => {
     if (!password) {
       setPasswordError('Please enter your password');
     } else if (password.length < 6) {
@@ -170,7 +170,7 @@ const Register = () => {
         <View style={styles.donthave}>
           <Text>Don't have an account</Text>
           <TouchableOpacity >
-            <Text style={styles.signuptxt} >Login</Text>
+            <Text style={styles.signuptxt} onPress={()=>navigation.navigate('login')} >Login</Text>
           </TouchableOpacity>
         </View>
       </View>
