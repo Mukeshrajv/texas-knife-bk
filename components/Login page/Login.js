@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity,ActivityIndicator,ToastAndroid, Platform, AlertIOS } from 'react-native';
+
+import { useState } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { getuserdata } from '../../Slice/loginSlice';
 import Loader from '../Sub-components/Loader';
 import Toast from 'react-native-toast-message';
+
 
 
 
@@ -21,18 +23,7 @@ const Login = ({ navigation }) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
- const ShowToast=()=>{
-  Toast.show({
-    type: 'success', // or 'error' or 'info'
-    position: 'bottom',
-    text1: 'Hello',
-    text2: 'This is a success toast',
-    visibilityTime: 3000, // milliseconds
-    autoHide: true,
-    topOffset: 30,
-    bottomOffset: 40,
-  });
- }
+  
 
   const handleSubmit = () => {
     if (!password) {
@@ -59,7 +50,13 @@ const Login = ({ navigation }) => {
         console.error('Error fetching data:', error);
         setIsLoading(false);
         console.log("Invalid user detail");
-
+       
+        Toast.show({
+          type: 'error',
+          position: 'bottom',
+          text1: 'Error',
+          text2: 'This is an error message.',
+        });
       
 
       }
@@ -79,6 +76,7 @@ const Login = ({ navigation }) => {
 
   return (
     <View style={styles.loginpage}>
+      
       {isLoading?(
         <Loader/>
         // <ActivityIndicator animating={true} hidesWhenStopped={true} size={60} color="blue" style={{justifyContent: 'center',alignItems: 'center',backgroundColor:'ffffff',width:'100%',height:'100%'}} />
@@ -92,7 +90,7 @@ const Login = ({ navigation }) => {
  
            {/* email */}
            <View style={styles.form_container}>
-             <Text style={styles.label} onPress={()=>ShowToast()}>Email</Text>
+             <Text style={styles.label} >Email</Text>
  
              <TextInput
                style={styles.input}
@@ -144,10 +142,10 @@ const Login = ({ navigation }) => {
            </View>
          </View>
          <View style={styles.forgotpassword}>
-           <TouchableOpacity><Text>Forgot Password?</Text></TouchableOpacity>
+           <TouchableOpacity ><Text>Forgot Password?</Text></TouchableOpacity>
          </View>
          <TouchableOpacity style={styles.btn} onPress={() => handleSubmit()}>
-           <Text style={styles.btn_text}>Login</Text>
+           <Text style={styles.btn_text} >Login</Text>
          </TouchableOpacity>
  
          <View style={styles.donthave}>
