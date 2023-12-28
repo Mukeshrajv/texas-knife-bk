@@ -8,6 +8,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Register from './components/Login page/Register';
 import Tab from './Tab/Tab';
+import SubList from './components/SubList/SubList';
+import SubCategory from './components/SubCategory/SubCategory';
 
 
 
@@ -23,7 +25,10 @@ export default function App() {
         }}>
           <Stack.Screen name="login" component={Login}   />
           <Stack.Screen name="register" component={Register}/>
+          <Stack.Screen name="subcategory" component={SubCategory}/>
+          <Stack.Screen name="subcategorylist" component={SubList}/>
           <Stack.Screen name="tab" component={Tab}/>
+      
         </Stack.Navigator>
       </NavigationContainer>
   
