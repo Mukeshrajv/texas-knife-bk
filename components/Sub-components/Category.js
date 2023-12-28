@@ -1,34 +1,55 @@
+import { useEffect,useState } from 'react'
+import axios from 'axios';
 import React from 'react'
-import { View ,StyleSheet, TouchableOpacity ,Text, Image,FlatList} from 'react-native'
+import { View ,StyleSheet, TouchableOpacity ,Text, Image,FlatList,Platform} from 'react-native'
 
 const Category = () => {
-    const categoriesList=[
-        {id:1,image:"",categoryName:"**GRAB BAG DEALS"},
-        {id:2,image:"",categoryName:"Abrasive/Belts/Buffing"},
-        {id:3,image:"",categoryName:"Adhesives/Epoxies/Glues"},
-        {id:4,image:"",categoryName:"Blades Blanks and Blade Kits"},
-        {id:5,image:"",categoryName:"Books DVD and Videos"},  
-        {id:6,image:"",categoryName:"Gift Certificates"},  
-        {id:7,image:"",categoryName:"Handle/SpacerMaterial"},
-          ]
+     const[categoryList,setCategoryList]=useState([]);
+  useEffect(() => {
+    const CategoryProductAPI='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cus_category';
+    const fetchData = async () => {
+    
+     try{
+      const response = await axios.get(CategoryProductAPI);
+      if(response){
+        setCategoryList(response.data.data)
+      }
+     }catch(error){
+         console.log("Category product is not get yet")
+     }
+    }
+    
+   
+    fetchData();
+   }, []); 
+    // const categoriesList=[
+    //     {id:1,image:"",categoryName:"**GRAB BAG DEALS"},
+    //     {id:2,image:"",categoryName:"Abrasive/Belts/Buffing"},
+    //     {id:3,image:"",categoryName:"Adhesives/Epoxies/Glues"},
+    //     {id:4,image:"",categoryName:"Blades Blanks and Blade Kits"},
+    //     {id:5,image:"",categoryName:"Books DVD and Videos"},  
+    //     {id:6,image:"",categoryName:"Gift Certificates"},  
+    //     {id:7,image:"",categoryName:"Handle/SpacerMaterial"},
+    //       ]
   return (
    <>
    <View style={styles.category}>
    <Text style={styles.header}>Catagories</Text>
     <View style={styles.category_container}>
+        
         {
             <FlatList
-            data={categoriesList}
+            data={categoryList}
             keyExtractor={i=>i.id}
             numColumns={2}
             renderItem={({item})=>{
              return(
                 <TouchableOpacity keyExtractor key={item.id} style={styles.category_list}>
                 <View style={styles.image_container}>
-                 <Image style={{width:'100%',height:'100%'}} source={require('../../assets/images/FeatureProductImage/f_product-3.png')}/>
+                 <Image style={{width:'100%',height:'100%'}} source={{ uri: item.image }}/>
                 </View>
                 <View style={styles.category_name_conatiner}>
-                   <Text style={styles.category_names}>{item.categoryName}</Text>
+                   <Text style={styles.category_names}>{item.name}</Text>
                 </View>
               </TouchableOpacity>
 
@@ -36,6 +57,9 @@ const Category = () => {
             }}
             />
         }
+
+   
+     
 
 
    {/* <TouchableOpacity style={styles.category_list}>
@@ -67,9 +91,20 @@ header:{
 },
 category_container:{
     // backgroundColor:'yellow',
-    flexDirection:'row',
-    height:290,
+    // flexDirection:'row',
+    // height:375
     // flexWrap:'wrap',
+   
+    ...Platform.select({
+        ios: {
+          height:300,
+          // Styles for iOS
+        },
+        android: {
+            height:370,
+          // Styles for Android
+        },
+      }),
 
 },
 category_list:{
@@ -79,6 +114,8 @@ category_list:{
     padding:5,
     flexDirection:'row',
     borderRadius:10,
+    alignItems:'center',
+    justifyContent:'center',
     
 },
 image_container:{
@@ -90,7 +127,7 @@ categori_name_conatiner:{
     width:75
 },
 category_names:{
-    textAlign:'justify',
+    textAlign:'center',
     width:75,
     height:53,
     overflow:'hidden'

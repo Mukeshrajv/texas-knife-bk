@@ -1,6 +1,6 @@
 import React, { useEffect, useState }  from 'react';
 import axios from 'axios';
-import { View,Text,StyleSheet,Image,FlatList,TouchableOpacity} from 'react-native';
+import { View,Text,StyleSheet,Image,FlatList,TouchableOpacity,} from 'react-native';
 import product from '../../assets/images/FeatureProductImage/f_product-1.png'
 const FeatureProduct = () => {
 
@@ -24,7 +24,7 @@ const FeatureProduct = () => {
    
     fetchData();
    }, []); 
-   console.log(featureProduct);
+  //  console.log(featureProduct);
 
     // const freatureProductList=[
     //     {id:1,productName:"Big Tex Filler With CRYO",code:"BL707C",price:32.95,image:'../../assets/images/FeatureProductImage/f_product-1.png'},
@@ -44,7 +44,7 @@ const FeatureProduct = () => {
    renderItem={({item})=>{
     return(
        
-   <View style={styles.featureproduct_list_container}>
+   <View keyExtractor style={styles.featureproduct_list_container}>
      <TouchableOpacity>
    <View style={styles.featureproduct_list}>
     <Text style={styles.featureproduct_name}>{item.product_name}</Text>
