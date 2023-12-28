@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity, Alert ,Platform,ToastAndroid} from 'react-native';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { getuserdata } from '../../Slice/loginSlice';
+import { useToast } from 'native-base';
 
 const Register = ({ navigation }) => {
   const dispatch = useDispatch();
+  const toast = useToast();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -56,15 +58,20 @@ if(name.length == 0 && password.length == 0 && email.length == 0 && reenter.leng
   const fetchData = async () => {
     try {
       const response = await axios.get(apiUrl);
+      if (Platform.OS === 'android') {
+        ToastAndroid.show('Registration successfully', ToastAndroid.SHORT);
+      } else if (Platform.OS === 'ios') {
+       Alert.alert('Registration successfully')
+      }  
       navigation.navigate('login');
       dispatch(getuserdata(response.data.data[0]))
-      //   console.log('API Response:', response.data.data[0]);
-    //  if (response){
-    //   Alert.alert('REGISTER SUCCESSFULLY');
-    //  }else{
-    //   Alert.alert('REGISTER SUCCESSFULLY');
-    //  }
+     
     } catch (error) {
+      if (Platform.OS === 'android') {
+        ToastAndroid.show(error, ToastAndroid.SHORT);
+      } else if (Platform.OS === 'ios') {
+       Alert.alert(error)
+      }  
       console.error('Error fetching data:', error);
     }
   };

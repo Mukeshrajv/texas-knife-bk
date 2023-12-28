@@ -1,18 +1,18 @@
 
 import { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity,Platform,AlertIOS, Alert } from 'react-native';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { getuserdata } from '../../Slice/loginSlice';
 import Loader from '../Sub-components/Loader';
-import Toast from 'react-native-toast-message';
+import { ToastAndroid } from 'react-native';
 
 
 
 
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
-
+ 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -26,6 +26,16 @@ const Login = ({ navigation }) => {
   
 
   const handleSubmit = () => {
+
+    if (!email) {
+      setEmailError('Please enter your email');
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setEmailError('Invalid email format');
+    }
+    else {
+      setEmailError('');
+    } 
+
     if (!password) {
       setPasswordError('Please enter your password');
     } else if (password.length < 6) {
@@ -40,6 +50,8 @@ const Login = ({ navigation }) => {
         const response = await axios.get(apiUrl);
         if(response){
           navigation.navigate('tab');
+          
+      
           dispatch(getuserdata(response.data.data[0]))
           console.log('API Response:', response.data.data[0]);
           setIsLoading(false)
@@ -47,16 +59,23 @@ const Login = ({ navigation }) => {
        
 
       } catch (error) {
-        console.error('Error fetching data:', error);
+        // console.error('Error fetching data:', error);
+        
+        if (Platform.OS === 'android') {
+          ToastAndroid.show('Please check your credentials', ToastAndroid.SHORT);
+        } else if (Platform.OS === 'ios') {
+         Alert.alert('Please check your credentials')
+        }  
+        
         setIsLoading(false);
         console.log("Invalid user detail");
        
-        Toast.show({
-          type: 'error',
-          position: 'bottom',
-          text1: 'Error',
-          text2: 'This is an error message.',
-        });
+        // Toast.show({
+        //   type: 'error',
+        //   position: 'bottom',
+        //   text1: 'Error',
+        //   text2: 'This is an error message.',
+        // });
       
 
       }
