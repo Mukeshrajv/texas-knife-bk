@@ -12,6 +12,7 @@ import Tab from './Tab/Tab';
 
 
 
+
  const Stack = createStackNavigator();
 
 export default function App() {
