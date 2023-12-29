@@ -157,6 +157,7 @@ if(name.length == 0 && password.length == 0 && email.length == 0 && reenter.leng
               style={styles.input}
               placeholder="Enter email"
               onChangeText={text => setEmail(text)}
+              autoCapitalize="none"
               value={email}
               onBlur={() => {
                 if (!email) {
@@ -185,6 +186,7 @@ if(name.length == 0 && password.length == 0 && email.length == 0 && reenter.leng
               style={styles.input}
               placeholder="Enter password"
               value={password}
+              secureTextEntry={true}
               onChangeText={text => setPassword(text)}
               onBlur={() => {
                 if (!password) {
@@ -210,6 +212,7 @@ if(name.length == 0 && password.length == 0 && email.length == 0 && reenter.leng
               style={styles.input}
               placeholder="Enter password"
               value={reenter}
+              secureTextEntry={true}
               onChangeText={text => setReenter(text)}
               onBlur={() => {
                 if (!reenter) {

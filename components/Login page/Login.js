@@ -70,14 +70,6 @@ const Login = ({ navigation }) => {
         setIsLoading(false);
         console.log("Invalid user detail");
        
-        // Toast.show({
-        //   type: 'error',
-        //   position: 'bottom',
-        //   text1: 'Error',
-        //   text2: 'This is an error message.',
-        // });
-      
-
       }
     };
     fetchData();
@@ -115,6 +107,7 @@ const Login = ({ navigation }) => {
                style={styles.input}
                placeholder="Enter email"
                onChangeText={text => setEmail(text)}
+               autoCapitalize="none"
                value={email}
                onBlur={() => {
                  if (!email) {
@@ -143,6 +136,7 @@ const Login = ({ navigation }) => {
                placeholder="Enter password"
                value={password}
                onChangeText={text => setPassword(text)}
+               secureTextEntry={true}
                onBlur={() => {
                  if (!password) {
                    setPasswordError('Please enter your password');
