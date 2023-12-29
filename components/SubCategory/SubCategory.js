@@ -12,7 +12,7 @@ const SubCategory = ({navigation}) => {
     // console.error(useSelector((state)=>state.category.categoryid))
     useEffect(()=>{
        
-        // const subcategoryapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cus_sub_category&category_id=2' 
+        //  const subcategoryapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cus_sub_category&category_id=2' 
        const subcategoryapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cus_sub_category&category_id='+encodedcategoryid;
         const fetchData = async () => {
        
@@ -20,7 +20,7 @@ const SubCategory = ({navigation}) => {
             const response = await axios.get(subcategoryapi);
             if(response){
          setSubCategoryData(response.data.data);
-              console.log(response.data.data)
+            //   console.log(response.data.data)
             }
            }catch(error){
                console.log("sub Category product is not get yet")
@@ -62,7 +62,7 @@ const SubCategory = ({navigation}) => {
             numColumns={2}
             renderItem={({item})=>{
              return(
-                <TouchableOpacity keyExtractor key={item.id} style={styles.subcategory_list}>
+                <TouchableOpacity style={styles.subcategory_list_touchable_opacity} keyExtractor key={item.id} >
                 <View style={styles.subcategory_list}>
                    <View style={styles.subcategory_image_container}>
                    <Image style={{width:"100%",height:"100%",resizeMode:'contain'}}  source={{ uri: item.image }} />
@@ -127,11 +127,9 @@ const styles=StyleSheet.create({
         
     },
     subcategory_list_container:{
-   
-        justifyContent:'space-around',
         alignItems:'center',
-    
-        
+        justifyContent:'space-around',  
+        // flexDirection:'row',  
     },
     subcategory_list:{
         borderWidth:2,
@@ -139,9 +137,12 @@ const styles=StyleSheet.create({
         height:200,
         alignItems:'center',
         borderColor:'#2f2e7e',
-        backgroundColor:'yellow'
-        
        
+        
+        
+
+
+        // backgroundColor:'yellow'
         // borderTopEndRadius:20,
         // borderBottomLeftRadius:20
     },
