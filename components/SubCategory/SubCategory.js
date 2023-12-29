@@ -12,6 +12,8 @@ const SubCategory = () => {
         <Text  style={styles.subcategory_header}>Sub Category Heading</Text>
     </View>
     <View style={styles.subcategory_list_container}>
+
+        
         
         <TouchableOpacity >
          <View style={styles.subcategory_list}>
@@ -24,17 +26,7 @@ const SubCategory = () => {
          </View>
         </TouchableOpacity>
 
-        
-        <TouchableOpacity >
-         <View style={styles.subcategory_list}>
-            <View style={styles.subcategory_image_container}>
-            <Image style={{width:"100%",height:"100%",resizeMode:'contain'}}  source={require('../../assets/images/FeatureProductImage/f_product-3.png')} />
-            </View>
-            <View style={styles.subcategory_name_container}>
-                <Text style={styles.subcategory_name}>Sub Category item name</Text>
-            </View>
-         </View>
-        </TouchableOpacity>
+
 
     </View>
    </View>
