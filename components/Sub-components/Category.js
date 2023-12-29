@@ -2,8 +2,13 @@ import { useEffect,useState } from 'react'
 import axios from 'axios';
 import React from 'react'
 import { View ,StyleSheet, TouchableOpacity ,Text, Image,FlatList,Platform} from 'react-native'
+import { useDispatch } from 'react-redux';
+import { getcategoryid } from '../../Slice/categorySlice';
 
 const Category = ({navigation}) => {
+  
+  const dispatch=useDispatch();
+
      const[categoryList,setCategoryList]=useState([]);
   useEffect(() => {
     const CategoryProductAPI='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cus_category';
@@ -31,6 +36,11 @@ const Category = ({navigation}) => {
     //     {id:6,image:"",categoryName:"Gift Certificates"},  
     //     {id:7,image:"",categoryName:"Handle/SpacerMaterial"},
     //       ]
+    const calldata=(item)=>{
+      navigation.navigate('subcategory')
+      dispatch(getcategoryid(item.id));
+      
+    }
   return (
    <>
    <View style={styles.category}>
@@ -44,7 +54,7 @@ const Category = ({navigation}) => {
             numColumns={2}
             renderItem={({item})=>{
              return(
-                <TouchableOpacity keyExtractor key={item.id} style={styles.category_list} onPress={()=>navigation.navigate('subcategory')}>
+                <TouchableOpacity keyExtractor key={item.id} style={styles.category_list} onPress={()=>calldata(item)}>
                 <View style={styles.image_container}>
                  <Image style={{width:'100%',height:'100%'}} source={{ uri: item.image }}/>
                 </View>
