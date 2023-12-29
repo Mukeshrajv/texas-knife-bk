@@ -53,7 +53,7 @@ const Login = ({ navigation }) => {
           
       
           dispatch(getuserdata(response.data.data[0]))
-          console.log('API Response:', response.data.data[0]);
+          // console.log('API Response:', response.data.data[0]);
           setIsLoading(false)
         }
        

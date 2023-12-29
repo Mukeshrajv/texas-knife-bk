@@ -6,7 +6,7 @@ const SubList = () => {
    <View style={styles.sublist}>
     <View style={styles.sublist_container}>
         <View style={styles.sublist_singlelist_container}>
-               
+               <Text>Sublist</Text>
         </View>
     </View>
    </View>

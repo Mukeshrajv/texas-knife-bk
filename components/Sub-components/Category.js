@@ -3,7 +3,7 @@ import axios from 'axios';
 import React from 'react'
 import { View ,StyleSheet, TouchableOpacity ,Text, Image,FlatList,Platform} from 'react-native'
 
-const Category = () => {
+const Category = ({navigation}) => {
      const[categoryList,setCategoryList]=useState([]);
   useEffect(() => {
     const CategoryProductAPI='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cus_category';
@@ -44,7 +44,7 @@ const Category = () => {
             numColumns={2}
             renderItem={({item})=>{
              return(
-                <TouchableOpacity keyExtractor key={item.id} style={styles.category_list}>
+                <TouchableOpacity keyExtractor key={item.id} style={styles.category_list} onPress={()=>navigation.navigate('subcategory')}>
                 <View style={styles.image_container}>
                  <Image style={{width:'100%',height:'100%'}} source={{ uri: item.image }}/>
                 </View>

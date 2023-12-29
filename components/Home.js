@@ -3,8 +3,9 @@ import { View,Text,StyleSheet,Image,TouchableOpacity} from 'react-native';
 import FeatureProduct from './Sub-components/FeatureProduct';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Category from './Sub-components/Category';
+import { useSelector } from 'react-redux'
 
-const Home = () => {
+const Home = ({navigation}) => {
  
   
 
@@ -17,7 +18,7 @@ const Home = () => {
     <View style={styles.header_container}>
       <View style={styles.name_container}>
         <Text style={styles.hello}>Hello</Text>
-        <Text style={styles.clint_name}>Mukesh</Text>
+        <Text style={styles.clint_name}>{useSelector((state)=>state.login.logindata.name)}</Text>
       </View>
       <View style={styles.image_container}>
         <Image style={{width:45,height:45}} source={require('../assets/images/texaslogo.png')}/>
@@ -36,10 +37,10 @@ const Home = () => {
     </View>
 
     {/* FeatureProduct */}
-    <FeatureProduct/>
+    <FeatureProduct />
     
      {/* categoryProduct */}
-       <Category/>
+       <Category navigation={navigation}/>
 
 
   </View>
