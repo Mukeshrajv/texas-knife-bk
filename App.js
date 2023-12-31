@@ -10,6 +10,7 @@ import Register from './components/Login page/Register';
 import Tab from './Tab/Tab';
 import SubList from './components/SubList/SubList';
 import SubCategory from './components/SubCategory/SubCategory';
+import PopCard from './components/Pop Card/PopCard';
 
 
 
@@ -29,6 +30,7 @@ export default function App() {
           <Stack.Screen name="subcategory" component={SubCategory}/>
           <Stack.Screen name="subcategorylist" component={SubList}/>
           <Stack.Screen name="tab" component={Tab}/>
+          <Stack.Screen name="pop" component={PopCard}/>
       
         </Stack.Navigator>
       </NavigationContainer>

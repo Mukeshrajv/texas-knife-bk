@@ -62,7 +62,7 @@ const SubCategory = ({navigation}) => {
             numColumns={2}
             renderItem={({item})=>{
              return(
-                <TouchableOpacity style={styles.subcategory_list_touchable_opacity} keyExtractor key={item.id} >
+                <TouchableOpacity style={styles.subcategory_list_touchable_opacity} keyExtractor key={item.id} onPress={()=>navigation.navigate('subcategorylist')}>
                 <View style={styles.subcategory_list}>
                    <View style={styles.subcategory_image_container}>
                    <Image style={{width:"100%",height:"100%",resizeMode:'contain'}}  source={{ uri: item.image }} />
@@ -167,16 +167,17 @@ const styles=StyleSheet.create({
     },
     cart_icon_text_container:{
         position:'absolute',
-        backgroundColor:'white',
+        // backgroundColor:'white',
         width:15,
         height:15,
         borderRadius:50,
-        left:9,
-        top:2,
+        left:16,
+         top:7,
         justifyContent:'center',
         alignItems:'center'
     },
-    cart_text:{color:'red',
+    cart_text:{
+    color:'#ffffff',
     fontWeight:'bold',
     fontSize:8,
     padding:2
