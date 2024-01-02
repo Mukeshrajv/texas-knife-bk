@@ -3,7 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 const initialState={
-  categoryid:''
+  categoryid:'',
+  categoryname:'',
+  subcategoryname:''
 }
 
 
@@ -13,11 +15,17 @@ export const categorySlice=createSlice({
     reducers:{
      getcategoryid:(state,action)=>{
         state.categoryid=action.payload;
+     },
+     getcategoryname:(state,action)=>{
+      state.categoryname=action.payload;
+     },
+     getsubcategoryname:(state,action)=>{
+      state.subcategoryname=action.payload;
      }
      
     }
 });
 
-export const{getcategoryid}=categorySlice.actions;
+export const{getcategoryid,getcategoryname,getsubcategoryname}=categorySlice.actions;
 
 export default categorySlice.reducer;

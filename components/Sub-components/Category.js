@@ -3,7 +3,7 @@ import axios from 'axios';
 import React from 'react'
 import { View ,StyleSheet, TouchableOpacity ,Text, Image,FlatList,Platform} from 'react-native'
 import { useDispatch } from 'react-redux';
-import { getcategoryid } from '../../Slice/categorySlice';
+import { getcategoryid,getcategoryname} from '../../Slice/categorySlice';
 
 const Category = ({navigation}) => {
   
@@ -39,6 +39,7 @@ const Category = ({navigation}) => {
     const calldata=(item)=>{
       navigation.navigate('subcategory')
       dispatch(getcategoryid(item.id));
+      dispatch(getcategoryname(item.name));
       
     }
   return (
