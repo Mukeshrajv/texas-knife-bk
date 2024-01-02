@@ -3,11 +3,9 @@ import { View, Text, TextInput, Button, StyleSheet, Image, TouchableOpacity, Ale
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { getuserdata } from '../../Slice/loginSlice';
-import { useToast } from 'native-base';
 
 const Register = ({ navigation }) => {
   const dispatch = useDispatch();
-  const toast = useToast();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
