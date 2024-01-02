@@ -4,8 +4,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { getsubcategoryname } from '../../Slice/categorySlice';
 
 const SubCategory = ({navigation}) => {
+    const dispatch=useDispatch();
+
     const [subCategoryData,setSubCategoryData]=useState([]);
     const encodedcategoryid = encodeURIComponent(useSelector((state)=>state.category.categoryid));
     
@@ -32,6 +36,12 @@ const SubCategory = ({navigation}) => {
          
           fetchData();
     },[])
+
+    const calldata=(item)=>{
+        navigation.navigate('subcategorylist');
+        dispatch(getsubcategoryname(item.name));
+
+    }
 
   return (
    <View style={styles.subcategory}>
@@ -62,7 +72,7 @@ const SubCategory = ({navigation}) => {
             numColumns={2}
             renderItem={({item})=>{
              return(
-                <TouchableOpacity style={styles.subcategory_list_touchable_opacity} keyExtractor key={item.id} onPress={()=>navigation.navigate('subcategorylist')}>
+                <TouchableOpacity style={styles.subcategory_list_touchable_opacity} keyExtractor key={item.id} onPress={()=>calldata(item)}>
                 <View style={styles.subcategory_list}>
                    <View style={styles.subcategory_image_container}>
                    <Image style={{width:"100%",height:"100%",resizeMode:'contain'}}  source={{ uri: item.image }} />
@@ -127,24 +137,21 @@ const styles=StyleSheet.create({
         
     },
     subcategory_list_container:{
+        width:"100%",
+        height:700,
         alignItems:'center',
-        justifyContent:'space-around',  
-        // flexDirection:'row',  
+        justifyContent:'space-evenly'
     },
-    subcategory_list:{
+    subcategory_list_touchable_opacity:{
         borderWidth:2,
         width:150,
         height:200,
-        alignItems:'center',
         borderColor:'#2f2e7e',
+        margin:10
        
-        
-        
-
-
-        // backgroundColor:'yellow'
-        // borderTopEndRadius:20,
-        // borderBottomLeftRadius:20
+    },
+    subcategory_list:{
+         alignItems:'center',
     },
     subcategory_image_container:{
         width:"100%",
