@@ -6,15 +6,15 @@ import { AntDesign } from '@expo/vector-icons';
 const PopCard = ({ Navigation }) => {
 const [show,setShow]=useState(false);
 const [isRotated, setIsRotated] = useState(false);
-const rotation = new Animated.Value(0);
+// const rotation = new Animated.Value(0);
 
-const handlePress = () => {
-  setIsRotated(!isRotated);
-  Animated.timing(rotation, {
-    toValue: isRotated ? 45 : 0, // Toggle between 0 and 45 degrees
-    duration: 200,
-  }).start();
-};
+// const handlePress = () => {
+//   setIsRotated(!isRotated);
+//   Animated.timing(rotation, {
+//     toValue: isRotated ? 45 : 0, // Toggle between 0 and 45 degrees
+//     duration: 200,
+//   }).start();
+// };
     return (
         <View style={styles.ProductDetail}>
             <View style={styles.ProductDetail_container}>
@@ -32,8 +32,8 @@ const handlePress = () => {
                     <Text style={styles.description}>description</Text>
                     <View style={styles.accordion}>
                     <Text style={styles.label}>Product Details</Text>
-                    <TouchableOpacity onPress={handlePress}>
-                    <Animated.View style={{ transform: [{ rotateZ:rotation }] }}>
+                    <TouchableOpacity>
+                    <Animated.View>
                     <AntDesign  onPress={()=>setShow(!show)} name="downcircle" size={24} color="black" />
                     </Animated.View>
                      </TouchableOpacity>
