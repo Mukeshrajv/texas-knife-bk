@@ -6,35 +6,55 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getsubcategoryname } from '../../Slice/categorySlice';
+import Nocategory from '../No category/Nocategory';
 
 const SubCategory = ({navigation}) => {
     const dispatch=useDispatch();
 
     const [subCategoryData,setSubCategoryData]=useState([]);
+    const [nocategorydata,setNocategorydata]=useState([]);
+
+    
+
+    const encodedcategoryname = encodeURIComponent(useSelector((state)=>state.category.categoryname));
     const encodedcategoryid = encodeURIComponent(useSelector((state)=>state.category.categoryid));
     
     // console.error(useSelector((state)=>state.category.categoryid))
     useEffect(()=>{
        
         //  const subcategoryapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cus_sub_category&category_id=2' 
-       const subcategoryapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cus_sub_category&category_id='+encodedcategoryid;
+      
+        const subcategoryapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cus_sub_category&category_id='+encodedcategoryid;
+        const NOCategoryListApi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cus_category_product&category='+encodedcategoryname;
+
         const fetchData = async () => {
        
            try{
             const response = await axios.get(subcategoryapi);
             if(response){
-         setSubCategoryData(response.data.data);
+         setSubCategoryData(response.data);
             //   console.log(response.data.data)
             }
            }catch(error){
-               console.log("sub Category product is not get yet")
-             
-               
+               console.log("sub Category product is not get yet")       
            }
           }
-          
-         
           fetchData();
+          
+          const fetchDatas = async () => {
+            try{
+             const response = await axios.get(NOCategoryListApi);
+             if(response){
+                 setNocategorydata(response.data.data);
+                 //   console.error(response.data.data) 
+             }
+            }catch(error){
+                console.log("No Category list is not get yet")   
+            }
+           }
+           fetchDatas();
+         
+       
     },[])
 
     const calldata=(item)=>{
@@ -51,7 +71,7 @@ const SubCategory = ({navigation}) => {
         <Icon name="arrow-left" size={25} color="#2f2e7e" style={{marginLeft:10}} onPress={()=>navigation.navigate('Home')}/>
         </TouchableOpacity>
    
-        <Text  style={styles.subcategory_header}>Sub Category Heading</Text>
+        <Text  style={styles.subcategory_header}>{useSelector((state)=>state.category.categoryname)}</Text>
 
 
         <TouchableOpacity style={{paddingLeft:10,padding:5}}  onPress={()=>navigation.navigate('cart')}>
@@ -63,16 +83,19 @@ const SubCategory = ({navigation}) => {
         </TouchableOpacity>
        
     </View>
-    <View style={styles.subcategory_list_container}>
 
-    {
+
+    { subCategoryData.status===200 ? (
+           <View style={styles.subcategory_list_container}>
+ {
             <FlatList
-            data={subCategoryData}
+            data={subCategoryData.data}
             keyExtractor={i=>i.id}
-            numColumns={2}
+            key={'_'}
+              numColumns={2}
             renderItem={({item})=>{
              return(
-                <TouchableOpacity style={styles.subcategory_list_touchable_opacity} keyExtractor key={item.id} onPress={()=>calldata(item)}>
+                <TouchableOpacity style={styles.subcategory_list_touchable_opacity}  key={item.id} onPress={()=>calldata(item)}>
                 <View style={styles.subcategory_list}>
                    <View style={styles.subcategory_image_container}>
                    <Image style={{width:"100%",height:"100%",resizeMode:'contain'}}  source={{ uri: item.image }} />
@@ -87,26 +110,37 @@ const SubCategory = ({navigation}) => {
             }}
             />
         }
+        </View>
+    ):(
+        <View style={styles.nocategorycontainer}>
+        <FlatList
+            data={nocategorydata}
+            keyExtractor={i=>i.id}
+            
+            renderItem={({item})=>{
+             return(
+            
+              <TouchableOpacity keyExtractor key={item.id} onPress={()=>navigation.navigate('pop')} >
+              <View style={styles.list}>
+                 <View style={styles.image_container}>
+                  <Image style={{width:'100%',height:'100%',resizeMode:'stretch'}}  source={{ uri: item.product_image }}/>
+                 </View>
+                 <View style={styles.name_price_container}>
+                  <Text style={styles.item_name}>{item.product_name}</Text>
+                  <Text style={styles.item_price}>{item.product_price}</Text>
+                 </View>
+              </View>
+              </TouchableOpacity> 
+             )
+            }}
+            />
+        </View>
+    )}
+    
+   
 
 
-
-
-
-{/*         
-        <TouchableOpacity >
-         <View style={styles.subcategory_list}>
-            <View style={styles.subcategory_image_container}>
-            <Image style={{width:"100%",height:"100%",resizeMode:'contain'}}  source={require('../../assets/images/FeatureProductImage/f_product-3.png')} />
-            </View>
-            <View style={styles.subcategory_name_container}>
-                <Text style={styles.subcategory_name}>Sub Category item name</Text>
-            </View>
-         </View>
-        </TouchableOpacity> */}
-
-
-
-    </View>
+  
    </View>
    </View>
   )
@@ -139,15 +173,18 @@ const styles=StyleSheet.create({
     subcategory_list_container:{
         width:"100%",
         height:700,
-        alignItems:'center',
-        justifyContent:'space-evenly'
+        // backgroundColor:'red',
+         alignItems:'center',
+        justifyContent:'space-evenly',
+     
     },
     subcategory_list_touchable_opacity:{
         borderWidth:2,
         width:150,
         height:200,
         borderColor:'#2f2e7e',
-        margin:10
+        margin:10,
+        // backgroundColor:'yellow'
        
     },
     subcategory_list:{
@@ -188,6 +225,67 @@ const styles=StyleSheet.create({
     fontWeight:'bold',
     fontSize:8,
     padding:2
-    }
+    },  
+
+    // nocategory area
+
+    nocategorycontainer:{
+        backgroundColor:'#ffffff',
+        marginTop:5,
+        padding:10,
+        height:700
+    },
+    nocategorylist:{
+        backgroundColor:'yellow',
+        margin:5,
+        flexDirection:'row',
+        columnGap:20,
+        backgroundColor:'#f2f2f7',
+        padding:10,
+        alignItems:'center',
+        borderRadius:10
+    },
+    image_container:{
+        width:65,
+        height:65,
+        borderRadius:5
+       },
+       list:{
+        margin:5,
+        flexDirection:'row',
+        columnGap:20,
+        backgroundColor:'#f2f2f7',
+        padding:10,
+        alignItems:'center',
+        borderRadius:10
+     
+       },
+       image_container:{
+        width:65,
+        height:65,
+       //  backgroundColor:'lightgreen',
+        borderRadius:5
+       },
+       name_price_container:{
+         justifyContent:'center',
+       },
+       item_name:{
+        width:220,
+        height:40,
+        overflow:'hidden',
+        textAlign:"left",
+       //  backgroundColor:'white',
+        fontSize:16,
+        color:'#2f2e7e',
+        fontWeight:'bold'
+       
+       },
+       item_price:{
+       paddingTop:5,
+       fontSize:16,
+       fontWeight:'bold',
+       color:'red',
+       marginLeft:10
+       },
 })
 export default SubCategory
