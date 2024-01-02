@@ -8,6 +8,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const SubList = ({navigation}) => {
    const [subCategoryDataList,setSubCategoryDataList]=useState([]);
+
+   
    const encodedcategoryname = encodeURIComponent(useSelector((state)=>state.category.categoryname));
    const encodedsubcategoryname=encodeURIComponent(useSelector((state)=>state.category.subcategoryname))
   
@@ -15,6 +17,8 @@ const SubList = ({navigation}) => {
   useEffect(()=>{
      
       const subcategorylistapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cus_subcategory_product&category='+encodedcategoryname+'&sub_category='+encodedsubcategoryname;
+      
+
       const fetchData = async () => {
          try{
           const response = await axios.get(subcategorylistapi);
@@ -27,19 +31,21 @@ const SubList = ({navigation}) => {
              console.log("sub Category list is not get yet")   
          }
         }
-        
+
        
         fetchData();
+             
+       
   },[])
   return (
    <View style={styles.sublist}>
     <View style={styles.sublist_container}>
     <View style={styles.sublist_header_conatiner}>
     <TouchableOpacity style={{paddingRight:10,padding:5}} onPress={()=>navigation.navigate('subcategory')}>
-        <Icon name="arrow-left" size={25} color="#2f2e7e" style={{marginLeft:10}} onPress={()=>navigation.navigate('subcategory')}/>
+        <Icon name="arrow-left" size={25} color="#2f2e7e" style={{marginLeft:10}} />
         </TouchableOpacity>
    
-        <Text  style={styles.sublist_header}>Sub Category Heading</Text>
+        <Text  style={styles.sublist_header}>{useSelector((state)=>state.category.subcategoryname)}</Text>
 
 
         <TouchableOpacity style={{paddingLeft:10,padding:5}}  onPress={()=>navigation.navigate('cart')}>
