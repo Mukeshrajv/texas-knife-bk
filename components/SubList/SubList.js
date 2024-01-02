@@ -101,7 +101,7 @@ const SubList = ({navigation}) => {
 
 
        </View>
-     
+     ``
     </View>
    </View>
   )
