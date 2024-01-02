@@ -1,19 +1,44 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View,Text,StyleSheet,Image,TouchableOpacity,FlatList} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons';
+import axios from 'axios';
+import { useSelector } from 'react-redux'
 
 const Cart = () => {
-   const cartItems=[
-      {productname:"product1",code:"BH102",amount:20.22},
-      {productname:"product2",code:"BH102",amount:20.22},
-      {productname:"product3",code:"BH102",amount:20.22},
-      {productname:"product4",code:"BH102",amount:20.22},
-      {productname:"product5",code:"BH102",amount:20.22},
-      {productname:"product6",code:"BH102",amount:20.22},
-      {productname:"product7",code:"BH102",amount:20.22},
-      {productname:"product8",code:"BH102",amount:20.22},
-   ]
+
+   const[cartItem,setCartItem]=useState([]);
+   const encodedCustomerId = encodeURIComponent( useSelector((state)=>state.login.logindata.id));
+
+   useEffect(()=>{
+      const CartAPI='https://www.texasknife.com/dynamic/texasknifeapi.php?action=final_cart_details&store_id=1&customer_id='+encodedCustomerId;
+      const fetchData = async () => {
+      
+       try{
+        const response = await axios.get(CartAPI);
+        if(response){
+          setCartItem(response.data.data);
+         //  console.error("cart data")
+        }
+       }catch(error){
+           console.log("Cart item  not get yet")
+       }
+      }
+      
+     
+      fetchData();
+   },[])
+
+   // const cartItems=[
+   //    {productname:"product1",code:"BH102",amount:20.22},
+   //    {productname:"product2",code:"BH102",amount:20.22},
+   //    {productname:"product3",code:"BH102",amount:20.22},
+   //    {productname:"product4",code:"BH102",amount:20.22},
+   //    {productname:"product5",code:"BH102",amount:20.22},
+   //    {productname:"product6",code:"BH102",amount:20.22},
+   //    {productname:"product7",code:"BH102",amount:20.22},
+   //    {productname:"product8",code:"BH102",amount:20.22},
+   // ]
   return (
   <View style={styles.cart}>
     <View style={styles.cart_container}>
@@ -28,27 +53,27 @@ const Cart = () => {
      <View style={styles.cart_items_container}>
 
      <FlatList
-   data={cartItems}
+   data={cartItem}
    keyExtractor={i=>i.id}
    renderItem={({item})=>{
     return(
-      <View style={styles.cart_item} keyExtractor>
+      <View style={styles.cart_item} keyExtractor key={item.id}> 
 
       <View style={styles.img_addbtn_container}>
        <View style={styles.product_image_container}>
-       <Image style={{width:'100%',height:"100%",resizeMode:'stretch'}} source={require('../assets/images/FeatureProductImage/f_product-5.png')}/>
+       <Image style={{width:'100%',height:"100%",resizeMode:'stretch'}} source={{ uri: item.product_image }}/>
 
        </View>
        <View style={styles.product_increment_container}>
        <Icon name="minus-circle" size={20} color="#2a2e7e" />
-          <Text style={styles.item_count}>1</Text>
+          <Text style={styles.item_count}>{item.quantity}</Text>
           <Icon name="plus-circle" size={20} color="#2a2e7e" />
        </View>
       </View>
 
       <View style={styles.cartitem_name_container}>
-       <Text style={styles.product_title}>{item.productname} <Text>({item.code})</Text></Text>
-       <Text style={styles.product_amt}>${item.amount}</Text>
+       <Text style={styles.product_title}>{item.product_name}</Text>
+       <Text style={styles.product_amt}>${item.product_price}</Text>
       </View>
 
       <View style={styles.cartitem_icon_container}>
