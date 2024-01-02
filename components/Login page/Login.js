@@ -108,7 +108,8 @@ const Login = ({ navigation }) => {
                placeholder="Enter email"
                onChangeText={text => setEmail(text)}
                autoCapitalize="none"
-               value={email}
+                value={email}
+              // value={"desss@gmail.com"}
                onBlur={() => {
                  if (!email) {
                    setEmailError('Please enter your email');

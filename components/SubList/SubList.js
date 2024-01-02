@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { View ,StyleSheet,Text,TouchableOpacity,Image,FlatList } from 'react-native'
+import { View ,StyleSheet,Text,TouchableOpacity,Image,FlatList ,Platform,} from 'react-native'
 import axios from 'axios'
 import { useState,useEffect } from 'react'
 import { useSelector } from 'react-redux'
@@ -8,37 +8,44 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const SubList = ({navigation}) => {
    const [subCategoryDataList,setSubCategoryDataList]=useState([]);
-   const encodedsubcategoryid = encodeURIComponent(useSelector((state)=>state.category.categoryid));
+
+   
+   const encodedcategoryname = encodeURIComponent(useSelector((state)=>state.category.categoryname));
+   const encodedsubcategoryname=encodeURIComponent(useSelector((state)=>state.category.subcategoryname))
   
   // console.error(useSelector((state)=>state.category.categoryid))
   useEffect(()=>{
      
-      //  const subcategoryapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cus_sub_category&category_id=2' 
-      const subcategorylistapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cus_sub_category&category_id='+encodedsubcategoryid;
+      const subcategorylistapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cus_subcategory_product&category='+encodedcategoryname+'&sub_category='+encodedsubcategoryname;
+      
+
       const fetchData = async () => {
          try{
           const response = await axios.get(subcategorylistapi);
           if(response){
        setSubCategoryDataList(response.data.data);
-            console.log(response.data.data)
+            // console.log(response.data.data)
+            // console.error("sucess")
           }
          }catch(error){
              console.log("sub Category list is not get yet")   
          }
         }
-        
+
        
         fetchData();
+             
+       
   },[])
   return (
    <View style={styles.sublist}>
     <View style={styles.sublist_container}>
     <View style={styles.sublist_header_conatiner}>
-    <TouchableOpacity style={{paddingRight:10,padding:5}} onPress={()=>navigation.navigate('Home')}>
-        <Icon name="arrow-left" size={25} color="#2f2e7e" style={{marginLeft:10}} onPress={()=>navigation.navigate('Home')}/>
+    <TouchableOpacity style={{paddingRight:10,padding:5}} onPress={()=>navigation.navigate('subcategory')}>
+        <Icon name="arrow-left" size={25} color="#2f2e7e" style={{marginLeft:10}} />
         </TouchableOpacity>
    
-        <Text  style={styles.sublist_header}>Sub Category Heading</Text>
+        <Text  style={styles.sublist_header}>{useSelector((state)=>state.category.subcategoryname)}</Text>
 
 
         <TouchableOpacity style={{paddingLeft:10,padding:5}}  onPress={()=>navigation.navigate('cart')}>
@@ -63,17 +70,16 @@ const SubList = ({navigation}) => {
             <FlatList
             data={subCategoryDataList}
             keyExtractor={i=>i.id}
-            numColumns={2}
             renderItem={({item})=>{
              return(
               <TouchableOpacity keyExtractor key={item.id} onPress={()=>navigation.navigate('pop')} >
               <View style={styles.list}>
                  <View style={styles.image_container}>
-                  <Image style={{width:'100%',height:'100%',resizeMode:'contain'}} source={require("../../assets/images/FeatureProductImage/f_product-5.png")}/>
+                  <Image style={{width:'100%',height:'100%',resizeMode:'stretch'}}  source={{ uri: item.product_image }}/>
                  </View>
                  <View style={styles.name_price_container}>
-                  <Text style={styles.item_name}>Rought-Jackson CR White (Brown) this the lasr pafass dfa dvsdv dsvsdjv s dfsd f df sdf sdf sdf  sdfsd f</Text>
-                  <Text style={styles.item_price}>$18.95</Text>
+                  <Text style={styles.item_name}>{item.product_name}</Text>
+                  <Text style={styles.item_price}>{item.product_price}</Text>
                  </View>
               </View>
               </TouchableOpacity> 
@@ -115,7 +121,17 @@ const styles=StyleSheet.create({
   },
   sublist_container:{
     // backgroundColor:'red',
-    marginTop:15
+   
+    ...Platform.select({
+      ios: {
+        marginTop:35,
+        // Styles for iOS
+      },
+      android: {
+        marginTop:25,
+        // Styles for Android
+      },
+    }),
   },
   sublist_header_conatiner:{
     padding:10,
@@ -131,8 +147,9 @@ const styles=StyleSheet.create({
   },
   list_contianer:{
     // backgroundColor:'yellow',
-    marginTop:10,
-    padding:10
+    marginTop:5,
+    padding:10,
+    height:700
   },
   list:{
    margin:5,
@@ -147,7 +164,7 @@ const styles=StyleSheet.create({
   image_container:{
    width:65,
    height:65,
-   backgroundColor:'lightgreen',
+  //  backgroundColor:'lightgreen',
    borderRadius:5
   },
   name_price_container:{
