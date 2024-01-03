@@ -4,6 +4,7 @@ import React from 'react'
 import { View ,StyleSheet, TouchableOpacity ,Text, Image,FlatList,Platform} from 'react-native'
 import { useDispatch } from 'react-redux';
 import { getcategoryid,getcategoryname} from '../../Slice/categorySlice';
+import { getProductDetails } from '../../Slice/ProductDetailsSlice';
 
 const Category = ({navigation}) => {
   
@@ -11,6 +12,8 @@ const Category = ({navigation}) => {
 
      const[categoryList,setCategoryList]=useState([]);
   useEffect(() => {
+   
+
     const CategoryProductAPI='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cus_category';
     const fetchData = async () => {
     

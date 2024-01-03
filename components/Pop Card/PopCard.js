@@ -3,25 +3,63 @@ import { Text, Image, View, Button, StyleSheet, TouchableOpacity, Animated } fro
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 
-const PopCard = ({ Navigation }) => {
+
+const PopCard = ({ navigation }) => {
+    const encodedProductCode = encodeURIComponent(useSelector((state)=>state.product.pdata));
     const [show, setShow] = useState(false);
-    // const [rotateValue, setRotateValue] = useState(new Animated.Value(0)); // Initial rotation angle
+    const [productData,setProductData]=useState([])
 
-    // const handleIconClick = () => {
-    //     Animated.timing(rotateValue, {
-    //       toValue: rotateValue._value + 180, // Rotate 360 degrees
-    //       duration: 500, // Animation duration in milliseconds
-    //       useNativeDriver: true, // Use native driver for smoother animation
-    //     }).start();
-    //   };
+//   const getdata=()=>{
+//     const data= useSelector((state)=>state.category.pdata);
+//     console.log(data)
+//      setProductData(data);
+//   }
+//   https://www.texasknife.com/dynamic/texasknifeapi.php?action=product&sku=AWD180
+
+    useEffect(()=>{
+        const productapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=product&sku='+encodedProductCode;
+        const fetchData = async () => {
+        console.log(productapi)
+            try{
+             const response = await axios.get(productapi);
+             if(response){
+          setProductData(response.data.data[0]);
+        console.log(response.data.data[0])
+             }
+            }catch(error){
+                console.log(" product data is not get yet")       
+            }
+           }
+           fetchData();
+
+        // fetch(productapi)
+        // .then(response => response.json())
+        // .then(data => {
+        //   setProductData(data);
+        //   var dt = data;
+
+        //   console.log("data");
+        //   console.log(dt.data[0].product_name)
+           
+        // })
+        // .catch(error => {
+        //   console.error('Error fetching data:', error);
+        // });
+
+        
+
+    },[])
+     console.log(productData.product_price)
     return (
         <View style={styles.ProductDetail}>
             <View style={styles.ProductDetail_container}>
                 <View style={styles.sublist_header_conatiner}>
-                    <TouchableOpacity style={{ paddingRight: 5, padding: 5 }} onPress={console.log('pressed')}>
-                        <Icon name="arrow-left" size={25} color="#2f2e7e" style={{ marginLeft: 5 }} onPress={console.log('pressed')} />
+                    <TouchableOpacity style={{ paddingRight: 5, padding: 5 }}  >
+                        <Icon name="arrow-left" size={25} color="#2f2e7e" style={{ marginLeft: 5 }} />
                     </TouchableOpacity>
 
                     <Text style={styles.sublist_header}>Product Details</Text>
@@ -34,22 +72,22 @@ const PopCard = ({ Navigation }) => {
                         </View>
                     </TouchableOpacity>
                 </View>
-                <View>
+                <View style={styles.image_container}>
                     <Image
                         style={styles.image}
-                        source={require('../../assets/images/TEXASnewlogo.png')}
+                        source={{ uri:  useSelector((state)=>state.product.pimage)}}
                     />
                 </View>
                 <View style={styles.Container}>
             
-                    <Text style={styles.name}>Glow-in-the-Dark Beads -Package of 50</Text>
+                    <Text style={styles.name}>{productData.product_name}</Text>
                     <View style={styles.code}>
-                        <Text style={{color:'white'}}>BEAD5</Text>
+                        <Text style={{color:'white'}}>{productData.sku}</Text>
                     </View>
                     <Text style={styles.label}>Price:</Text>
-                    <Text style={styles.price}>$ 12.95</Text>
+                    <Text style={styles.price}>$ {productData.product_price}</Text>
                     <Text style={styles.label}>Description:</Text>
-                    <Text style={styles.description}>The soft black sanding sponge is 4-1/2"*5-1/2".The ultrafine pad is for fine sanding.Use dry or wet.Flexible,comfortable and long-lasting.Great for sanding hard to reach areas.</Text>
+                    <Text style={styles.description}>{productData.description}</Text>
                     <View style={styles.accordion}>
                         <Text style={styles.label}>Product Details</Text>
                         <TouchableOpacity onPress={() => setShow(!show)} >
@@ -65,7 +103,7 @@ const PopCard = ({ Navigation }) => {
                             <Text >weight:</Text>
                             </View>
                             <View style={{backgroundColor:'white',padding:10,width:'70%'}}>
-                            <Text>0.25</Text>
+                            <Text>{productData.weight}</Text>
                             </View>
                         </View>
                     }
@@ -97,12 +135,20 @@ const styles = StyleSheet.create({
         // marginTop:15,
         padding: 10,
     },
+    image_container:{
+        alignItems:'center',
+        width:'100%',
+        height:150,
+        marginBottom:10,
+    },
     image: {
-        height: 200,
-        width: '100%',
+        height: "100%",
+        width: '90%',
         resizeMode: 'contain',
         // backgroundColor: 'blue',
         marginBottom: 10,
+        resizeMode:'stretch',
+        borderRadius:20
     },
     Container: {
         padding: 16,
@@ -129,7 +175,7 @@ const styles = StyleSheet.create({
         marginBottom:10,
     },
     name: {
-        fontSize: 22,
+        fontSize: 18,
         fontWeight: 'bold',
         color: '#2f2e7e',
         marginBottom:10,
