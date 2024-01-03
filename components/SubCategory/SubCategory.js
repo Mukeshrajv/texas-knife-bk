@@ -163,13 +163,13 @@ const styles=StyleSheet.create({
         justifyContent:'space-between',
         alignItems:'center',
     },
-    subcategory_header:{
-        fontSize:16,
-        fontWeight:'bold',
-        color:'#2a2e7e',
-        // backgroundColor:'red',
-        
-    },
+        subcategory_header:{
+            fontSize:16,
+            fontWeight:'bold',
+            color:'#2a2e7e',
+            // backgroundColor:'red',
+            
+        },
     subcategory_list_container:{
         width:"100%",
         height:700,
