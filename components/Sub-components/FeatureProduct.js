@@ -2,7 +2,7 @@ import React, { useEffect, useState }  from 'react';
 import axios from 'axios';
 import { View,Text,StyleSheet,Image,FlatList,TouchableOpacity,} from 'react-native';
 import { useDispatch } from 'react-redux';
-import { getProductDetails,getProductImage} from '../../Slice/ProductDetailsSlice';
+import { getProductDetails,getProductRoute} from '../../Slice/ProductDetailsSlice';
 const FeatureProduct = ({navigation}) => {
    const dispatch=useDispatch();
   const[featureProduct,setFeatureProduct]=useState([])
@@ -28,7 +28,7 @@ const FeatureProduct = ({navigation}) => {
   const handleChange=(item)=>{
     navigation.navigate('pop')
      dispatch(getProductDetails(item.sku));
-     dispatch(getProductImage(item.product_image));
+     dispatch(getProductRoute("Home"));
     // console.log(item.sku)
 
   }

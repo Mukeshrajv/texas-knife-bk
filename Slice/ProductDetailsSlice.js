@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState={
 pdata:'',
-pimage:'',
+cartrout:'',
 
 }
 
@@ -17,13 +17,14 @@ export const ProductDetailsSlice=createSlice({
             state.pdata=action.payload;
             console.log("hello"+state.pdata)
         },
-        getProductImage:(state,action)=>{
-            state.pimage=action.payload;
-            console.log("hello"+state.pdata)
+        getProductRoute:(state,action)=>{
+            state.cartrout=action.payload;
+            // console.error(state.cartrout)
         }
+        
     }
 })
 
-export const{ getProductDetails,getProductImage}=ProductDetailsSlice.actions;
+export const{ getProductDetails,getProductRoute}=ProductDetailsSlice.actions;
 
 export default ProductDetailsSlice.reducer;
