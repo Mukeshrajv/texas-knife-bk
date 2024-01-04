@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
+
+
 import { Text, Image, View, Button, StyleSheet, TouchableOpacity, Animated ,ScrollView} from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -94,6 +96,7 @@ const PopCard = ({ navigation }) => {
                 {/* onPress={()=>navigation.navigate(()=>useSelector((state)=>state.product.cartrout))} */}
                     <TouchableOpacity style={{ paddingRight: 5, padding: 5 }}  >
                         <Icon name="arrow-left" size={25} color="#2f2e7e" style={{ marginLeft: 5 }} />
+
                     </TouchableOpacity>
 
                     <Text style={styles.sublist_header}>Product Details</Text>
@@ -106,7 +109,9 @@ const PopCard = ({ navigation }) => {
                         </View>
                     </TouchableOpacity>
                 </View>
+
                 <View style={styles.image_container}>
+
                     <Image
                         style={styles.image}
                         source={{ uri:  productImage.msg}}
@@ -114,6 +119,7 @@ const PopCard = ({ navigation }) => {
                 </View>
                 <View style={styles.Container}>
             
+
                     <Text style={styles.name}>{productData.product_name}</Text>
                     <View style={styles.code}>
                         <Text style={{color:'white'}}>{productData.sku}</Text>
@@ -137,6 +143,7 @@ const PopCard = ({ navigation }) => {
                                 {
                                     show?(<View><AntDesign name="upcircle" size={24} color="black" /></View>):(<View><AntDesign name="downcircle" size={24} color="black" /></View>)
                                 }
+
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -146,7 +153,9 @@ const PopCard = ({ navigation }) => {
                             <Text >weight:</Text>
                             </View>
                             <View style={{backgroundColor:'white',padding:10,width:'70%'}}>
+
                             <Text>{productData.weight}</Text>
+
                             </View>
                         </View>
                     }
@@ -158,7 +167,9 @@ const PopCard = ({ navigation }) => {
                         <Feather name="plus-circle" size={30} color="black" />
                     </View>
                     <View style={styles.btn}>
+
                         <Text >Add To Cart</Text>
+
                     </View>
                 </View>
             </View>
@@ -196,7 +207,12 @@ const styles = StyleSheet.create({
         height:150,
         marginBottom:10,
     },
+    ProductDetail_container: {
+        // marginTop:15,
+        padding: 10,
+    },
     image: {
+
         height: "100%",
         width: '90%',
         resizeMode: 'contain',
@@ -204,6 +220,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         resizeMode:'stretch',
         borderRadius:20
+
     },
     Container: {
         padding: 16,
@@ -239,10 +256,11 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600',
         marginBottom: 10,
-    },
+
     description_container:{
         // backgroundColor:'yellow',
     //    marginBottom:-20
+
     },
     description: {
         fontSize: 16,
@@ -280,7 +298,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 10,
+
     
+
     },
     rotated: {
         transform: [{ rotate: '180deg' }],
