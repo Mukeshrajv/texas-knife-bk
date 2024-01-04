@@ -12,6 +12,7 @@ import SubList from './components/SubList/SubList';
 import SubCategory from './components/SubCategory/SubCategory';
 import PopCard from './components/Pop Card/PopCard';
 import Nocategory from './components/No category/Nocategory';
+import  SearchBar  from './components/SearchBar/SearchBar';
 
 
 
@@ -33,7 +34,7 @@ export default function App() {
           <Stack.Screen name="subcategory" component={SubCategory}/>
           <Stack.Screen name="subcategorylist" component={SubList}/>
           <Stack.Screen name="pop" component={PopCard}/>
-      
+          <Stack.Screen name="SearchBar" component={SearchBar}/>
         </Stack.Navigator>
       </NavigationContainer>
   
