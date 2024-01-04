@@ -1,27 +1,99 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Text, Image, View, Button, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import { Text, Image, View, Button, StyleSheet, TouchableOpacity, Animated ,ScrollView} from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+import HTMLView from 'react-native-htmlview';
 
 
-const PopCard = ({ Navigation }) => {
+
+const PopCard = ({ navigation }) => {
     const [show, setShow] = useState(false);
-    // const [rotateValue, setRotateValue] = useState(new Animated.Value(0)); // Initial rotation angle
+  
 
-    // const handleIconClick = () => {
-    //     Animated.timing(rotateValue, {
-    //       toValue: rotateValue._value + 180, // Rotate 360 degrees
-    //       duration: 500, // Animation duration in milliseconds
-    //       useNativeDriver: true, // Use native driver for smoother animation
-    //     }).start();
-    //   };
+    const [reload,setReload]=useState(false);
+    const [productData,setProductData]=useState([]);
+    const [productImage,setProductImage]=useState([]);
+    const [imageurl,setImageurl]=useState('');
+   
+    const encodedProductCode = encodeURIComponent(useSelector((state)=>state.product.pdata));
+   
+
+//   https://www.texasknife.com/dynamic/texasknifeapi.php?action=product&sku=AWD180
+
+    useEffect(()=>{
+        const productapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=product&sku='+encodedProductCode; 
+
+        const fetchData = async () => {
+        // console.log(productapi)
+            try{
+             const response = await axios.get(productapi);
+             if(response){
+            setProductData(response.data.data[0]);
+            // console.log("dai: "+response.data.data[0].product_image);
+            setImageurl(response.data.data[0].product_image)
+            // setProductImage(productData.product_image)
+
+            const encodedProductImage = encodeURIComponent(imageurl);
+            const productimageapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=image&image='+encodedProductImage;
+            // console.log("url : "+productimageapi)
+            const fetchimage=async()=>{
+                try{
+                const response=await axios.get(productimageapi);
+                if(response){
+                 
+                    setProductImage(response.data.data[0])
+                }
+                }catch(error){
+                    console.log("product image not get yet")
+                }
+            }
+            fetchimage()
+          
+           
+             }
+            }catch(error){
+                console.log(" product data is not get yet")       
+            }
+           }
+           fetchData();
+        //    console.log("hello")
+           
+           
+        //    const encodedProductImage = encodeURIComponent(imageurl);
+        //    const productimageapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=image&image='+encodedProductImage;
+        //    console.log("url : "+productimageapi)
+        //    const fetchimage=async()=>{
+        //        try{
+        //        const response=await axios.get(productimageapi);
+        //        if(response){
+                
+        //            setProductImage(response.data.data[0])
+        //        }
+        //        }catch(error){
+        //            console.log("product image not get yet")
+        //        }
+        //    }
+        //    fetchimage()
+          
+          
+      
+        //   console.log("product image : "+productImage.msg)
+        
+     setTimeout(()=>setReload(true),1000)
+    },[reload])
+    //  console.log(productData.product_price)
+
+
     return (
         <View style={styles.ProductDetail}>
             <View style={styles.ProductDetail_container}>
-                <View style={styles.sublist_header_conatiner}>
-                    <TouchableOpacity style={{ paddingRight: 5, padding: 5 }} onPress={console.log('pressed')}>
-                        <Icon name="arrow-left" size={25} color="#2f2e7e" style={{ marginLeft: 5 }} onPress={console.log('pressed')} />
+                <View style={styles.sublist_header_conatiner}>  
+                {/* onPress={()=>navigation.navigate(()=>useSelector((state)=>state.product.cartrout))} */}
+                    <TouchableOpacity style={{ paddingRight: 5, padding: 5 }}  >
+                        <Icon name="arrow-left" size={25} color="#2f2e7e" style={{ marginLeft: 5 }} />
                     </TouchableOpacity>
 
                     <Text style={styles.sublist_header}>Product Details</Text>
@@ -34,28 +106,37 @@ const PopCard = ({ Navigation }) => {
                         </View>
                     </TouchableOpacity>
                 </View>
-                <View>
+                <View style={styles.image_container}>
                     <Image
                         style={styles.image}
-                        source={require('../../assets/images/TEXASnewlogo.png')}
+                        source={{ uri:  productImage.msg}}
                     />
                 </View>
                 <View style={styles.Container}>
             
-                    <Text style={styles.name}>Glow-in-the-Dark Beads -Package of 50</Text>
+                    <Text style={styles.name}>{productData.product_name}</Text>
                     <View style={styles.code}>
-                        <Text style={{color:'white'}}>BEAD5</Text>
+                        <Text style={{color:'white'}}>{productData.sku}</Text>
                     </View>
+                    <View>
                     <Text style={styles.label}>Price:</Text>
-                    <Text style={styles.price}>$ 12.95</Text>
+                    <Text style={styles.price}>$ {productData.product_price}</Text>
+                    </View>
+                    <View style={styles.description_container}>
                     <Text style={styles.label}>Description:</Text>
-                    <Text style={styles.description}>The soft black sanding sponge is 4-1/2"*5-1/2".The ultrafine pad is for fine sanding.Use dry or wet.Flexible,comfortable and long-lasting.Great for sanding hard to reach areas.</Text>
+                    <ScrollView style={{height:80}}>
+
+                     <HTMLView  value={productData.description}  stylesheet={customStyles} />
+                    </ScrollView>
+                    </View>
+                    {/* <Text style={styles.description}>{productData.description}</Text> */}
                     <View style={styles.accordion}>
                         <Text style={styles.label}>Product Details</Text>
                         <TouchableOpacity onPress={() => setShow(!show)} >
-                            <View style={styles.icon}
-                            >
-                                <AntDesign name="downcircle" size={24} color="black" />
+                            <View style={styles.icon}>
+                                {
+                                    show?(<View><AntDesign name="upcircle" size={24} color="black" /></View>):(<View><AntDesign name="downcircle" size={24} color="black" /></View>)
+                                }
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -65,7 +146,7 @@ const PopCard = ({ Navigation }) => {
                             <Text >weight:</Text>
                             </View>
                             <View style={{backgroundColor:'white',padding:10,width:'70%'}}>
-                            <Text>0.25</Text>
+                            <Text>{productData.weight}</Text>
                             </View>
                         </View>
                     }
@@ -73,17 +154,28 @@ const PopCard = ({ Navigation }) => {
                     <Text style={styles.label}>Quantity</Text>
                     <View style={styles.quantity}>
                         <Feather name="minus-circle" size={30} color="black" />
-                        <Text style={styles.description}>1</Text>
+                        <Text>1</Text>
                         <Feather name="plus-circle" size={30} color="black" />
                     </View>
                     <View style={styles.btn}>
-                        <Text onPress={console.log('pressed')}>Add To Cart</Text>
+                        <Text >Add To Cart</Text>
                     </View>
                 </View>
             </View>
         </View>
     );
 }
+const customStyles = StyleSheet.create({
+    p: {
+      fontSize: 14,
+      color:'grey',
+      marginBottom:-60
+
+       
+    },
+    // Add more styles for other HTML elements as needed
+  });
+
 const styles = StyleSheet.create({
     ProductDetail: {
         flexDirection: 'column',
@@ -92,17 +184,26 @@ const styles = StyleSheet.create({
         padding: 10,
         marginTop: 15,
         // width: 350,
+        backgroundColor:'#ffffff'
     },
     ProductDetail_container: {
         // marginTop:15,
         padding: 10,
     },
+    image_container:{
+        alignItems:'center',
+        width:'100%',
+        height:150,
+        marginBottom:10,
+    },
     image: {
-        height: 200,
-        width: '100%',
+        height: "100%",
+        width: '90%',
         resizeMode: 'contain',
         // backgroundColor: 'blue',
         marginBottom: 10,
+        resizeMode:'stretch',
+        borderRadius:20
     },
     Container: {
         padding: 16,
@@ -129,7 +230,7 @@ const styles = StyleSheet.create({
         marginBottom:10,
     },
     name: {
-        fontSize: 22,
+        fontSize: 18,
         fontWeight: 'bold',
         color: '#2f2e7e',
         marginBottom:10,
@@ -139,11 +240,18 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         marginBottom: 10,
     },
+    description_container:{
+        // backgroundColor:'yellow',
+    //    marginBottom:-20
+    },
     description: {
         fontSize: 16,
         fontWeight: '400',
         color: '#787878',
         marginBottom: 16,
+    //    width:200,
+    //    height:60,
+    //    backgroundColor:'white'
     },
     quantity: {
         width: 100,
@@ -172,6 +280,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 10,
+    
     },
     rotated: {
         transform: [{ rotate: '180deg' }],

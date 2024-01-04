@@ -1,9 +1,10 @@
 import React, { useEffect, useState }  from 'react';
 import axios from 'axios';
 import { View,Text,StyleSheet,Image,FlatList,TouchableOpacity,} from 'react-native';
-import product from '../../assets/images/FeatureProductImage/f_product-1.png'
-const FeatureProduct = () => {
-
+import { useDispatch } from 'react-redux';
+import { getProductDetails,getProductRoute} from '../../Slice/ProductDetailsSlice';
+const FeatureProduct = ({navigation}) => {
+   const dispatch=useDispatch();
   const[featureProduct,setFeatureProduct]=useState([])
 
   useEffect(() => {
@@ -24,15 +25,13 @@ const FeatureProduct = () => {
    
     fetchData();
    }, []); 
-  //  console.log(featureProduct);
+  const handleChange=(item)=>{
+    navigation.navigate('pop')
+     dispatch(getProductDetails(item.sku));
+     dispatch(getProductRoute("Home"));
+    // console.log(item.sku)
 
-    // const freatureProductList=[
-    //     {id:1,productName:"Big Tex Filler With CRYO",code:"BL707C",price:32.95,image:'../../assets/images/FeatureProductImage/f_product-1.png'},
-    //     {id:2,productName:"Favorite Chefs Santoku With CRYO ",code:"BL547",price:19.95,image:"../../assets/images/FeatureProductImage/f_product-2.png"},
-    //     {id:3,productName:"New Guides Skinner With Brass Bolsters CRYO",code:"BL483C",price:27.45,image:"../../assets/images/FeatureProductImage/f_product-3.png"},
-    //     {id:4,productName:"Favorite Utility Paring Blade WIth CRYO",code:"BL476C",price:19.95,image:"../../assets/images/FeatureProductImage/f_product-4.png"},
-    //     {id:5,productName:"Favorite Mid Size Chef Blade With CRYO",code:"BL531C",price:20.95,image:"../../assets/images/FeatureProductImage/f_product-5.png"}
-    //   ]
+  }
   return (
    <>
     <View style={styles.featureproduct_container}>
@@ -45,7 +44,7 @@ const FeatureProduct = () => {
     return(
        
    <View keyExtractor style={styles.featureproduct_list_container}>
-     <TouchableOpacity>
+     <TouchableOpacity onPress={()=>handleChange(item)}>
    <View style={styles.featureproduct_list}>
     <Text style={styles.featureproduct_name}>{item.product_name}</Text>
     <Text style={styles.price}>$ {item.product_price}</Text>

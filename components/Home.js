@@ -38,7 +38,7 @@ const Home = ({navigation}) => {
     </View>
 
     {/* FeatureProduct */}
-    <FeatureProduct />
+    <FeatureProduct navigation={navigation}/>
     
      {/* categoryProduct */}
        <Category navigation={navigation}/>
