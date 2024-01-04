@@ -5,8 +5,11 @@ import axios from 'axios'
 import { useState,useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useDispatch } from 'react-redux'; 
+import { getProductDetails } from '../../Slice/ProductDetailsSlice'
 
 const SubList = ({navigation}) => {
+  const dispatch=useDispatch();
    const [subCategoryDataList,setSubCategoryDataList]=useState([]);
 
    
@@ -37,6 +40,12 @@ const SubList = ({navigation}) => {
              
        
   },[])
+ 
+  const handleChange=(item)=>{
+    navigation.navigate('pop')
+    dispatch(getProductDetails(item.sku))
+  }
+
   return (
    <View style={styles.sublist}>
     <View style={styles.sublist_container}>
@@ -72,7 +81,7 @@ const SubList = ({navigation}) => {
             keyExtractor={i=>i.id}
             renderItem={({item})=>{
              return(
-              <TouchableOpacity keyExtractor key={item.id} onPress={()=>navigation.navigate('pop')} >
+              <TouchableOpacity keyExtractor key={item.id} onPress={()=>handleChange(item)} >
               <View style={styles.list}>
                  <View style={styles.image_container}>
                   <Image style={{width:'100%',height:'100%',resizeMode:'stretch'}}  source={{ uri: item.product_image }}/>

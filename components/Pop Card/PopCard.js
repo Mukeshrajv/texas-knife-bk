@@ -9,55 +9,85 @@ import axios from 'axios';
 
 
 const PopCard = ({ navigation }) => {
-    const encodedProductCode = encodeURIComponent(useSelector((state)=>state.product.pdata));
     const [show, setShow] = useState(false);
-    const [productData,setProductData]=useState([])
 
-//   const getdata=()=>{
-//     const data= useSelector((state)=>state.category.pdata);
-//     console.log(data)
-//      setProductData(data);
-//   }
+    const [reload,setReload]=useState(false);
+    const [productData,setProductData]=useState([]);
+    const [productImage,setProductImage]=useState([]);
+    const [imageurl,setImageurl]=useState('');
+   
+    const encodedProductCode = encodeURIComponent(useSelector((state)=>state.product.pdata));
+   
+
 //   https://www.texasknife.com/dynamic/texasknifeapi.php?action=product&sku=AWD180
 
     useEffect(()=>{
-        const productapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=product&sku='+encodedProductCode;
+        const productapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=product&sku='+encodedProductCode; 
+
         const fetchData = async () => {
-        console.log(productapi)
+        // console.log(productapi)
             try{
              const response = await axios.get(productapi);
              if(response){
-          setProductData(response.data.data[0]);
-        console.log(response.data.data[0])
+            setProductData(response.data.data[0]);
+            // console.log("dai: "+response.data.data[0].product_image);
+            setImageurl(response.data.data[0].product_image)
+            // setProductImage(productData.product_image)
+
+            const encodedProductImage = encodeURIComponent(imageurl);
+            const productimageapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=image&image='+encodedProductImage;
+            // console.log("url : "+productimageapi)
+            const fetchimage=async()=>{
+                try{
+                const response=await axios.get(productimageapi);
+                if(response){
+                 
+                    setProductImage(response.data.data[0])
+                }
+                }catch(error){
+                    console.log("product image not get yet")
+                }
+            }
+            fetchimage()
+          
+           
              }
             }catch(error){
                 console.log(" product data is not get yet")       
             }
            }
            fetchData();
-
-        // fetch(productapi)
-        // .then(response => response.json())
-        // .then(data => {
-        //   setProductData(data);
-        //   var dt = data;
-
-        //   console.log("data");
-        //   console.log(dt.data[0].product_name)
+        //    console.log("hello")
            
-        // })
-        // .catch(error => {
-        //   console.error('Error fetching data:', error);
-        // });
-
+           
+        //    const encodedProductImage = encodeURIComponent(imageurl);
+        //    const productimageapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=image&image='+encodedProductImage;
+        //    console.log("url : "+productimageapi)
+        //    const fetchimage=async()=>{
+        //        try{
+        //        const response=await axios.get(productimageapi);
+        //        if(response){
+                
+        //            setProductImage(response.data.data[0])
+        //        }
+        //        }catch(error){
+        //            console.log("product image not get yet")
+        //        }
+        //    }
+        //    fetchimage()
+          
+          
+      
+        //   console.log("product image : "+productImage.msg)
         
-
-    },[])
-     console.log(productData.product_price)
+     setTimeout(()=>setReload(true),1000)
+    },[reload])
+    //  console.log(productData.product_price)
     return (
         <View style={styles.ProductDetail}>
             <View style={styles.ProductDetail_container}>
-                <View style={styles.sublist_header_conatiner}>
+                <View style={styles.sublist_header_conatiner}>  
+                {/* onPress={()=>navigation.navigate(()=>useSelector((state)=>state.product.cartrout))} */}
                     <TouchableOpacity style={{ paddingRight: 5, padding: 5 }}  >
                         <Icon name="arrow-left" size={25} color="#2f2e7e" style={{ marginLeft: 5 }} />
                     </TouchableOpacity>
@@ -75,7 +105,7 @@ const PopCard = ({ navigation }) => {
                 <View style={styles.image_container}>
                     <Image
                         style={styles.image}
-                        source={{ uri:  useSelector((state)=>state.product.pimage)}}
+                        source={{ uri:  productImage.msg}}
                     />
                 </View>
                 <View style={styles.Container}>
@@ -115,7 +145,7 @@ const PopCard = ({ navigation }) => {
                         <Feather name="plus-circle" size={30} color="black" />
                     </View>
                     <View style={styles.btn}>
-                        <Text onPress={console.log('pressed')}>Add To Cart</Text>
+                        <Text >Add To Cart</Text>
                     </View>
                 </View>
             </View>
