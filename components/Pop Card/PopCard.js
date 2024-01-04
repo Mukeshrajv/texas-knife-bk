@@ -1,15 +1,17 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Text, Image, View, Button, StyleSheet, TouchableOpacity, Animated } from 'react-native';
+import { Text, Image, View, Button, StyleSheet, TouchableOpacity, Animated ,ScrollView} from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import HTMLView from 'react-native-htmlview';
 
 
 
 const PopCard = ({ navigation }) => {
     const [show, setShow] = useState(false);
+  
 
     const [reload,setReload]=useState(false);
     const [productData,setProductData]=useState([]);
@@ -83,6 +85,8 @@ const PopCard = ({ navigation }) => {
      setTimeout(()=>setReload(true),1000)
     },[reload])
     //  console.log(productData.product_price)
+
+
     return (
         <View style={styles.ProductDetail}>
             <View style={styles.ProductDetail_container}>
@@ -114,16 +118,25 @@ const PopCard = ({ navigation }) => {
                     <View style={styles.code}>
                         <Text style={{color:'white'}}>{productData.sku}</Text>
                     </View>
+                    <View>
                     <Text style={styles.label}>Price:</Text>
                     <Text style={styles.price}>$ {productData.product_price}</Text>
+                    </View>
+                    <View style={styles.description_container}>
                     <Text style={styles.label}>Description:</Text>
-                    <Text style={styles.description}>{productData.description}</Text>
+                    <ScrollView style={{height:80}}>
+
+                     <HTMLView  value={productData.description}  stylesheet={customStyles} />
+                    </ScrollView>
+                    </View>
+                    {/* <Text style={styles.description}>{productData.description}</Text> */}
                     <View style={styles.accordion}>
                         <Text style={styles.label}>Product Details</Text>
                         <TouchableOpacity onPress={() => setShow(!show)} >
-                            <View style={styles.icon}
-                            >
-                                <AntDesign name="downcircle" size={24} color="black" />
+                            <View style={styles.icon}>
+                                {
+                                    show?(<View><AntDesign name="upcircle" size={24} color="black" /></View>):(<View><AntDesign name="downcircle" size={24} color="black" /></View>)
+                                }
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -141,7 +154,7 @@ const PopCard = ({ navigation }) => {
                     <Text style={styles.label}>Quantity</Text>
                     <View style={styles.quantity}>
                         <Feather name="minus-circle" size={30} color="black" />
-                        <Text style={styles.description}>1</Text>
+                        <Text>1</Text>
                         <Feather name="plus-circle" size={30} color="black" />
                     </View>
                     <View style={styles.btn}>
@@ -152,6 +165,17 @@ const PopCard = ({ navigation }) => {
         </View>
     );
 }
+const customStyles = StyleSheet.create({
+    p: {
+      fontSize: 14,
+      color:'grey',
+      marginBottom:-60
+
+       
+    },
+    // Add more styles for other HTML elements as needed
+  });
+
 const styles = StyleSheet.create({
     ProductDetail: {
         flexDirection: 'column',
@@ -160,6 +184,7 @@ const styles = StyleSheet.create({
         padding: 10,
         marginTop: 15,
         // width: 350,
+        backgroundColor:'#ffffff'
     },
     ProductDetail_container: {
         // marginTop:15,
@@ -215,11 +240,18 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         marginBottom: 10,
     },
+    description_container:{
+        // backgroundColor:'yellow',
+    //    marginBottom:-20
+    },
     description: {
         fontSize: 16,
         fontWeight: '400',
         color: '#787878',
         marginBottom: 16,
+    //    width:200,
+    //    height:60,
+    //    backgroundColor:'white'
     },
     quantity: {
         width: 100,
@@ -248,6 +280,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginBottom: 10,
+    
     },
     rotated: {
         transform: [{ rotate: '180deg' }],
