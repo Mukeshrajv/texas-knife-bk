@@ -5,7 +5,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState={
 pdata:'',
 cartrout:'',
-
+cartload:true
 }
 
 
@@ -20,11 +20,13 @@ export const ProductDetailsSlice=createSlice({
         getProductRoute:(state,action)=>{
             state.cartrout=action.payload;
             // console.error(state.cartrout)
+        },
+        getCartReload:(state,action)=>{
+               state.cartload=!state.cartload;     
         }
-        
     }
 })
 
-export const{ getProductDetails,getProductRoute}=ProductDetailsSlice.actions;
+export const{ getProductDetails,getProductRoute,getCartReload}=ProductDetailsSlice.actions;
 
 export default ProductDetailsSlice.reducer;

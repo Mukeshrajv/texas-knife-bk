@@ -7,13 +7,15 @@ import { AntDesign } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import HTMLView from 'react-native-htmlview';
+import HTMLView from 'react-native-htmlview'; 
+import { getCartReload } from '../../Slice/ProductDetailsSlice';
+import { useDispatch } from 'react-redux';
 
 
 
 const PopCard = ({ navigation }) => {
+    const dispatch=useDispatch();
     const [show, setShow] = useState(false);
-
 
     const [reload, setReload] = useState(false);
     const [productData, setProductData] = useState([]);
@@ -53,14 +55,18 @@ const PopCard = ({ navigation }) => {
             //  console.log(AddToCartApi);   
         try{
         const response=await axios.get(AddToCartApi)
+        
         // console.log("cart added response : "+response)
         if(response){
+            
             if (Platform.OS === 'android') {
                 ToastAndroid.show('Item Added Sucessfully', ToastAndroid.SHORT);
               } else if (Platform.OS === 'ios') {
                Alert.alert('Item Added successfully')
               }  
-        }
+            //   dispatch(getCartReload(!useSelector((state)=>state.product.cartload)))
+                
+         }
        }
        catch(error){
         if (Platform.OS === 'android') {
@@ -74,6 +80,7 @@ const PopCard = ({ navigation }) => {
 //this function used for to call api function
     const AddToCart=()=>{
         sendData()
+        dispatch(getCartReload(false))
         // console.log("item added sucess")
     }
 
