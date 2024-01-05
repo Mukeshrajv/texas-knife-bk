@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600',
         marginBottom: 10,
-
+    },
     description_container:{
         // backgroundColor:'yellow',
     //    marginBottom:-20
@@ -326,11 +326,6 @@ const styles = StyleSheet.create({
         fontSize: 8,
         padding: 2
     }
-    //   icon:{
-    //     transform: [{ rotate: rotateValue.interpolate({
-    //         inputRange: [0, 180],
-    //         outputRange: ['0deg', '180deg'],
-    //       }) }]
-    //   }
+   
 });
 export default PopCard
