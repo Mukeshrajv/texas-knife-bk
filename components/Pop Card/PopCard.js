@@ -269,6 +269,13 @@ const styles = StyleSheet.create({
     },
     description_container: {
         marginBottom: 10,
+
+    },
+    description_container:{
+        // backgroundColor:'yellow',
+    //    marginBottom:-20
+
+
     },
     description: {
         fontSize: 16,
@@ -335,6 +342,8 @@ const styles = StyleSheet.create({
         fontSize: 8,
         padding: 2
     }
+
+   
 
 });
 export default PopCard

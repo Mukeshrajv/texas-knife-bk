@@ -1,45 +1,70 @@
-import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, FlatList, Icon, Text, Platform } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, TextInput, StyleSheet, FlatList, Icon, Text, Platform ,TouchableOpacity,ScrollView} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import HTMLView from 'react-native-htmlview';
+import { useDispatch } from 'react-redux'; 
+import { getProductDetails } from '../../Slice/ProductDetailsSlice';
 
 const SearchBar = ({ navigation }) => {
+    const dispatch=useDispatch();
+    const [searchTerm, setSearchTerm] = useState('');  
+   const[searchbarData,setSearchbarData]=useState([]);
+   const[filtered,setFiltred]=useState([]);
 
-    const dummy = [
-        { id: 1, title: 'Item 1', description: 'This  black nylon case will conveniently carry 60 knives whe..' },
-        { id: 2, title: 'cccc', description: 'Description for item 2' },
-        { id: 3, title: 'fbdfbdb', description: 'Description for item 3' },
-        { id: 4, title: 'fdbbfb', description: 'Description for item 4' },
-        { id: 5, title: 'myhm', description: 'Description for item 5' },
-        { id: 6, title: 'Item 6', description: 'Description for item 6' },
-        { id: 7, title: 'Item 7', description: 'Description for item 7' },
-        { id: 8, title: 'Item 8', description: 'Description for item 8' },
-        { id: 9, title: 'Item 9', description: 'Description for item 9' },
-        { id: 10, title: 'Item 10', description: 'Description for item 10' },
-    ]
+    useEffect(()=>{
+    const searchbarapi="https://www.texasknife.com/dynamic/texasknifeapi.php?action=get_product_like"
+    const fetchdata=async()=>{
+     try{
+        const response=await axios.get(searchbarapi);
+        setSearchbarData(response.data.data)
 
-    const [items, setItems] = useState(dummy);
+     }catch(error){
+        console.log(error)
+     }
+    }
+    fetchdata()
+    })
 
-    const [searchTerm, setSearchTerm] = useState('');
-
+  
     const filterProducts = () => {
-        setItems(dummy.filter((product) =>
-            product.title.toLowerCase().includes(searchTerm.toLowerCase())
+        setFiltred(searchbarData.filter((product) =>
+            product.sku.includes(searchTerm)
+           
         ));
     };
 
+    // const filterProducts = (searchTerm) => {
+    //     // Filter the original data based on the search text
+    //     const filteredList =searchbarData.filter(item =>
+    //       item.sku.toLowerCase().includes(searchTerm)
+    //     );
+    
+    //     // Update the state with the filtered list
+    //     setFiltred(filteredList);
+    //   };
+  const onClickHandle=(item)=>{
+    navigation.navigate('pop')
+    dispatch(getProductDetails(item.sku))
+  }
 
     const renderItem = ({ item }) => {
         return (
-            <View style={styles.list_container}>
+            <TouchableOpacity key={item.sku} keyExtractor style={styles.list_container} onPress={()=>onClickHandle(item)}>
                 <View style={styles.label}>
-                    <Text style={{ color: 'black', fontSize: 20, width: '40%' }}>Product Code:</Text>
-                    <Text style={{ color: '#2f2e7e', fontSize: 20, width: '60%' }}>{item.title}</Text>
+                    <Text style={{ color: 'black', fontSize:16, width: '40%',fontWeight:'bold' }}>Product Code:</Text>
+                    <Text style={{ color: '#2f2e7e', fontSize: 16, width: '60%' }}>{item.sku}</Text>
                 </View>
                 <View style={styles.label}>
-                    <Text style={{ color: 'black', fontSize: 20, width: '40%' }}>Description:</Text>
-                    <Text style={{ color: 'red', fontSize: 20, width: '60%' }} numberOfLines={2}>{item.description}</Text>
+                    <Text style={{ color: 'black', fontSize: 16, width: '40%',fontWeight:'bold' }}>Description:</Text>
+                    <ScrollView style={styles.htmlcontainer}>
+                    <HTMLView   value={item.description}  stylesheet={customStyles} />
+                    </ScrollView>
+                  
+                    {/* <Text style={{ color: 'red', fontSize: 20, width: '60%' }} numberOfLines={2}>{item.description}</Text> */}
                 </View>
-            </View>
+            </TouchableOpacity>
         );
     };
 
@@ -57,17 +82,26 @@ const SearchBar = ({ navigation }) => {
                 <AntDesign name="search1" size={24} marginLeft={10} color="black" />
             </View>
             <View style={styles.flatlist_container}>
-                <FlatList
-                    showsVerticalScrollIndicator={false}
-                    data={items}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id}
 
-                />
+                {searchTerm?( <FlatList
+                    showsVerticalScrollIndicator={false}
+                    data={filtered}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.sku}
+
+                />):(<View></View>)}
+               
             </View>
         </View>
     );
 };
+const customStyles = StyleSheet.create({
+    p: {
+         fontSize: 16,
+        marginBottom:-60      
+     },
+    // Add more styles for other HTML elements as needed
+  });
 const styles = StyleSheet.create({
     SearchBar_container: {
         width: '100%',
@@ -87,7 +121,8 @@ const styles = StyleSheet.create({
     searchInput: {
         flex: 1,
         fontSize: 16,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        textTransform:'uppercase'
     },
     search_container: {
         height: '92%',
@@ -119,6 +154,12 @@ const styles = StyleSheet.create({
     label: {
         flexDirection: 'row',
 
+    },
+    htmlcontainer:{
+        // backgroundColor:'green',
+        height:60,
+        maxWidth:'80%',
+        overflow:'scroll'
     },
     flatlist_container: {
         padding: 10,
