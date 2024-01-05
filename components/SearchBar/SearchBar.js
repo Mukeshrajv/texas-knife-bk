@@ -4,8 +4,11 @@ import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import HTMLView from 'react-native-htmlview';
+import { useDispatch } from 'react-redux'; 
+import { getProductDetails } from '../../Slice/ProductDetailsSlice';
 
 const SearchBar = ({ navigation }) => {
+    const dispatch=useDispatch();
     const [searchTerm, setSearchTerm] = useState('');  
    const[searchbarData,setSearchbarData]=useState([]);
    const[filtered,setFiltred]=useState([]);
@@ -28,6 +31,7 @@ const SearchBar = ({ navigation }) => {
     const filterProducts = () => {
         setFiltred(searchbarData.filter((product) =>
             product.sku.includes(searchTerm)
+           
         ));
     };
 
@@ -40,11 +44,14 @@ const SearchBar = ({ navigation }) => {
     //     // Update the state with the filtered list
     //     setFiltred(filteredList);
     //   };
-  
+  const onClickHandle=(item)=>{
+    navigation.navigate('pop')
+    dispatch(getProductDetails(item.sku))
+  }
 
     const renderItem = ({ item }) => {
         return (
-            <TouchableOpacity key={item.sku} keyExtractor style={styles.list_container} >
+            <TouchableOpacity key={item.sku} keyExtractor style={styles.list_container} onPress={()=>onClickHandle(item)}>
                 <View style={styles.label}>
                     <Text style={{ color: 'black', fontSize:16, width: '40%',fontWeight:'bold' }}>Product Code:</Text>
                     <Text style={{ color: '#2f2e7e', fontSize: 16, width: '60%' }}>{item.sku}</Text>
