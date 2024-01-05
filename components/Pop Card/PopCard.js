@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 
 
-import { Text, Image, View, Button, StyleSheet, TouchableOpacity, Animated, ScrollView } from 'react-native';
+import { Text, Image, View, Button, StyleSheet, TouchableOpacity, Animated, ScrollView,ToastAndroid } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -19,12 +19,65 @@ const PopCard = ({ navigation }) => {
     const [productData, setProductData] = useState([]);
     const [productImage, setProductImage] = useState([]);
     const [imageurl, setImageurl] = useState('');
+    const [quantity,setQuantity]=useState(1);
 
     const encodedProductCode = encodeURIComponent(useSelector((state) => state.product.pdata));
 
+    const store_id=encodeURIComponent(1);
+    const user_id=encodeURIComponent(useSelector((state)=>state.login.logindata.id));
+    const user_email=encodeURIComponent(useSelector((state)=>state.login.logindata.email));
+    const product_id=encodeURIComponent(productData.id);
+    const product_quantity=encodeURIComponent(quantity);
+    const product_price=encodeURIComponent(productData.product_price);
+    const product_code=encodeURIComponent(productData.sku);
+    const session_id=encodeURIComponent(123456);
+    
 
-    //   https://www.texasknife.com/dynamic/texasknifeapi.php?action=product&sku=AWD180
+//    quantity increment function
+    const quantityAdd=()=>{
+        setQuantity(quantity+1)
+    }
+//  quantity decrement function 
+    const quantitySub=()=>{
+        if(quantity <= 1){
+            setQuantity(1)
+        }else{
+            setQuantity(quantity-1)
+        }   
+    }
+ 
+    
+//api call for add to cart
+    const sendData=async()=>{
+        const AddToCartApi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cart&store_id='+store_id+'&user_id='+user_id+'&product_id='+product_id+'&product_det_qty='+product_quantity+'&get_cur_price='+product_price+'&sku='+product_code+'&user_email='+user_email+'&session_ids='+session_id+'&based_on=Add';
+            //  console.log(AddToCartApi);   
+        try{
+        const response=await axios.get(AddToCartApi)
+        // console.log("cart added response : "+response)
+        if(response){
+            if (Platform.OS === 'android') {
+                ToastAndroid.show('Item Added Sucessfully', ToastAndroid.SHORT);
+              } else if (Platform.OS === 'ios') {
+               Alert.alert('Item Added successfully')
+              }  
+        }
+       }
+       catch(error){
+        if (Platform.OS === 'android') {
+            ToastAndroid.show('Item Not Added', ToastAndroid.SHORT);
+          } else if (Platform.OS === 'ios') {
+           Alert.alert('Item Not Added')
+          }  
+        console.log("Item Not added to cart")
+       }
+    }
+//this function used for to call api function
+    const AddToCart=()=>{
+        sendData()
+        // console.log("item added sucess")
+    }
 
+//useeffect used for to fetch product detail data while navigate the page
     useEffect(() => {
         const productapi = 'https://www.texasknife.com/dynamic/texasknifeapi.php?action=product&sku=' + encodedProductCode;
 
@@ -86,9 +139,9 @@ const PopCard = ({ navigation }) => {
 
         setTimeout(() => setReload(true), 1000)
     }, [reload])
-    //  console.log(productData.product_price)
-
-
+    //   console.log(useSelector((state)=>state.login.logindata))
+  
+  
     return (
         <View style={styles.ProductDetail}>
             <View style={styles.ProductDetail_container}>
@@ -162,15 +215,15 @@ const PopCard = ({ navigation }) => {
 
                     <Text style={styles.label}>Quantity</Text>
                     <View style={styles.quantity}>
-                        <Feather name="minus-circle" size={30} color="black" />
-                        <Text>1</Text>
-                        <Feather name="plus-circle" size={30} color="black" />
+                        <Feather name="minus-circle" size={30} color="black" onPress={()=>quantitySub()}/>
+                        <Text>{quantity}</Text>
+                        <Feather name="plus-circle" size={30} color="black" onPress={()=>quantityAdd()} />
                     </View>
-                    <View style={styles.btn}>
+                    <TouchableOpacity style={styles.btn} onPress={()=>AddToCart()}>                            
 
                         <Text >Add To Cart</Text>
 
-                    </View>
+                    </TouchableOpacity>
                 </View>
                 </View>
             </View>
@@ -292,6 +345,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         padding: 5,
         marginBottom: 10,
+        alignItems:'center'
     },
     label: {
         color: 'red',
