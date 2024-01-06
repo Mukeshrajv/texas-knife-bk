@@ -13,6 +13,10 @@ import SubCategory from './components/SubCategory/SubCategory';
 import PopCard from './components/Pop Card/PopCard';
 import Nocategory from './components/No category/Nocategory';
 import  SearchBar  from './components/SearchBar/SearchBar';
+import Address from './components/Address/Address';
+import Shipping from './components/Shipping/Shipping';
+import Payment from './components/Payment/Payment';
+import Checkout from './components/Checkout/Checkout';
 
 
 
@@ -35,6 +39,10 @@ export default function App() {
           <Stack.Screen name="subcategorylist" component={SubList}/>
           <Stack.Screen name="pop" component={PopCard}/>
           <Stack.Screen name="SearchBar" component={SearchBar}/>
+          <Stack.Screen name="address" component={Address}/>
+          <Stack.Screen name='shipping'component={Shipping}/>
+          <Stack.Screen name='payment' component={Payment}/>
+          <Stack.Screen name='checkout' component={Checkout}/>
         </Stack.Navigator>
       </NavigationContainer>
   

@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux';
 import { getCartReload } from '../Slice/ProductDetailsSlice';
 
-const Cart = () => {
+const Cart = ({navigation}) => {
 const dispatch=useDispatch();
 
    const[cartItem,setCartItem]=useState([]);
@@ -27,6 +27,7 @@ const dispatch=useDispatch();
         const response = await axios.get(CartAPI);
         if(response){
           setCartItem(response.data.data);
+          setCount(Number(cartItem.quantity))
          //  console.error("cart data")
         }
        }catch(error){
@@ -34,7 +35,7 @@ const dispatch=useDispatch();
        }
       }
       
-
+      
      
       fetchData();
    },[reload])
@@ -70,10 +71,17 @@ const dispatch=useDispatch();
 
    const deleteCart=(item)=>{
        DeleteApiCall(item)
-      
+   }
+const increment=(count)=>{
+   
+}
+const decrement=(count)=>{
+   if(count<=1){
+     
+   }else{
       
    }
-
+}
   return (
   <View style={styles.cart}>
    
@@ -104,9 +112,9 @@ const dispatch=useDispatch();
     
            </View>
            <View style={styles.product_increment_container}>
-           <Icon name="minus-circle" size={20} color="#2a2e7e" />
+           <Icon name="minus-circle" size={20} color="#2a2e7e" onPress={()=>decrement(item.quantity)}/>
               <Text style={styles.item_count}>{item.quantity}</Text>
-              <Icon name="plus-circle" size={20} color="#2a2e7e" />
+              <Icon name="plus-circle" size={20} color="#2a2e7e" onPress={()=>increment(item.quantity)} />
            </View>
           </View>
     
@@ -130,7 +138,7 @@ const dispatch=useDispatch();
            <View style={styles.total_container}>
                <Text style={styles.total}>Sub Total-<Text style={styles.total_amt}>$19.95</Text></Text>
            </View>
-           <TouchableOpacity style={styles.proceed_btn_container}>
+           <TouchableOpacity style={styles.proceed_btn_container} onPress={()=> navigation.navigate('address')}>
              <Text style={styles.proceed_btn}>Proceed</Text>
            </TouchableOpacity>
        </View>
