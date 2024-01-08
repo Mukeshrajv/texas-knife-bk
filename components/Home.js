@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View,Text,StyleSheet,Image,TouchableOpacity} from 'react-native';
 import FeatureProduct from './Sub-components/FeatureProduct';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Category from './Sub-components/Category';
-import SearchBar from './SearchBar/SearchBar';
+
 import { useSelector } from 'react-redux'
+
 
 const Home = ({navigation}) => {
  

@@ -3,9 +3,12 @@ import axios from 'axios';
 import { View,Text,StyleSheet,Image,FlatList,TouchableOpacity,} from 'react-native';
 import { useDispatch } from 'react-redux';
 import { getProductDetails,getProductRoute} from '../../Slice/ProductDetailsSlice';
+
+
 const FeatureProduct = ({navigation}) => {
    const dispatch=useDispatch();
-  const[featureProduct,setFeatureProduct]=useState([])
+   const[featureProduct,setFeatureProduct]=useState([])
+   
 
   useEffect(() => {
     const FeatureProductAPI='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cus_featured_product';
