@@ -10,6 +10,7 @@ import axios from 'axios';
 import HTMLView from 'react-native-htmlview'; 
 import { getCartReload } from '../../Slice/ProductDetailsSlice';
 import { useDispatch } from 'react-redux';
+import Loader from '../Sub-components/Loader';
 
 
 
@@ -21,7 +22,7 @@ const PopCard = ({ navigation }) => {
     const [productData, setProductData] = useState([]);
     const [productImage, setProductImage] = useState([]);
     const [quantity,setQuantity]=useState(1);
-
+    const [loader,setLoader]=useState(false);
     const encodedProductCode = encodeURIComponent(useSelector((state) => state.product.pdata));
 
     const store_id=encodeURIComponent(1);
@@ -59,6 +60,7 @@ const PopCard = ({ navigation }) => {
         if(response){
             
             if (Platform.OS === 'android') {
+                navigation.navigate("Home")
                 ToastAndroid.show('Item Added Sucessfully', ToastAndroid.SHORT);
               } else if (Platform.OS === 'ios') {
                Alert.alert('Item Added successfully')
@@ -95,8 +97,7 @@ const PopCard = ({ navigation }) => {
                     setProductData(response.data.data[0]);
                     let responseImageUrl=response.data.data[0].product_image;
                     // console.log("dai: "+response.data.data[0].product_image);
-                   
-                    // setProductImage(productData.product_image)
+
 
                     const encodedProductImage = encodeURIComponent(responseImageUrl);
                     const productimageapi = 'https://www.texasknife.com/dynamic/texasknifeapi.php?action=image&image=' + encodedProductImage;
@@ -105,7 +106,7 @@ const PopCard = ({ navigation }) => {
                         try {
                             const response = await axios.get(productimageapi);
                             if (response) {
-
+                                setLoader(true)
                                 setProductImage(response.data.data[0])
                             }
                         } catch (error) {
@@ -127,7 +128,10 @@ const PopCard = ({ navigation }) => {
   
   
     return (
-        <View style={styles.ProductDetail}>
+        <>
+    
+        {loader?(
+            <View style={styles.ProductDetail}>
             <View style={styles.ProductDetail_container}>
                 <View style={styles.header_container}>
                     {/* onPress={()=>navigation.navigate(()=>useSelector((state)=>state.product.cartrout))} */}
@@ -212,6 +216,10 @@ const PopCard = ({ navigation }) => {
                 </View>
             </View>
         </View>
+        ):(
+            <Loader/>
+        )}
+          </> 
     );
 }
 const customStyles = StyleSheet.create({
