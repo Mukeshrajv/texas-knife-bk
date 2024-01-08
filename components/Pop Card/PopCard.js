@@ -7,7 +7,14 @@ import { AntDesign } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+<<<<<<< Updated upstream
 import HTMLView from 'react-native-htmlview';
+=======
+import HTMLView from 'react-native-htmlview'; 
+import { getCartReload } from '../../Slice/ProductDetailsSlice';
+import { useDispatch } from 'react-redux';
+import Loader from '../Sub-components/Loader';
+>>>>>>> Stashed changes
 
 
 
@@ -15,6 +22,7 @@ const PopCard = ({ navigation }) => {
     const [show, setShow] = useState(false);
   
 
+<<<<<<< Updated upstream
     const [reload,setReload]=useState(false);
     const [productData,setProductData]=useState([]);
     const [productImage,setProductImage]=useState([]);
@@ -22,6 +30,12 @@ const PopCard = ({ navigation }) => {
    
     const encodedProductCode = encodeURIComponent(useSelector((state)=>state.product.pdata));
    
+=======
+    const [productData, setProductData] = useState([]);
+    const [productImage, setProductImage] = useState([]);
+    const [quantity,setQuantity]=useState(1);
+    const [isLoading, setIsLoading] = useState(false);
+>>>>>>> Stashed changes
 
 //   https://www.texasknife.com/dynamic/texasknifeapi.php?action=product&sku=AWD180
 
@@ -29,6 +43,7 @@ const PopCard = ({ navigation }) => {
         const productapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=product&sku='+encodedProductCode; 
 
         const fetchData = async () => {
+<<<<<<< Updated upstream
         // console.log(productapi)
             try{
              const response = await axios.get(productapi);
@@ -37,6 +52,36 @@ const PopCard = ({ navigation }) => {
             // console.log("dai: "+response.data.data[0].product_image);
             setImageurl(response.data.data[0].product_image)
             // setProductImage(productData.product_image)
+=======
+            // console.log(productapi)
+            try {
+                const response = await axios.get(productapi);
+                if (response) {
+                    setProductData(response.data.data[0]);
+                    let responseImageUrl=response.data.data[0].product_image;
+                   
+                    // console.log("dai: "+response.data.data[0].product_image);
+                   
+                    // setProductImage(productData.product_image)
+
+                    const encodedProductImage = encodeURIComponent(responseImageUrl);
+                    const productimageapi = 'https://www.texasknife.com/dynamic/texasknifeapi.php?action=image&image=' + encodedProductImage;
+                    // console.log("url : "+productimageapi)
+                    const fetchimage = async () => {
+                        try {
+                            const response = await axios.get(productimageapi);
+                            if (response) {
+
+                                setProductImage(response.data.data[0])
+                                setIsLoading(true)
+                            }
+                        } catch (error) {
+                            console.log("product image not get yet")
+                        }
+                    }
+                    fetchimage()
+
+>>>>>>> Stashed changes
 
             const encodedProductImage = encodeURIComponent(imageurl);
             const productimageapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=image&image='+encodedProductImage;
@@ -90,7 +135,11 @@ const PopCard = ({ navigation }) => {
 
 
     return (
-        <View style={styles.ProductDetail}>
+<>
+
+        {isLoading?(
+        
+            <View style={styles.ProductDetail}>
             <View style={styles.ProductDetail_container}>
                 <View style={styles.sublist_header_conatiner}>  
                 {/* onPress={()=>navigation.navigate(()=>useSelector((state)=>state.product.cartrout))} */}
@@ -174,6 +223,11 @@ const PopCard = ({ navigation }) => {
                 </View>
             </View>
         </View>
+        ):(
+            <Loader/>
+        )}
+        
+        </>
     );
 }
 const customStyles = StyleSheet.create({
