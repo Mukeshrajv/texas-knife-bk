@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 
 
-import { Text, Image, View, Button, StyleSheet, TouchableOpacity, Animated, ScrollView,ToastAndroid } from 'react-native';
+import { Text, Image, View,StyleSheet, TouchableOpacity,ScrollView,ToastAndroid } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -14,13 +14,12 @@ import { useDispatch } from 'react-redux';
 
 
 const PopCard = ({ navigation }) => {
+
     const dispatch=useDispatch();
     const [show, setShow] = useState(false);
 
-    const [reload, setReload] = useState(false);
     const [productData, setProductData] = useState([]);
     const [productImage, setProductImage] = useState([]);
-    const [imageurl, setImageurl] = useState('');
     const [quantity,setQuantity]=useState(1);
 
     const encodedProductCode = encodeURIComponent(useSelector((state) => state.product.pdata));
@@ -94,11 +93,12 @@ const PopCard = ({ navigation }) => {
                 const response = await axios.get(productapi);
                 if (response) {
                     setProductData(response.data.data[0]);
+                    let responseImageUrl=response.data.data[0].product_image;
                     // console.log("dai: "+response.data.data[0].product_image);
-                    setImageurl(response.data.data[0].product_image)
+                   
                     // setProductImage(productData.product_image)
 
-                    const encodedProductImage = encodeURIComponent(imageurl);
+                    const encodedProductImage = encodeURIComponent(responseImageUrl);
                     const productimageapi = 'https://www.texasknife.com/dynamic/texasknifeapi.php?action=image&image=' + encodedProductImage;
                     // console.log("url : "+productimageapi)
                     const fetchimage = async () => {
@@ -121,31 +121,8 @@ const PopCard = ({ navigation }) => {
             }
         }
         fetchData();
-        //    console.log("hello")
-
-
-        //    const encodedProductImage = encodeURIComponent(imageurl);
-        //    const productimageapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=image&image='+encodedProductImage;
-        //    console.log("url : "+productimageapi)
-        //    const fetchimage=async()=>{
-        //        try{
-        //        const response=await axios.get(productimageapi);
-        //        if(response){
-
-        //            setProductImage(response.data.data[0])
-        //        }
-        //        }catch(error){
-        //            console.log("product image not get yet")
-        //        }
-        //    }
-        //    fetchimage()
-
-
-
-        //   console.log("product image : "+productImage.msg)
-
-        setTimeout(() => setReload(true), 1000)
-    }, [reload])
+    
+    }, []);
     //   console.log(useSelector((state)=>state.login.logindata))
   
   
