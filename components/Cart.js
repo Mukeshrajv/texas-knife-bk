@@ -1,23 +1,33 @@
 import React, { useEffect, useState } from 'react'
-import { View,Text,StyleSheet,Image,TouchableOpacity,FlatList} from 'react-native'
+import { View,Text,StyleSheet,Image,TouchableOpacity,FlatList,ToastAndroid} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux';
+import { getCartReload } from '../Slice/ProductDetailsSlice';
 
-const Cart = () => {
+const Cart = ({navigation}) => {
+const dispatch=useDispatch();
 
    const[cartItem,setCartItem]=useState([]);
-   const encodedCustomerId = encodeURIComponent( useSelector((state)=>state.login.logindata.id));
 
+   const encodedCustomerId = encodeURIComponent( useSelector((state)=>state.login.logindata.id));
+   const user_id=encodeURIComponent(useSelector((state)=>state.login.logindata.id));
+   const session_id=encodeURIComponent(123456);
+   
+     const reload=useSelector((state)=>state.product.cartload);
    useEffect(()=>{
+      
       const CartAPI='https://www.texasknife.com/dynamic/texasknifeapi.php?action=final_cart_details&store_id=1&customer_id='+encodedCustomerId;
+     
       const fetchData = async () => {
       
        try{
         const response = await axios.get(CartAPI);
         if(response){
           setCartItem(response.data.data);
+          setCount(Number(cartItem.quantity))
          //  console.error("cart data")
         }
        }catch(error){
@@ -25,109 +35,135 @@ const Cart = () => {
        }
       }
       
+      
      
       fetchData();
-   },[])
+   },[reload])
 
-   // const cartItems=[
-   //    {productname:"product1",code:"BH102",amount:20.22},
-   //    {productname:"product2",code:"BH102",amount:20.22},
-   //    {productname:"product3",code:"BH102",amount:20.22},
-   //    {productname:"product4",code:"BH102",amount:20.22},
-   //    {productname:"product5",code:"BH102",amount:20.22},
-   //    {productname:"product6",code:"BH102",amount:20.22},
-   //    {productname:"product7",code:"BH102",amount:20.22},
-   //    {productname:"product8",code:"BH102",amount:20.22},
-   // ]
+   const DeleteApiCall=async(item)=>{
+     
+      const product_id=encodeURIComponent(item.id);
+      try{
+      
+      const cartDeleteapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=remove_cart&customer_id='+user_id+'&session_id='+session_id+'&product_id='+product_id;
+      console.log("cart delete APi :: "+cartDeleteapi)
+      const response=await axios.get(cartDeleteapi);
+      if(response){
+         
+         if (Platform.OS === 'android') {
+            ToastAndroid.show('Item Deleted Sucessfully', ToastAndroid.SHORT);
+          } else if (Platform.OS === 'ios') {
+           Alert.alert('Item Deleted successfully')
+          }  
+          dispatch(getCartReload(false))
+      }
+
+      }
+      catch(error){
+         if (Platform.OS === 'android') {
+            ToastAndroid.show('Item Not Deleted', ToastAndroid.SHORT);
+          } else if (Platform.OS === 'ios') {
+           Alert.alert('Item Not Deleted')
+          }  
+         console.log("Cart Item Not Deleted")
+      }
+   }
+
+   const deleteCart=(item)=>{
+       DeleteApiCall(item)
+   }
+const increment=(count)=>{
+   
+}
+const decrement=(count)=>{
+   if(count<=1){
+     
+   }else{
+      
+   }
+}
   return (
   <View style={styles.cart}>
-    <View style={styles.cart_container}>
-     <View style={styles.cart_header}>
-        <Text style={styles.header}>My Cart</Text>
-     </View>
-
-     <View style={{justifyContent:'space-between',alignContent:"center",width:"100%",height:'90%'}}>
-
    
 
-     <View style={styles.cart_items_container}>
+   {
+      cartItem.length>=1?(
+         <View style={styles.cart_container}>
+         <View style={styles.cart_header}>
+            <Text style={styles.header}>My Cart</Text>
+         </View>
+    
+         <View style={{justifyContent:'space-between',alignContent:"center",width:"100%",height:'90%'}}>
+         <View style={styles.cart_items_container}>
 
-     <FlatList
-   data={cartItem}
-   keyExtractor={i=>i.id}
-   renderItem={({item})=>{
-    return(
-      <View style={styles.cart_item} keyExtractor key={item.id}> 
+         <FlatList
+       data={cartItem}
+       keyExtractor={i=>i.id}
+       renderItem={({item})=>{
+        return(
+    
 
-      <View style={styles.img_addbtn_container}>
-       <View style={styles.product_image_container}>
-       <Image style={{width:'100%',height:"100%",resizeMode:'stretch'}} source={{ uri: item.product_image }}/>
-
-       </View>
-       <View style={styles.product_increment_container}>
-       <Icon name="minus-circle" size={20} color="#2a2e7e" />
-          <Text style={styles.item_count}>{item.quantity}</Text>
-          <Icon name="plus-circle" size={20} color="#2a2e7e" />
-       </View>
-      </View>
-
-      <View style={styles.cartitem_name_container}>
-       <Text style={styles.product_title}>{item.product_name}</Text>
-       <Text style={styles.product_amt}>${item.product_price}</Text>
-      </View>
-
-      <View style={styles.cartitem_icon_container}>
-      <Icon name="exclamation-circle" size={30} color="#2a2e7e" />
-      <Micon name="delete" size={25} color="#ab0000" />
-      </View>
-
-   </View>
-    )
-   }}
-   />
-
-
-        {/* <View style={styles.cart_item}>
-
-           <View style={styles.img_addbtn_container}>
-            <View style={styles.product_image_container}>
-            <Image style={{width:'100%',height:"100%",resizeMode:'stretch'}} source={require('../assets/images/FeatureProductImage/f_product-5.png')}/>
-
-            </View>
-            <View style={styles.product_increment_container}>
-            <Icon name="minus-circle" size={20} color="#2a2e7e" />
-               <Text style={styles.item_count}>1</Text>
-               <Icon name="plus-circle" size={20} color="#2a2e7e" />
-            </View>
+        
+          <View style={styles.cart_item} keyExtractor key={item.id}> 
+    
+          <View style={styles.img_addbtn_container}>
+           <View style={styles.product_image_container}>
+           <Image style={{width:'100%',height:"100%",resizeMode:'stretch'}} source={{ uri: item.product_image }}/>
+    
            </View>
-
-           <View style={styles.cartitem_name_container}>
-            <Text style={styles.product_title}>Favorite Chefs Santoku with CRYO <Text>(BL547)</Text></Text>
-            <Text style={styles.product_amt}>$19.95</Text>
+           <View style={styles.product_increment_container}>
+           <Icon name="minus-circle" size={20} color="#2a2e7e" onPress={()=>decrement(item.quantity)}/>
+              <Text style={styles.item_count}>{item.quantity}</Text>
+              <Icon name="plus-circle" size={20} color="#2a2e7e" onPress={()=>increment(item.quantity)} />
            </View>
-
-           <View style={styles.cartitem_icon_container}>
-           <Icon name="exclamation-circle" size={30} color="#2a2e7e" />
-           <Micon name="delete" size={25} color="#ab0000" />
-           </View>
-
-        </View> */}
-
-
-     </View>
-
-      <View style={styles.footer_conatiner}>
-          <View style={styles.total_container}>
-              <Text style={styles.total}>Sub Total-<Text style={styles.total_amt}>$19.95</Text></Text>
           </View>
-          <TouchableOpacity style={styles.proceed_btn_container}>
-            <Text style={styles.proceed_btn}>Proceed</Text>
-          </TouchableOpacity>
-      </View>
+    
+          <View style={styles.cartitem_name_container}>
+           <Text style={styles.product_title}>{item.product_name}</Text>
+           <Text style={styles.product_amt}>${item.product_price}</Text>
+          </View>
+    
+          <View style={styles.cartitem_icon_container}>
+          <Icon name="exclamation-circle" size={30} color="#2a2e7e" />
+          <Micon name="delete" size={25} color="#ab0000" onPress={()=>deleteCart(item)} />
+          </View>
+    
+       </View>
+       )
+       }}
+       />
+    
+         </View>
+           <View style={styles.footer_conatiner}>
+           <View style={styles.total_container}>
+               <Text style={styles.total}>Sub Total-<Text style={styles.total_amt}>$19.95</Text></Text>
+           </View>
+           <TouchableOpacity style={styles.proceed_btn_container} onPress={()=> navigation.navigate('address')}>
+             <Text style={styles.proceed_btn}>Proceed</Text>
+           </TouchableOpacity>
+       </View>
+   </View>
 
-      </View>
-
-    </View>
+ </View>
+   
+      ):(
+         <View style={styles.emptycart_container}>
+         <View style={styles.emptycart_img_conatiner}>
+         <Image
+                 source={require('../assets/images/empty-cart.png')}
+                 resizeMode='contain'
+                 style={{
+                     width:'100%',
+                     height:'100%',
+                  } }
+                 />
+                  <Text style={styles.emptycart_text}>Cart Empty</Text>
+         </View>
+        
+         </View>
+      )
+   }
+         
 
   </View>
   )
@@ -214,7 +250,7 @@ footer_conatiner:{
    flexDirection:'row',
    justifyContent:'space-between',
    height:45,
-   alignItems:'center'
+   alignItems:'center',
 },
 total:{
    paddingLeft:5,
@@ -242,6 +278,25 @@ proceed_btn:{
    paddingRight:5,
    color:'#ffffff'
 
-}
+},
+emptycart_container:{
+   width:'100%',
+   height:'100%',
+   // backgroundColor:'yellow',
+   alignItems:'center',
+   justifyContent:'center'
+},
+emptycart_img_conatiner:{
+   // backgroundColor:'red',
+   width:"100%",
+   height:300
+},
+emptycart_text:{
+   textAlign:'center',
+   marginTop:10,
+   fontSize:22,
+   fontWeight:'500',
+   
+ }
 })
 export default Cart

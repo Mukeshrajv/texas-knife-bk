@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useDispatch } from 'react-redux'; 
 import { getProductDetails } from '../../Slice/ProductDetailsSlice'
+import LinearGradient from 'react-native-linear-gradient';
 
 const SubList = ({navigation}) => {
   const dispatch=useDispatch();
@@ -66,56 +67,52 @@ const SubList = ({navigation}) => {
         </TouchableOpacity>
        
     </View>
-
-       {/* <View style={styles.header_container}>
-        <Text style={styles.header}>Rough</Text>
-       </View> */}
-   
-       <View style={styles.list_contianer}>
-
-
-
-       {
-            <FlatList
-            data={subCategoryDataList}
-            keyExtractor={i=>i.id}
-            renderItem={({item})=>{
-             return(
-              <TouchableOpacity keyExtractor key={item.id} onPress={()=>handleChange(item)} >
-              <View style={styles.list}>
-                 <View style={styles.image_container}>
-                  <Image style={{width:'100%',height:'100%',resizeMode:'stretch'}}  source={{ uri: item.product_image }}/>
-                 </View>
-                 <View style={styles.name_price_container}>
-                  <Text style={styles.item_name}>{item.product_name}</Text>
-                  <Text style={styles.item_price}>{item.product_price}</Text>
-                 </View>
+  
+{
+  subCategoryDataList.length>=1?(
+    <View style={styles.list_contianer}>
+    {
+         <FlatList
+         data={subCategoryDataList}
+         keyExtractor={i=>i.id}
+         renderItem={({item})=>{
+          return(
+           <TouchableOpacity keyExtractor key={item.id} onPress={()=>handleChange(item)} >
+           <View style={styles.list}>
+              <View style={styles.image_container}>
+               <Image style={{width:'100%',height:'100%',resizeMode:'stretch'}}  source={{ uri: item.product_image }}/>
               </View>
-              </TouchableOpacity> 
-             )
-            }}
+              <View style={styles.name_price_container}>
+               <Text style={styles.item_name}>{item.product_name}</Text>
+               <Text style={styles.item_price}>{item.product_price}</Text>
+              </View>
+           </View>
+           </TouchableOpacity> 
+          )
+         }}
+         />
+     }
+    </View>
+  ):(
+    <View style={styles.emptycart_container}>
+    <View style={styles.emptycart_img_conatiner}>
+    <Image
+            source={require('../../assets/images/empty-cart.png')}
+            resizeMode='contain'
+            style={{
+                width:'100%',
+                height:'100%',
+             } }
             />
-        }
-
-
-
-
-
-
-        {/* <TouchableOpacity >
-        <View style={styles.list}>
-           <View style={styles.image_container}>
-            <Image style={{width:'100%',height:'100%',resizeMode:'contain'}} source={require("../../assets/images/FeatureProductImage/f_product-5.png")}/>
-           </View>
-           <View style={styles.name_price_container}>
-            <Text style={styles.item_name}>Rought-Jackson CR White (Brown) this the lasr pafass dfa dvsdv dsvsdjv s dfsd f df sdf sdf sdf  sdfsd f</Text>
-            <Text style={styles.item_price}>$18.95</Text>
-           </View>
-        </View>
-        </TouchableOpacity> */}
-
-
-       </View>
+           
+            <Text style={styles.emptycart_text}>No Product Available</Text>
+    </View>
+   
+    </View>
+  )
+}
+   
+      
      
     </View>
    </View>
@@ -214,6 +211,25 @@ cart_text:{
 fontWeight:'bold',
 fontSize:8,
 padding:2
+},
+emptycart_container:{
+  width:'100%',
+  height:'80%',
+  //  backgroundColor:'yellow',
+  alignItems:'center',
+  justifyContent:'center'
+},
+emptycart_img_conatiner:{
+  // backgroundColor:'red',
+  width:"100%",
+  height:300
+},
+emptycart_text:{
+  textAlign:'center',
+  marginTop:10,
+  fontSize:22,
+  fontWeight:'500',
+  
 }
 })
 

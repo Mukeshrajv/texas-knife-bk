@@ -1,58 +1,59 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 
 
-import { Text, Image, View, Button, StyleSheet, TouchableOpacity, Animated ,ScrollView} from 'react-native';
+import { Text, Image, View,StyleSheet, TouchableOpacity,ScrollView,ToastAndroid } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-<<<<<<< Updated upstream
-import HTMLView from 'react-native-htmlview';
-=======
+
+
 import HTMLView from 'react-native-htmlview'; 
 import { getCartReload } from '../../Slice/ProductDetailsSlice';
 import { useDispatch } from 'react-redux';
 import Loader from '../Sub-components/Loader';
->>>>>>> Stashed changes
+
+import HTMLView from 'react-native-htmlview'; 
+import { getCartReload } from '../../Slice/ProductDetailsSlice';
+import { useDispatch } from 'react-redux';
+
 
 
 
 const PopCard = ({ navigation }) => {
-    const [show, setShow] = useState(false);
-  
 
-<<<<<<< Updated upstream
-    const [reload,setReload]=useState(false);
-    const [productData,setProductData]=useState([]);
-    const [productImage,setProductImage]=useState([]);
-    const [imageurl,setImageurl]=useState('');
-   
-    const encodedProductCode = encodeURIComponent(useSelector((state)=>state.product.pdata));
-   
-=======
+    const dispatch=useDispatch();
+    const [show, setShow] = useState(false);
+
+
     const [productData, setProductData] = useState([]);
     const [productImage, setProductImage] = useState([]);
     const [quantity,setQuantity]=useState(1);
     const [isLoading, setIsLoading] = useState(false);
->>>>>>> Stashed changes
 
-//   https://www.texasknife.com/dynamic/texasknifeapi.php?action=product&sku=AWD180
 
-    useEffect(()=>{
-        const productapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=product&sku='+encodedProductCode; 
+    const [productData, setProductData] = useState([]);
+    const [productImage, setProductImage] = useState([]);
+    const [quantity,setQuantity]=useState(1);
+
+
+    const encodedProductCode = encodeURIComponent(useSelector((state) => state.product.pdata));
+
+    const store_id=encodeURIComponent(1);
+    const user_id=encodeURIComponent(useSelector((state)=>state.login.logindata.id));
+    const user_email=encodeURIComponent(useSelector((state)=>state.login.logindata.email));
+    const product_id=encodeURIComponent(productData.id);
+    const product_quantity=encodeURIComponent(quantity);
+    const product_price=encodeURIComponent(productData.product_price);
+    const product_code=encodeURIComponent(productData.sku);
+    const session_id=encodeURIComponent(123456);
+    
+
 
         const fetchData = async () => {
-<<<<<<< Updated upstream
-        // console.log(productapi)
-            try{
-             const response = await axios.get(productapi);
-             if(response){
-            setProductData(response.data.data[0]);
-            // console.log("dai: "+response.data.data[0].product_image);
-            setImageurl(response.data.data[0].product_image)
-            // setProductImage(productData.product_image)
-=======
+
+
             // console.log(productapi)
             try {
                 const response = await axios.get(productapi);
@@ -81,7 +82,6 @@ const PopCard = ({ navigation }) => {
                     }
                     fetchimage()
 
->>>>>>> Stashed changes
 
             const encodedProductImage = encodeURIComponent(imageurl);
             const productimageapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=image&image='+encodedProductImage;
@@ -90,7 +90,7 @@ const PopCard = ({ navigation }) => {
                 try{
                 const response=await axios.get(productimageapi);
                 if(response){
-                 
+                     setIsloading(true)
                     setProductImage(response.data.data[0])
                 }
                 }catch(error){
@@ -128,12 +128,100 @@ const PopCard = ({ navigation }) => {
           
       
         //   console.log("product image : "+productImage.msg)
+
+//    quantity increment function
+    const quantityAdd=()=>{
+        setQuantity(quantity+1)
+    }
+//  quantity decrement function 
+    const quantitySub=()=>{
+        if(quantity <= 1){
+            setQuantity(1)
+        }else{
+            setQuantity(quantity-1)
+        }   
+    }
+ 
+    
+//api call for add to cart
+    const sendData=async()=>{
+        const AddToCartApi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cart&store_id='+store_id+'&user_id='+user_id+'&product_id='+product_id+'&product_det_qty='+product_quantity+'&get_cur_price='+product_price+'&sku='+product_code+'&user_email='+user_email+'&session_ids='+session_id+'&based_on=Add';
+            //  console.log(AddToCartApi);   
+        try{
+        const response=await axios.get(AddToCartApi)
+
         
-     setTimeout(()=>setReload(true),1000)
-    },[reload])
-    //  console.log(productData.product_price)
+        // console.log("cart added response : "+response)
+        if(response){
+            
+            if (Platform.OS === 'android') {
+                ToastAndroid.show('Item Added Sucessfully', ToastAndroid.SHORT);
+              } else if (Platform.OS === 'ios') {
+               Alert.alert('Item Added successfully')
+              }  
+            //   dispatch(getCartReload(!useSelector((state)=>state.product.cartload)))
+                
+         }
+       }
+       catch(error){
+        if (Platform.OS === 'android') {
+            ToastAndroid.show('Item Not Added', ToastAndroid.SHORT);
+          } else if (Platform.OS === 'ios') {
+           Alert.alert('Item Not Added')
+          }  
+        console.log("Item Not added to cart")
+       }
+    }
+//this function used for to call api function
+    const AddToCart=()=>{
+        sendData()
+        dispatch(getCartReload(false))
+        // console.log("item added sucess")
+    }
+
+//useeffect used for to fetch product detail data while navigate the page
+    useEffect(() => {
+        const productapi = 'https://www.texasknife.com/dynamic/texasknifeapi.php?action=product&sku=' + encodedProductCode;
+
+        const fetchData = async () => {
+            // console.log(productapi)
+            try {
+                const response = await axios.get(productapi);
+                if (response) {
+                    setProductData(response.data.data[0]);
+                    let responseImageUrl=response.data.data[0].product_image;
+                    // console.log("dai: "+response.data.data[0].product_image);
+                   
+                    // setProductImage(productData.product_image)
+
+                    const encodedProductImage = encodeURIComponent(responseImageUrl);
+                    const productimageapi = 'https://www.texasknife.com/dynamic/texasknifeapi.php?action=image&image=' + encodedProductImage;
+                    // console.log("url : "+productimageapi)
+                    const fetchimage = async () => {
+                        try {
+                            const response = await axios.get(productimageapi);
+                            if (response) {
+
+                                setProductImage(response.data.data[0])
+                            }
+                        } catch (error) {
+                            console.log("product image not get yet")
+                        }
+                    }
+                    fetchimage()
 
 
+                }
+            } catch (error) {
+                console.log(" product data is not get yet")
+            }
+        }
+        fetchData();
+    
+    }, []);
+    //   console.log(useSelector((state)=>state.login.logindata))
+  
+  
     return (
 <>
 
@@ -141,48 +229,48 @@ const PopCard = ({ navigation }) => {
         
             <View style={styles.ProductDetail}>
             <View style={styles.ProductDetail_container}>
-                <View style={styles.sublist_header_conatiner}>  
-                {/* onPress={()=>navigation.navigate(()=>useSelector((state)=>state.product.cartrout))} */}
+                <View style={styles.header_container}>
+                    {/* onPress={()=>navigation.navigate(()=>useSelector((state)=>state.product.cartrout))} */}
                     <TouchableOpacity style={{ paddingRight: 5, padding: 5 }}  >
                         <Icon name="arrow-left" size={25} color="#2f2e7e" style={{ marginLeft: 5 }} />
 
                     </TouchableOpacity>
 
-                    <Text style={styles.sublist_header}>Product Details</Text>
+                    <Text style={styles.header_title}>Product Details</Text>
 
                     <TouchableOpacity style={{ paddingLeft: 5, padding: 5 }} onPress={() => navigation.navigate('cart')}>
 
                         <Icon name="shopping-cart" size={25} color="#2f2e7e" style={{ marginRight: 10, position: 'relative' }} onPress={() => navigation.navigate('cart')} />
-                        <View style={styles.cart_icon_text_container}>
+                        <View style={styles.header_cart_icon}>
                             <Text style={styles.cart_text}>12</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
-
+                <View style={styles.product_detail_container}>
                 <View style={styles.image_container}>
 
                     <Image
                         style={styles.image}
-                        source={{ uri:  productImage.msg}}
+                        source={{ uri: productImage.msg }}
                     />
                 </View>
-                <View style={styles.Container}>
-            
-
-                    <Text style={styles.name}>{productData.product_name}</Text>
-                    <View style={styles.code}>
-                        <Text style={{color:'white'}}>{productData.sku}</Text>
-                    </View>
+                <View style={styles.Product_container}>
                     <View>
-                    <Text style={styles.label}>Price:</Text>
-                    <Text style={styles.price}>$ {productData.product_price}</Text>
+                        <Text style={styles.name}>{productData.product_name}</Text>
+                    </View>
+                    <View style={styles.code}>
+                        <Text style={{ color: 'white' }}>{productData.sku}</Text>
+                    </View>
+                    <View style={styles.price_container}>
+                        <Text style={styles.label}>Price:</Text>
+                        <Text style={styles.price}>$ {productData.product_price}</Text>
                     </View>
                     <View style={styles.description_container}>
-                    <Text style={styles.label}>Description:</Text>
-                    <ScrollView style={{height:80}}>
+                        <Text style={styles.label} >Description:</Text>
+                        <ScrollView style={{ height: 80 }}>
 
-                     <HTMLView  value={productData.description}  stylesheet={customStyles} />
-                    </ScrollView>
+                            <HTMLView value={productData.description} stylesheet={customStyles} />
+                        </ScrollView>
                     </View>
                     {/* <Text style={styles.description}>{productData.description}</Text> */}
                     <View style={styles.accordion}>
@@ -190,7 +278,7 @@ const PopCard = ({ navigation }) => {
                         <TouchableOpacity onPress={() => setShow(!show)} >
                             <View style={styles.icon}>
                                 {
-                                    show?(<View><AntDesign name="upcircle" size={24} color="black" /></View>):(<View><AntDesign name="downcircle" size={24} color="black" /></View>)
+                                    show ? (<View><AntDesign name="upcircle" size={24} color="black" /></View>) : (<View><AntDesign name="downcircle" size={24} color="black" /></View>)
                                 }
 
                             </View>
@@ -198,12 +286,12 @@ const PopCard = ({ navigation }) => {
                     </View>
                     {show &&
                         <View style={styles.weight}>
-                            <View  style={{backgroundColor:'gray',padding:10,width:'30%'}}>
-                            <Text >weight:</Text>
+                            <View style={{ backgroundColor: 'gray', padding: 10, width: '30%' }}>
+                                <Text >weight:</Text>
                             </View>
-                            <View style={{backgroundColor:'white',padding:10,width:'70%'}}>
+                            <View style={{ backgroundColor: 'white', padding: 10, width: '70%' }}>
 
-                            <Text>{productData.weight}</Text>
+                                <Text>{productData.weight}</Text>
 
                             </View>
                         </View>
@@ -211,15 +299,16 @@ const PopCard = ({ navigation }) => {
 
                     <Text style={styles.label}>Quantity</Text>
                     <View style={styles.quantity}>
-                        <Feather name="minus-circle" size={30} color="black" />
-                        <Text>1</Text>
-                        <Feather name="plus-circle" size={30} color="black" />
+                        <Feather name="minus-circle" size={30} color="black" onPress={()=>quantitySub()}/>
+                        <Text>{quantity}</Text>
+                        <Feather name="plus-circle" size={30} color="black" onPress={()=>quantityAdd()} />
                     </View>
-                    <View style={styles.btn}>
+                    <TouchableOpacity style={styles.btn} onPress={()=>AddToCart()}>                            
 
                         <Text >Add To Cart</Text>
 
-                    </View>
+                    </TouchableOpacity>
+                </View>
                 </View>
             </View>
         </View>
@@ -232,14 +321,12 @@ const PopCard = ({ navigation }) => {
 }
 const customStyles = StyleSheet.create({
     p: {
-      fontSize: 14,
-      color:'grey',
-      marginBottom:-60
-
-       
+        fontSize: 14,
+        color: 'grey',
+        marginBottom: -60
     },
     // Add more styles for other HTML elements as needed
-  });
+});
 
 const styles = StyleSheet.create({
     ProductDetail: {
@@ -249,17 +336,25 @@ const styles = StyleSheet.create({
         padding: 10,
         marginTop: 15,
         // width: 350,
-        backgroundColor:'#ffffff'
+
+        backgroundColor: '#ffffff'
     },
     ProductDetail_container: {
-        // marginTop:15,
-        padding: 10,
+        // padding: 10,
+    //    backgroundColor:'gray'
     },
-    image_container:{
-        alignItems:'center',
-        width:'100%',
-        height:150,
-        marginBottom:10,
+    product_detail_container:{
+        width: '100%',
+        height: 700,
+        justifyContent:'center',
+        // alignItems:'center',
+        // backgroundColor:'yellow'
+    },
+    image_container: {
+        alignItems: 'center',
+        width: '100%',
+        height: 150,
+        marginBottom: 10,
     },
     ProductDetail_container: {
         // marginTop:15,
@@ -272,22 +367,25 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
         // backgroundColor: 'blue',
         marginBottom: 10,
-        resizeMode:'stretch',
-        borderRadius:20
+        resizeMode: 'stretch',
+        borderRadius: 20
 
     },
-    Container: {
+    price_container: {
+        marginBottom: 5,
+    },
+    Product_container: {
         padding: 16,
         backgroundColor: '#ffdbdb',
         borderRadius: 25,
     },
-    sublist_header_conatiner: {
+    header_container: {
         padding: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
     },
-    sublist_header: {
+    header_title: {
         textAlign: 'center',
         fontSize: 16,
         fontWeight: 'bold',
@@ -296,24 +394,29 @@ const styles = StyleSheet.create({
     code: {
         backgroundColor: 'black',
         width: '25%',
-        borderRadius:10,
-        alignItems:'center',
-        marginBottom:10,
+        borderRadius: 10,
+        alignItems: 'center',
+        marginBottom: 10,
     },
     name: {
         fontSize: 18,
         fontWeight: 'bold',
         color: '#2f2e7e',
-        marginBottom:10,
+        marginBottom: 10,
     },
     price: {
         fontSize: 16,
         fontWeight: '600',
+        // marginBottom: 10,
+    },
+    description_container: {
         marginBottom: 10,
 
+    },
     description_container:{
         // backgroundColor:'yellow',
     //    marginBottom:-20
+
 
     },
     description: {
@@ -321,21 +424,23 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         color: '#787878',
         marginBottom: 16,
-    //    width:200,
-    //    height:60,
-    //    backgroundColor:'white'
+        //    width:200,
+        //    height:60,
+        //    backgroundColor:'white'
     },
     quantity: {
         width: 100,
         flexDirection: 'row',
         justifyContent: 'space-around',
         padding: 5,
+        marginBottom: 10,
+        alignItems:'center'
     },
     label: {
         color: 'red',
         fontWeight: 'bold',
         fontSize: 20,
-        marginBottom:5,
+        marginBottom: 5,
     },
     btn: {
         display: 'flex',
@@ -353,18 +458,18 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginBottom: 10,
 
-    
+
 
     },
     rotated: {
         transform: [{ rotate: '180deg' }],
         transition: 'transform 0.2s ease-in-out', // Add a smooth transition
     },
-    weight:{
-        width:'100%',
-        flexDirection:'row',
+    weight: {
+        width: '100%',
+        flexDirection: 'row',
     },
-    cart_icon_text_container: {
+    header_cart_icon: {
         position: 'absolute',
         width: 15,
         height: 15,
@@ -380,11 +485,8 @@ const styles = StyleSheet.create({
         fontSize: 8,
         padding: 2
     }
-    //   icon:{
-    //     transform: [{ rotate: rotateValue.interpolate({
-    //         inputRange: [0, 180],
-    //         outputRange: ['0deg', '180deg'],
-    //       }) }]
-    //   }
+
+   
+
 });
 export default PopCard
