@@ -7,6 +7,8 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux';
 import { getCartReload } from '../Slice/ProductDetailsSlice';
  import Loader from '../components/Sub-components/Loader'
+ import { getProductDetails } from '../Slice/ProductDetailsSlice';
+
 
 
 const Cart = ({navigation}) => {
@@ -14,10 +16,20 @@ const dispatch=useDispatch();
 
    const[cartItem,setCartItem]=useState([]);
    const[loader,setLoader]=useState(false);
+   const[productCode,setProductCode]=useState("");
+ 
 
    const encodedCustomerId = encodeURIComponent( useSelector((state)=>state.login.logindata.id));
    const user_id=encodeURIComponent(useSelector((state)=>state.login.logindata.id));
    const session_id=encodeURIComponent(123456);
+   const user_email=encodeURIComponent(useSelector((state)=>state.login.logindata.email));
+   const store_id=encodeURIComponent(1);
+   
+   // const product_id=encodeURIComponent(cartItem.id);
+   // const product_quantity=encodeURIComponent(quantity);
+   // const product_price=encodeURIComponent(cartItem.product_price);
+   // const product_code=encodeURIComponent(cartItem.sku);
+
    
      const reload=useSelector((state)=>state.product.cartload);
    useEffect(()=>{
@@ -30,9 +42,7 @@ const dispatch=useDispatch();
         const response = await axios.get(CartAPI);
         if(response){
           setCartItem(response.data.data);
-          setCount(Number(cartItem.quantity));
-          setLoader(true)
-         //  console.error("cart data")
+          setLoader(true);
         }
        }catch(error){
            console.log("Cart item  not get yet")
@@ -43,6 +53,7 @@ const dispatch=useDispatch();
       
      
       fetchData();
+     
    },[reload])
 
    const DeleteApiCall=async(item)=>{
@@ -73,19 +84,95 @@ const dispatch=useDispatch();
          console.log("Cart Item Not Deleted")
       }
    }
+  
 
    const deleteCart=(item)=>{
        DeleteApiCall(item)
    }
-const increment=(count)=>{
-   
+const increment=(item)=>{
+   const product_quantity=encodeURIComponent(1);
+   const product_id=encodeURIComponent(item.id);
+   const product_price=encodeURIComponent(item.product_price);
+
+   const pcode_Api='https://www.texasknife.com/dynamic/texasknifeapi.php?action=sku&id='+product_id;
+     const getProductCode=async()=>{
+    const response=await axios.get(pcode_Api);
+    try{
+      if(response){
+         const product_code=encodeURIComponent(response.data.data[0].sku);
+        
+         const AddSub=async()=>{
+            
+            const IncDec_Api='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cart&store_id='+store_id+'&user_id='+user_id+'&product_id='+product_id+'&product_det_qty='+product_quantity+'&get_cur_price='+product_price+'&sku='+product_code+'&user_email='+user_email+'&session_ids='+session_id+'&based_on=Add';
+              console.log(IncDec_Api)
+            const response=await axios.get(IncDec_Api);
+            try{
+               if(response){
+                  dispatch(getCartReload(false))
+                  setLoader(true)
+                  // console.log(response.data)
+               }
+            }
+            catch(error){
+               console.log("quantity addition subtraction does not exist")
+            }
+           
+         }
+         AddSub()
+
+      }
+    }catch(error){
+      console.log("Product code doesnot exist in cart page");
+    }
+     }
+
+
+   getProductCode();
+    setLoader(false);
 }
-const decrement=(count)=>{
-   if(count<=1){
-     
-   }else{
-      
-   }
+
+const decrement=(item)=>{
+   const product_quantity=encodeURIComponent(1);
+   const product_id=encodeURIComponent(item.id);
+   const product_price=encodeURIComponent(item.product_price);
+
+  
+   const pcode_Api='https://www.texasknife.com/dynamic/texasknifeapi.php?action=sku&id='+product_id;
+     const getProductCode=async()=>{
+    const response=await axios.get(pcode_Api);
+    try{
+      if(response){
+         const product_code=encodeURIComponent(response.data.data[0].sku);
+        
+         const AddSub=async()=>{
+            
+            const IncDec_Api='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cart&store_id='+store_id+'&user_id='+user_id+'&product_id='+product_id+'&product_det_qty='+product_quantity+'&get_cur_price='+product_price+'&sku='+product_code+'&user_email='+user_email+'&session_ids='+session_id+'&based_on=Minus';
+              console.log(IncDec_Api)
+            const response=await axios.get(IncDec_Api);
+            try{
+               if(response){
+                  dispatch(getCartReload(false))
+                  setLoader(true)
+                  // console.log(response.data)
+               }
+            }
+            catch(error){
+               console.log("quantity addition subtraction does not exist")
+            }
+           
+         }
+         AddSub()
+
+      }
+    }catch(error){
+      console.log("Product code doesnot exist in cart page");
+    }
+     }
+
+
+   getProductCode();
+    setLoader(false);
+   
 }
   return (
    <>
@@ -119,15 +206,15 @@ const decrement=(count)=>{
         
                </View>
                <View style={styles.product_increment_container}>
-               <Icon name="minus-circle" size={20} color="#2a2e7e" onPress={()=>decrement(item.quantity)}/>
+               <Icon name="minus-circle" size={20} color="#2a2e7e" onPress={()=>decrement(item)}/>
                   <Text style={styles.item_count}>{item.quantity}</Text>
-                  <Icon name="plus-circle" size={20} color="#2a2e7e" onPress={()=>increment(item.quantity)} />
+                  <Icon name="plus-circle" size={20} color="#2a2e7e" onPress={()=>increment(item)} />
                </View>
               </View>
         
               <View style={styles.cartitem_name_container}>
                <Text style={styles.product_title}>{item.product_name}</Text>
-               <Text style={styles.product_amt}>${item.product_price}</Text>
+               <Text style={styles.product_amt}>${item.total}</Text>
               </View>
         
               <View style={styles.cartitem_icon_container}>
@@ -143,7 +230,7 @@ const decrement=(count)=>{
              </View>
                <View style={styles.footer_conatiner}>
                <View style={styles.total_container}>
-                   <Text style={styles.total}>Sub Total-<Text style={styles.total_amt}>$19.95</Text></Text>
+                   <Text style={styles.total}>Sub Total-<Text style={styles.total_amt}>{cartItem.cart_total_amount}</Text></Text>
                </View>
                <TouchableOpacity style={styles.proceed_btn_container} onPress={()=> navigation.navigate('address')}>
                  <Text style={styles.proceed_btn}>Proceed</Text>
