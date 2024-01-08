@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View,Text,StyleSheet,Image,TouchableOpacity,FlatList,ToastAndroid} from 'react-native'
+import { View,Text,StyleSheet,Image,TouchableOpacity,FlatList,ToastAndroid,Alert} from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Micon from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux';
 import { getCartReload } from '../Slice/ProductDetailsSlice';
  import Loader from '../components/Sub-components/Loader'
- import { getProductDetails } from '../Slice/ProductDetailsSlice';
+import { getButtonShown } from '../Slice/ProductDetailsSlice';
 
 
 
@@ -16,8 +16,7 @@ const dispatch=useDispatch();
 
    const[cartItem,setCartItem]=useState([]);
    const[loader,setLoader]=useState(false);
-   const[productCode,setProductCode]=useState("");
- 
+   
 
    const encodedCustomerId = encodeURIComponent( useSelector((state)=>state.login.logindata.id));
    const user_id=encodeURIComponent(useSelector((state)=>state.login.logindata.id));
@@ -174,6 +173,12 @@ const decrement=(item)=>{
     setLoader(false);
    
 }
+
+const goToDetailPage=(item)=>{
+navigation.navigate('pop');
+dispatch(getButtonShown(false))
+
+}
   return (
    <>
    {loader?(
@@ -218,7 +223,7 @@ const decrement=(item)=>{
               </View>
         
               <View style={styles.cartitem_icon_container}>
-              <Icon name="exclamation-circle" size={30} color="#2a2e7e" />
+              <Icon name="exclamation-circle" size={30} color="#2a2e7e"onPress={()=>{goToDetailPage(item)}}/>
               <Micon name="delete" size={25} color="#ab0000" onPress={()=>deleteCart(item)} />
               </View>
         

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 
-import { Text, Image, View,StyleSheet, TouchableOpacity,ScrollView,ToastAndroid } from 'react-native';
+import { Text, Image, View,StyleSheet, TouchableOpacity,ScrollView,ToastAndroid ,Alert} from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -11,6 +11,7 @@ import HTMLView from 'react-native-htmlview';
 import { getCartReload } from '../../Slice/ProductDetailsSlice';
 import { useDispatch } from 'react-redux';
 import Loader from '../Sub-components/Loader';
+import { getButtonShown } from '../../Slice/ProductDetailsSlice';
 
 
 
@@ -34,6 +35,7 @@ const PopCard = ({ navigation }) => {
     const product_code=encodeURIComponent(productData.sku);
     const session_id=encodeURIComponent(123456);
     
+    const buttonShow=useSelector((state)=>state.product.buttonshown);
 
 //    quantity increment function
     const quantityAdd=()=>{
@@ -58,23 +60,21 @@ const PopCard = ({ navigation }) => {
         
         // console.log("cart added response : "+response)
         if(response){
-            
+            navigation.navigate("Home")
             if (Platform.OS === 'android') {
-                navigation.navigate("Home")
                 ToastAndroid.show('Item Added Sucessfully', ToastAndroid.SHORT);
-              } else if (Platform.OS === 'ios') {
+              } 
+              else if (Platform.OS === 'ios') {
                Alert.alert('Item Added successfully')
               }  
-            //   dispatch(getCartReload(!useSelector((state)=>state.product.cartload)))
+              dispatch(getCartReload(!useSelector((state)=>state.product.cartload)))
                 
          }
        }
        catch(error){
         if (Platform.OS === 'android') {
             ToastAndroid.show('Item Not Added', ToastAndroid.SHORT);
-          } else if (Platform.OS === 'ios') {
-           Alert.alert('Item Not Added')
-          }  
+          }
         console.log("Item Not added to cart")
        }
     }
@@ -83,6 +83,13 @@ const PopCard = ({ navigation }) => {
         sendData()
         dispatch(getCartReload(false))
         // console.log("item added sucess")
+    }
+
+    //This function used for back to cart 
+    const BackToCart=()=>{
+        navigation.navigate("cart");
+        dispatch(getButtonShown(true));
+
     }
 
 //useeffect used for to fetch product detail data while navigate the page
@@ -134,21 +141,7 @@ const PopCard = ({ navigation }) => {
             <View style={styles.ProductDetail}>
             <View style={styles.ProductDetail_container}>
                 <View style={styles.header_container}>
-                    {/* onPress={()=>navigation.navigate(()=>useSelector((state)=>state.product.cartrout))} */}
-                    <TouchableOpacity style={{ paddingRight: 5, padding: 5 }}  >
-                        <Icon name="arrow-left" size={25} color="#2f2e7e" style={{ marginLeft: 5 }} />
-
-                    </TouchableOpacity>
-
                     <Text style={styles.header_title}>Product Details</Text>
-
-                    <TouchableOpacity style={{ paddingLeft: 5, padding: 5 }} onPress={() => navigation.navigate('cart')}>
-
-                        <Icon name="shopping-cart" size={25} color="#2f2e7e" style={{ marginRight: 10, position: 'relative' }} onPress={() => navigation.navigate('cart')} />
-                        <View style={styles.header_cart_icon}>
-                            <Text style={styles.cart_text}>12</Text>
-                        </View>
-                    </TouchableOpacity>
                 </View>
                 <View style={styles.product_detail_container}>
                 <View style={styles.image_container}>
@@ -207,11 +200,17 @@ const PopCard = ({ navigation }) => {
                         <Text>{quantity}</Text>
                         <Feather name="plus-circle" size={30} color="black" onPress={()=>quantityAdd()} />
                     </View>
+
+                    {buttonShow?(
                     <TouchableOpacity style={styles.btn} onPress={()=>AddToCart()}>                            
-
-                        <Text >Add To Cart</Text>
-
+                    <Text >Add To Cart</Text>
                     </TouchableOpacity>
+                    ):(
+                        <TouchableOpacity style={styles.btn} onPress={()=>BackToCart()}>                            
+                    <Text >Back</Text>
+                    </TouchableOpacity>
+                    )}
+                   
                 </View>
                 </View>
             </View>
@@ -283,16 +282,14 @@ const styles = StyleSheet.create({
         borderRadius: 25,
     },
     header_container: {
-        padding: 10,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        padding: 10
     },
     header_title: {
         textAlign: 'center',
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#2f2e7e'
+        color: '#2f2e7e',
+        width:'100%'
     },
     code: {
         backgroundColor: 'black',
@@ -317,6 +314,7 @@ const styles = StyleSheet.create({
 
     },
     description_container:{
+        marginTop:5
         // backgroundColor:'yellow',
     //    marginBottom:-20
 
@@ -364,32 +362,10 @@ const styles = StyleSheet.create({
 
 
     },
-    rotated: {
-        transform: [{ rotate: '180deg' }],
-        transition: 'transform 0.2s ease-in-out', // Add a smooth transition
-    },
     weight: {
         width: '100%',
         flexDirection: 'row',
-    },
-    header_cart_icon: {
-        position: 'absolute',
-        width: 15,
-        height: 15,
-        borderRadius: 50,
-        left: 16,
-        top: 7,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    cart_text: {
-        color: '#ffffff',
-        fontWeight: 'bold',
-        fontSize: 8,
-        padding: 2
-    }
-
-   
+    }   
 
 });
 export default PopCard
