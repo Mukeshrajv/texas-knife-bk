@@ -7,11 +7,12 @@ import { useSelector } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useDispatch } from 'react-redux'; 
 import { getProductDetails } from '../../Slice/ProductDetailsSlice'
-import LinearGradient from 'react-native-linear-gradient';
+import Loader from '../Sub-components/Loader'
 
 const SubList = ({navigation}) => {
   const dispatch=useDispatch();
    const [subCategoryDataList,setSubCategoryDataList]=useState([]);
+   const[loader,setLoader]=useState(false);
 
    
    const encodedcategoryname = encodeURIComponent(useSelector((state)=>state.category.categoryname));
@@ -28,6 +29,7 @@ const SubList = ({navigation}) => {
           const response = await axios.get(subcategorylistapi);
           if(response){
        setSubCategoryDataList(response.data.data);
+       setLoader(true)
             // console.log(response.data.data)
             // console.error("sucess")
           }
@@ -67,50 +69,58 @@ const SubList = ({navigation}) => {
         </TouchableOpacity>
        
     </View>
-  
-{
-  subCategoryDataList.length>=1?(
-    <View style={styles.list_contianer}>
-    {
-         <FlatList
-         data={subCategoryDataList}
-         keyExtractor={i=>i.id}
-         renderItem={({item})=>{
-          return(
-           <TouchableOpacity keyExtractor key={item.id} onPress={()=>handleChange(item)} >
-           <View style={styles.list}>
-              <View style={styles.image_container}>
-               <Image style={{width:'100%',height:'100%',resizeMode:'stretch'}}  source={{ uri: item.product_image }}/>
-              </View>
-              <View style={styles.name_price_container}>
-               <Text style={styles.item_name}>{item.product_name}</Text>
-               <Text style={styles.item_price}>{item.product_price}</Text>
-              </View>
-           </View>
-           </TouchableOpacity> 
-          )
-         }}
-         />
-     }
-    </View>
-  ):(
-    <View style={styles.emptycart_container}>
-    <View style={styles.emptycart_img_conatiner}>
-    <Image
-            source={require('../../assets/images/empty-cart.png')}
-            resizeMode='contain'
-            style={{
-                width:'100%',
-                height:'100%',
-             } }
-            />
-           
-            <Text style={styles.emptycart_text}>No Product Available</Text>
-    </View>
-   
-    </View>
-  )
-}
+    
+
+{loader?(
+ <View>
+ {
+   subCategoryDataList.length>=1?(
+     <View style={styles.list_contianer}>
+     {
+          <FlatList
+          data={subCategoryDataList}
+          keyExtractor={i=>i.id}
+          renderItem={({item})=>{
+           return(
+            <TouchableOpacity keyExtractor key={item.id} onPress={()=>handleChange(item)} >
+            <View style={styles.list}>
+               <View style={styles.image_container}>
+                <Image style={{width:'100%',height:'100%',resizeMode:'stretch'}}  source={{ uri: item.product_image }}/>
+               </View>
+               <View style={styles.name_price_container}>
+                <Text style={styles.item_name}>{item.product_name}</Text>
+                <Text style={styles.item_price}>{item.product_price}</Text>
+               </View>
+            </View>
+            </TouchableOpacity> 
+           )
+          }}
+          />
+      }
+     </View>
+   ):(
+     <View style={styles.emptycart_container}>
+     <View style={styles.emptycart_img_conatiner}>
+     <Image
+             source={require('../../assets/images/empty-cart.png')}
+             resizeMode='contain'
+             style={{
+                 width:'100%',
+                 height:'100%',
+              } }
+             />
+            
+             <Text style={styles.emptycart_text}>No Product Available</Text>
+     </View>
+    
+     </View>
+   )
+ }
+ </View>
+):(
+  <Loader/>
+)}
+ 
    
       
      
