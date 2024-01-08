@@ -5,12 +5,15 @@ import { View ,StyleSheet, TouchableOpacity ,Text, Image,FlatList,Platform} from
 import { useDispatch } from 'react-redux';
 import { getcategoryid,getcategoryname} from '../../Slice/categorySlice';
 import { getProductDetails } from '../../Slice/ProductDetailsSlice';
+import Loader from './Loader';
 
 const Category = ({navigation}) => {
   
   const dispatch=useDispatch();
 
      const[categoryList,setCategoryList]=useState([]);
+     const [loader,setLoader]=useState(false)
+
   useEffect(() => {
    
 
@@ -21,6 +24,7 @@ const Category = ({navigation}) => {
       const response = await axios.get(CategoryProductAPI);
       if(response){
         setCategoryList(response.data.data)
+        setLoader(true)
       }
      }catch(error){
          console.log("Category product is not get yet")
@@ -30,15 +34,7 @@ const Category = ({navigation}) => {
    
     fetchData();
    }, []); 
-    // const categoriesList=[
-    //     {id:1,image:"",categoryName:"**GRAB BAG DEALS"},
-    //     {id:2,image:"",categoryName:"Abrasive/Belts/Buffing"},
-    //     {id:3,image:"",categoryName:"Adhesives/Epoxies/Glues"},
-    //     {id:4,image:"",categoryName:"Blades Blanks and Blade Kits"},
-    //     {id:5,image:"",categoryName:"Books DVD and Videos"},  
-    //     {id:6,image:"",categoryName:"Gift Certificates"},  
-    //     {id:7,image:"",categoryName:"Handle/SpacerMaterial"},
-    //       ]
+    
     const calldata=(item)=>{
       navigation.navigate('subcategory')
       dispatch(getcategoryid(item.id));
@@ -47,11 +43,13 @@ const Category = ({navigation}) => {
     }
   return (
    <>
+  
    <View style={styles.category}>
    <Text style={styles.header}>Catagories</Text>
     <View style={styles.category_container}>
         
         {
+          loader?(
             <FlatList
             data={categoryList}
             keyExtractor={i=>i.id}
@@ -70,22 +68,11 @@ const Category = ({navigation}) => {
              )
             }}
             />
+          ):(
+            <Loader/>
+          )
+            
         }
-
-   
-     
-
-
-   {/* <TouchableOpacity style={styles.category_list}>
-     <View style={styles.image_container}>
-      <Image style={{width:'100%',height:'100%'}} source={require('../../assets/images/FeatureProductImage/f_product-3.png')}/>
-     </View>
-     <View style={styles.category_name_conatiner}>
-        <Text style={styles.category_names}>Abrasive/Belts/buffing/meaching</Text>
-     </View>
-   </TouchableOpacity> */}
-
-
     </View>
    </View>
    </>
