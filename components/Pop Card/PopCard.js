@@ -7,9 +7,17 @@ import { AntDesign } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+
+
 import HTMLView from 'react-native-htmlview'; 
 import { getCartReload } from '../../Slice/ProductDetailsSlice';
 import { useDispatch } from 'react-redux';
+import Loader from '../Sub-components/Loader';
+
+import HTMLView from 'react-native-htmlview'; 
+import { getCartReload } from '../../Slice/ProductDetailsSlice';
+import { useDispatch } from 'react-redux';
+
 
 
 
@@ -18,9 +26,17 @@ const PopCard = ({ navigation }) => {
     const dispatch=useDispatch();
     const [show, setShow] = useState(false);
 
+
     const [productData, setProductData] = useState([]);
     const [productImage, setProductImage] = useState([]);
     const [quantity,setQuantity]=useState(1);
+    const [isLoading, setIsLoading] = useState(false);
+
+
+    const [productData, setProductData] = useState([]);
+    const [productImage, setProductImage] = useState([]);
+    const [quantity,setQuantity]=useState(1);
+
 
     const encodedProductCode = encodeURIComponent(useSelector((state) => state.product.pdata));
 
@@ -33,6 +49,85 @@ const PopCard = ({ navigation }) => {
     const product_code=encodeURIComponent(productData.sku);
     const session_id=encodeURIComponent(123456);
     
+
+
+        const fetchData = async () => {
+
+
+            // console.log(productapi)
+            try {
+                const response = await axios.get(productapi);
+                if (response) {
+                    setProductData(response.data.data[0]);
+                    let responseImageUrl=response.data.data[0].product_image;
+                   
+                    // console.log("dai: "+response.data.data[0].product_image);
+                   
+                    // setProductImage(productData.product_image)
+
+                    const encodedProductImage = encodeURIComponent(responseImageUrl);
+                    const productimageapi = 'https://www.texasknife.com/dynamic/texasknifeapi.php?action=image&image=' + encodedProductImage;
+                    // console.log("url : "+productimageapi)
+                    const fetchimage = async () => {
+                        try {
+                            const response = await axios.get(productimageapi);
+                            if (response) {
+
+                                setProductImage(response.data.data[0])
+                                setIsLoading(true)
+                            }
+                        } catch (error) {
+                            console.log("product image not get yet")
+                        }
+                    }
+                    fetchimage()
+
+
+            const encodedProductImage = encodeURIComponent(imageurl);
+            const productimageapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=image&image='+encodedProductImage;
+            // console.log("url : "+productimageapi)
+            const fetchimage=async()=>{
+                try{
+                const response=await axios.get(productimageapi);
+                if(response){
+                     setIsloading(true)
+                    setProductImage(response.data.data[0])
+                }
+                }catch(error){
+                    console.log("product image not get yet")
+                }
+            }
+            fetchimage()
+          
+           
+             }
+            }catch(error){
+                console.log(" product data is not get yet")       
+            }
+           }
+           fetchData();
+        //    console.log("hello")
+           
+           
+        //    const encodedProductImage = encodeURIComponent(imageurl);
+        //    const productimageapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=image&image='+encodedProductImage;
+        //    console.log("url : "+productimageapi)
+        //    const fetchimage=async()=>{
+        //        try{
+        //        const response=await axios.get(productimageapi);
+        //        if(response){
+                
+        //            setProductImage(response.data.data[0])
+        //        }
+        //        }catch(error){
+        //            console.log("product image not get yet")
+        //        }
+        //    }
+        //    fetchimage()
+          
+          
+      
+        //   console.log("product image : "+productImage.msg)
 
 //    quantity increment function
     const quantityAdd=()=>{
@@ -54,6 +149,7 @@ const PopCard = ({ navigation }) => {
             //  console.log(AddToCartApi);   
         try{
         const response=await axios.get(AddToCartApi)
+
         
         // console.log("cart added response : "+response)
         if(response){
@@ -127,7 +223,11 @@ const PopCard = ({ navigation }) => {
   
   
     return (
-        <View style={styles.ProductDetail}>
+<>
+
+        {isLoading?(
+        
+            <View style={styles.ProductDetail}>
             <View style={styles.ProductDetail_container}>
                 <View style={styles.header_container}>
                     {/* onPress={()=>navigation.navigate(()=>useSelector((state)=>state.product.cartrout))} */}
@@ -212,6 +312,11 @@ const PopCard = ({ navigation }) => {
                 </View>
             </View>
         </View>
+        ):(
+            <Loader/>
+        )}
+        
+        </>
     );
 }
 const customStyles = StyleSheet.create({
