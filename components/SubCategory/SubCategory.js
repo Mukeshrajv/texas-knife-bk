@@ -7,12 +7,14 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getsubcategoryname } from '../../Slice/categorySlice';
 import Nocategory from '../No category/Nocategory';
+import Loader from '../Sub-components/Loader'
 
 const SubCategory = ({navigation}) => {
     const dispatch=useDispatch();
 
     const [subCategoryData,setSubCategoryData]=useState([]);
     const [nocategorydata,setNocategorydata]=useState([]);
+    const [loader,setLoader]=useState(false);
 
     
 
@@ -33,6 +35,7 @@ const SubCategory = ({navigation}) => {
             const response = await axios.get(subcategoryapi);
             if(response){
          setSubCategoryData(response.data);
+         setLoader(true);
             //   console.log(response.data.data)
             }
            }catch(error){
@@ -46,6 +49,7 @@ const SubCategory = ({navigation}) => {
              const response = await axios.get(NOCategoryListApi);
              if(response){
                  setNocategorydata(response.data.data);
+                 setLoader(true);
                  //   console.error(response.data.data) 
              }
             }catch(error){
@@ -83,8 +87,9 @@ const SubCategory = ({navigation}) => {
         </TouchableOpacity>
        
     </View>
-
-
+{
+    loader?(
+<View>
     { subCategoryData.status===200 ? (
            <View style={styles.subcategory_list_container}>
  {
@@ -136,7 +141,12 @@ const SubCategory = ({navigation}) => {
             />
         </View>
     )}
-    
+    </View>
+    ):(
+        <Loader/>
+    )
+}
+
    
 
 
