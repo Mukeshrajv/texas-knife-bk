@@ -29,11 +29,12 @@ const SubList = ({navigation}) => {
           const response = await axios.get(subcategorylistapi);
           if(response){
        setSubCategoryDataList(response.data.data);
-       setLoader(true)
+       setLoader(true);
             // console.log(response.data.data)
             // console.error("sucess")
           }
          }catch(error){
+          setLoader(true);
              console.log("sub Category list is not get yet")   
          }
         }
