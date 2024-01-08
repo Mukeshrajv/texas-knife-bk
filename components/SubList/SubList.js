@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { useDispatch } from 'react-redux'; 
 import { getProductDetails } from '../../Slice/ProductDetailsSlice'
 import Loader from '../Sub-components/Loader'
+import { getButtonShown } from '../../Slice/ProductDetailsSlice'
 
 const SubList = ({navigation}) => {
   const dispatch=useDispatch();
@@ -46,8 +47,10 @@ const SubList = ({navigation}) => {
   },[])
  
   const handleChange=(item)=>{
+    dispatch(getButtonShown(true));
     navigation.navigate('pop')
     dispatch(getProductDetails(item.sku))
+   
   }
 
   return (
