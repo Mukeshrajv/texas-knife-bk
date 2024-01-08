@@ -6,11 +6,14 @@ import axios from 'axios';
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux';
 import { getCartReload } from '../Slice/ProductDetailsSlice';
+ import Loader from '../components/Sub-components/Loader'
+
 
 const Cart = ({navigation}) => {
 const dispatch=useDispatch();
 
    const[cartItem,setCartItem]=useState([]);
+   const[loader,setLoader]=useState(false);
 
    const encodedCustomerId = encodeURIComponent( useSelector((state)=>state.login.logindata.id));
    const user_id=encodeURIComponent(useSelector((state)=>state.login.logindata.id));
@@ -27,11 +30,13 @@ const dispatch=useDispatch();
         const response = await axios.get(CartAPI);
         if(response){
           setCartItem(response.data.data);
-          setCount(Number(cartItem.quantity))
+          setCount(Number(cartItem.quantity));
+          setLoader(true)
          //  console.error("cart data")
         }
        }catch(error){
            console.log("Cart item  not get yet")
+           setLoader(true)
        }
       }
       
@@ -83,89 +88,96 @@ const decrement=(count)=>{
    }
 }
   return (
-  <View style={styles.cart}>
+   <>
+   {loader?(
+       <View style={styles.cart}>
    
 
-   {
-      cartItem.length>=1?(
-         <View style={styles.cart_container}>
-         <View style={styles.cart_header}>
-            <Text style={styles.header}>My Cart</Text>
-         </View>
-    
-         <View style={{justifyContent:'space-between',alignContent:"center",width:"100%",height:'90%'}}>
-         <View style={styles.cart_items_container}>
-
-         <FlatList
-       data={cartItem}
-       keyExtractor={i=>i.id}
-       renderItem={({item})=>{
-        return(
-    
-
+       {
+          cartItem.length>=1?(
+             <View style={styles.cart_container}>
+             <View style={styles.cart_header}>
+                <Text style={styles.header}>My Cart</Text>
+             </View>
         
-          <View style={styles.cart_item} keyExtractor key={item.id}> 
+             <View style={{justifyContent:'space-between',alignContent:"center",width:"100%",height:'90%'}}>
+             <View style={styles.cart_items_container}>
     
-          <View style={styles.img_addbtn_container}>
-           <View style={styles.product_image_container}>
-           <Image style={{width:'100%',height:"100%",resizeMode:'stretch'}} source={{ uri: item.product_image }}/>
-    
-           </View>
-           <View style={styles.product_increment_container}>
-           <Icon name="minus-circle" size={20} color="#2a2e7e" onPress={()=>decrement(item.quantity)}/>
-              <Text style={styles.item_count}>{item.quantity}</Text>
-              <Icon name="plus-circle" size={20} color="#2a2e7e" onPress={()=>increment(item.quantity)} />
-           </View>
-          </View>
-    
-          <View style={styles.cartitem_name_container}>
-           <Text style={styles.product_title}>{item.product_name}</Text>
-           <Text style={styles.product_amt}>${item.product_price}</Text>
-          </View>
-    
-          <View style={styles.cartitem_icon_container}>
-          <Icon name="exclamation-circle" size={30} color="#2a2e7e" />
-          <Micon name="delete" size={25} color="#ab0000" onPress={()=>deleteCart(item)} />
-          </View>
-    
-       </View>
-       )
-       }}
-       />
-    
-         </View>
-           <View style={styles.footer_conatiner}>
-           <View style={styles.total_container}>
-               <Text style={styles.total}>Sub Total-<Text style={styles.total_amt}>$19.95</Text></Text>
-           </View>
-           <TouchableOpacity style={styles.proceed_btn_container} onPress={()=> navigation.navigate('address')}>
-             <Text style={styles.proceed_btn}>Proceed</Text>
-           </TouchableOpacity>
-       </View>
-   </View>
-
- </View>
-   
-      ):(
-         <View style={styles.emptycart_container}>
-         <View style={styles.emptycart_img_conatiner}>
-         <Image
-                 source={require('../assets/images/empty-cart.png')}
-                 resizeMode='contain'
-                 style={{
-                     width:'100%',
-                     height:'100%',
-                  } }
-                 />
-                  <Text style={styles.emptycart_text}>Cart Empty</Text>
-         </View>
+             <FlatList
+           data={cartItem}
+           keyExtractor={i=>i.id}
+           renderItem={({item})=>{
+            return(
         
-         </View>
-      )
-   }
-         
-
-  </View>
+    
+            
+              <View style={styles.cart_item} keyExtractor key={item.id}> 
+        
+              <View style={styles.img_addbtn_container}>
+               <View style={styles.product_image_container}>
+               <Image style={{width:'100%',height:"100%",resizeMode:'stretch'}} source={{ uri: item.product_image }}/>
+        
+               </View>
+               <View style={styles.product_increment_container}>
+               <Icon name="minus-circle" size={20} color="#2a2e7e" onPress={()=>decrement(item.quantity)}/>
+                  <Text style={styles.item_count}>{item.quantity}</Text>
+                  <Icon name="plus-circle" size={20} color="#2a2e7e" onPress={()=>increment(item.quantity)} />
+               </View>
+              </View>
+        
+              <View style={styles.cartitem_name_container}>
+               <Text style={styles.product_title}>{item.product_name}</Text>
+               <Text style={styles.product_amt}>${item.product_price}</Text>
+              </View>
+        
+              <View style={styles.cartitem_icon_container}>
+              <Icon name="exclamation-circle" size={30} color="#2a2e7e" />
+              <Micon name="delete" size={25} color="#ab0000" onPress={()=>deleteCart(item)} />
+              </View>
+        
+           </View>
+           )
+           }}
+           />
+        
+             </View>
+               <View style={styles.footer_conatiner}>
+               <View style={styles.total_container}>
+                   <Text style={styles.total}>Sub Total-<Text style={styles.total_amt}>$19.95</Text></Text>
+               </View>
+               <TouchableOpacity style={styles.proceed_btn_container} onPress={()=> navigation.navigate('address')}>
+                 <Text style={styles.proceed_btn}>Proceed</Text>
+               </TouchableOpacity>
+           </View>
+       </View>
+    
+     </View>
+       
+          ):(
+             <View style={styles.emptycart_container}>
+             <View style={styles.emptycart_img_conatiner}>
+             <Image
+                     source={require('../assets/images/empty-cart.png')}
+                     resizeMode='contain'
+                     style={{
+                         width:'100%',
+                         height:'100%',
+                      } }
+                     />
+                      <Text style={styles.emptycart_text}>Cart Empty</Text>
+             </View>
+            
+             </View>
+          )
+       }
+             
+    
+      </View>
+   ):(
+     <Loader/>
+   )}
+   </>
+ 
   )
 }
 const styles=StyleSheet.create({
