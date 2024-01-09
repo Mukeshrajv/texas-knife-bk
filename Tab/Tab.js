@@ -1,12 +1,12 @@
 import React from 'react'
-import { StyleSheet, Text, View,Image,Platform } from 'react-native';
+import { StyleSheet, Text, View,Image,Platform ,TouchableOpacity} from 'react-native';
 import Home from '../components/Home';
 import Cart from '../components/Cart';
 import Profile from '../components/Profile';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // import { NavigationContainer } from '@react-navigation/native';
 
-const Tab = () => {
+const Tab = ({navigation}) => {
     const Tabs=createBottomTabNavigator();
   return (
     
@@ -38,7 +38,7 @@ const Tab = () => {
      <Tabs.Screen name='Home' component={Home} 
       options={{
          tabBarIcon:({focused})=>(
-             <View>
+             <TouchableOpacity >
                  <Image
                  source={require('../assets/images/home.png')}
                  resizeMode='contain'
@@ -48,7 +48,7 @@ const Tab = () => {
                      tintColor:focused?'#ffffff':'#748c94'
                   } }
                  />
-             </View>
+             </TouchableOpacity>
          )
      }}
       />
