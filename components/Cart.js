@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { getCartReload } from '../Slice/ProductDetailsSlice';
  import Loader from '../components/Sub-components/Loader'
 import { getButtonShown } from '../Slice/ProductDetailsSlice';
+import { getProductDetails } from '../Slice/ProductDetailsSlice';
 
 
 
@@ -16,7 +17,7 @@ const dispatch=useDispatch();
 
    const[cartItem,setCartItem]=useState([]);
    const[loader,setLoader]=useState(false);
-   
+   const[code,setCode]=useState('');
 
    const encodedCustomerId = encodeURIComponent( useSelector((state)=>state.login.logindata.id));
    const user_id=encodeURIComponent(useSelector((state)=>state.login.logindata.id));
@@ -175,8 +176,24 @@ const decrement=(item)=>{
 }
 
 const goToDetailPage=(item)=>{
-navigation.navigate('pop');
-dispatch(getButtonShown(false))
+   const product_id=encodeURIComponent(item.id)
+
+   const pcode_Api='https://www.texasknife.com/dynamic/texasknifeapi.php?action=sku&id='+product_id;
+   const getProductCode=async()=>{
+     try{
+      const response=await axios.get(pcode_Api);
+      if(response){
+         dispatch(getProductDetails(response.data.data[0].sku));
+         dispatch(getButtonShown(false));
+         navigation.navigate('pop');      
+      }
+     }catch(error){
+      console.log("product not get in icon click")
+     }   
+}
+   
+  
+getProductCode();
 
 }
   return (
