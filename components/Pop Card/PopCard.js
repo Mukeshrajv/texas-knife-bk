@@ -72,9 +72,7 @@ const PopCard = ({ navigation }) => {
          }
        }
        catch(error){
-        if (Platform.OS === 'android') {
-            ToastAndroid.show('Item Not Added', ToastAndroid.SHORT);
-          }
+       
         console.log("Item Not added to cart")
        }
     }

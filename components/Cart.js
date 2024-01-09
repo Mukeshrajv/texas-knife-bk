@@ -9,6 +9,7 @@ import { getCartReload } from '../Slice/ProductDetailsSlice';
  import Loader from '../components/Sub-components/Loader'
 import { getButtonShown } from '../Slice/ProductDetailsSlice';
 import { getProductDetails } from '../Slice/ProductDetailsSlice';
+ 
 
 
 
@@ -17,7 +18,7 @@ const dispatch=useDispatch();
 
    const[cartItem,setCartItem]=useState([]);
    const[loader,setLoader]=useState(false);
-   const[code,setCode]=useState('');
+   const [totalPrice, setTotalPrice] = useState('');
 
    const encodedCustomerId = encodeURIComponent( useSelector((state)=>state.login.logindata.id));
    const user_id=encodeURIComponent(useSelector((state)=>state.login.logindata.id));
@@ -32,6 +33,15 @@ const dispatch=useDispatch();
 
    
      const reload=useSelector((state)=>state.product.cartload);
+ 
+     const TotalAmount=(data)=>{
+      // const s = cartItem.reduce((s,{amount}) => s+parseInt(amount),0)
+      // console.log(s)
+      let t = 0;
+      data.map(({total}) => t = t + total)
+     setTotalPrice(t.toFixed(2));
+     }
+   
    useEffect(()=>{
       
       const CartAPI='https://www.texasknife.com/dynamic/texasknifeapi.php?action=final_cart_details&store_id=1&customer_id='+encodedCustomerId;
@@ -42,10 +52,12 @@ const dispatch=useDispatch();
         const response = await axios.get(CartAPI);
         if(response){
           setCartItem(response.data.data);
+          TotalAmount(response.data.data)
+        
           setLoader(true);
         }
        }catch(error){
-           console.log("Cart item  not get yet")
+           console.log("Cart item  not get yet in list")
            setLoader(true)
        }
       }
@@ -53,7 +65,7 @@ const dispatch=useDispatch();
       
      
       fetchData();
-     
+    
    },[reload])
 
    const DeleteApiCall=async(item)=>{
@@ -62,7 +74,7 @@ const dispatch=useDispatch();
       try{
       
       const cartDeleteapi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=remove_cart&customer_id='+user_id+'&session_id='+session_id+'&product_id='+product_id;
-      console.log("cart delete APi :: "+cartDeleteapi)
+      // console.log("cart delete APi :: "+cartDeleteapi)
       const response=await axios.get(cartDeleteapi);
       if(response){
          
@@ -75,12 +87,7 @@ const dispatch=useDispatch();
       }
 
       }
-      catch(error){
-         if (Platform.OS === 'android') {
-            ToastAndroid.show('Item Not Deleted', ToastAndroid.SHORT);
-          } else if (Platform.OS === 'ios') {
-           Alert.alert('Item Not Deleted')
-          }  
+      catch(error){  
          console.log("Cart Item Not Deleted")
       }
    }
@@ -104,7 +111,7 @@ const increment=(item)=>{
          const AddSub=async()=>{
             
             const IncDec_Api='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cart&store_id='+store_id+'&user_id='+user_id+'&product_id='+product_id+'&product_det_qty='+product_quantity+'&get_cur_price='+product_price+'&sku='+product_code+'&user_email='+user_email+'&session_ids='+session_id+'&based_on=Add';
-              console.log(IncDec_Api)
+            //   console.log(IncDec_Api)
             const response=await axios.get(IncDec_Api);
             try{
                if(response){
@@ -147,7 +154,7 @@ const decrement=(item)=>{
          const AddSub=async()=>{
             
             const IncDec_Api='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cart&store_id='+store_id+'&user_id='+user_id+'&product_id='+product_id+'&product_det_qty='+product_quantity+'&get_cur_price='+product_price+'&sku='+product_code+'&user_email='+user_email+'&session_ids='+session_id+'&based_on=Minus';
-              console.log(IncDec_Api)
+            //   console.log(IncDec_Api)
             const response=await axios.get(IncDec_Api);
             try{
                if(response){
@@ -252,7 +259,7 @@ getProductCode();
              </View>
                <View style={styles.footer_conatiner}>
                <View style={styles.total_container}>
-                   <Text style={styles.total}>Sub Total-<Text style={styles.total_amt}>{cartItem.cart_total_amount}</Text></Text>
+                   <Text style={styles.total}>Sub Total-<Text style={styles.total_amt}>{totalPrice}</Text></Text>
                </View>
                <TouchableOpacity style={styles.proceed_btn_container} onPress={()=> navigation.navigate('address')}>
                  <Text style={styles.proceed_btn}>Proceed</Text>
