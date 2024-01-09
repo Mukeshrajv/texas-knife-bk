@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, ScrollView, TextInput } from 
 import { CheckBox } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons';
 
-const Address = () => {
+const Address = ({ navigation }) => {
     return (
         <View style={styles.address}>
             <View style={styles.address_container}>
@@ -228,7 +228,7 @@ const Address = () => {
 
 
                 <View style={styles.footer_button_conatiner}>
-                    <TouchableOpacity style={styles.footer_button}>
+                    <TouchableOpacity style={styles.footer_button} onPress={()=> navigation.navigate("shipping")}>
                         <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Continue to Shipping</Text>
                     </TouchableOpacity>
                 </View>
