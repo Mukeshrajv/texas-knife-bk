@@ -94,7 +94,26 @@ const dispatch=useDispatch();
   
 
    const deleteCart=(item)=>{
-       DeleteApiCall(item)
+      Alert.alert(
+         'Confirmation',
+         'Are you sure you want to delete?',
+         [
+           {
+             text: 'Cancel',
+             style: 'cancel',
+           },
+           {
+             text: 'OK',
+             onPress: () => {
+               DeleteApiCall(item)
+               // Perform your delete operation here
+               // console.log('Item deleted');
+             },
+           },
+         ],
+         { cancelable: false }
+       );
+     
    }
 const increment=(item)=>{
    const product_quantity=encodeURIComponent(1);
