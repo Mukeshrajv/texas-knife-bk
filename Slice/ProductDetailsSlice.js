@@ -7,6 +7,7 @@ pdata:'',
 cartrout:'',
 cartload:true,
 buttonshown:true,
+
 }
 
 
@@ -27,6 +28,7 @@ export const ProductDetailsSlice=createSlice({
         getButtonShown:(state,action)=>{
             state.buttonshown=action.payload;
         }
+       
     }
 })
 
