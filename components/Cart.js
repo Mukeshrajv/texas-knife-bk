@@ -164,41 +164,44 @@ const decrement=(item)=>{
 
   
    const pcode_Api='https://www.texasknife.com/dynamic/texasknifeapi.php?action=sku&id='+product_id;
-     const getProductCode=async()=>{
-    const response=await axios.get(pcode_Api);
-    try{
-      if(response){
-         const product_code=encodeURIComponent(response.data.data[0].sku);
-        
-         const AddSub=async()=>{
-            
-            const IncDec_Api='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cart&store_id='+store_id+'&user_id='+user_id+'&product_id='+product_id+'&product_det_qty='+product_quantity+'&get_cur_price='+product_price+'&sku='+product_code+'&user_email='+user_email+'&session_ids='+session_id+'&based_on=Minus';
-            //   console.log(IncDec_Api)
-            const response=await axios.get(IncDec_Api);
-            try{
-               if(response){
-                  dispatch(getCartReload(false))
-                  setLoader(true)
-                  // console.log(response.data)
-               }
-            }
-            catch(error){
-               console.log("quantity addition subtraction does not exist")
-            }
-           
+   if(item.quantity>1){
+      const getProductCode=async()=>{
+         const response=await axios.get(pcode_Api);
+         try{
+           if(response){
+              const product_code=encodeURIComponent(response.data.data[0].sku);
+             
+              const AddSub=async()=>{
+                 
+                 const IncDec_Api='https://www.texasknife.com/dynamic/texasknifeapi.php?action=cart&store_id='+store_id+'&user_id='+user_id+'&product_id='+product_id+'&product_det_qty='+product_quantity+'&get_cur_price='+product_price+'&sku='+product_code+'&user_email='+user_email+'&session_ids='+session_id+'&based_on=Minus';
+                 //   console.log(IncDec_Api)
+                 const response=await axios.get(IncDec_Api);
+                 try{
+                    if(response){
+                       dispatch(getCartReload(false))
+                       setLoader(true)
+                       // console.log(response.data)
+                    }
+                 }
+                 catch(error){
+                    console.log("quantity addition subtraction does not exist")
+                 }
+                
+              }
+              AddSub()
+     
+           }
+         }catch(error){
+           console.log("Product code doesnot exist in cart page");
          }
-         AddSub()
-
-      }
-    }catch(error){
-      console.log("Product code doesnot exist in cart page");
-    }
-     }
-
-
-   getProductCode();
-    setLoader(false);
-   
+          }
+     
+     
+        getProductCode();
+         setLoader(false);
+        
+   }
+    
 }
 
 const goToDetailPage=(item)=>{
