@@ -7461,10 +7461,10 @@ react-native-modal@*, react-native-modal@^13.0.1:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
 
-react-native-paper@^5.11.6:
-  version "5.11.6"
-  resolved "https://registry.npmjs.org/react-native-paper/-/react-native-paper-5.11.6.tgz"
-  integrity sha512-+WpBC1aYQ3SMolnOZAdJGoMFWgKoiBym+s8251QyT+ZbBIWd/NYJPoA4wmjGPeUc1vcnJKV7+Uy42T2zp2ts6Q==
+react-native-paper@^5.11.7:
+  version "5.11.7"
+  resolved "https://registry.npmjs.org/react-native-paper/-/react-native-paper-5.11.7.tgz"
+  integrity sha512-Zh18uEkqOYhX5tG6g8w257vAUAof3AsgZ+gB0q2JZDVWcXefs+P4XucRoY6WGc6x3mN8eW1mpancolj2so1eXw==
   dependencies:
     "@callstack/react-theme-provider" "^3.0.9"
     color "^3.1.2"
