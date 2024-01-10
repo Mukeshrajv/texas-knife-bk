@@ -1,9 +1,12 @@
 import React from 'react'
 import { Text, View,StyleSheet,TouchableOpacity,Image,ScrollView ,Platform} from 'react-native'
-import { CheckBox } from 'react-native-elements';
+import { RadioButton } from 'react-native-paper';
 import Tab from '../../Tab/Tab';
+import { useState } from 'react';
 
 const Shipping = () => {
+   const [checked, setChecked] = useState('first');
+  //  console.log(checked)
   return (
     <View style={styles.shipping}>
         <View style={styles.shipping_container}>
@@ -40,7 +43,7 @@ const Shipping = () => {
               </View>
               <View style={styles.shipping_subtotal_container}>
                 <Text style={styles.total_text}>Shipping</Text>
-                <Text style={styles.total_amount_text}>$9.90</Text>
+                <Text style={styles.total_amount_text}>${checked}</Text>
               </View>
               <View style={styles.shipping_subtotal_container}>
                 <Text style={styles.total_text}>Estimated Sales Tax</Text>
@@ -58,81 +61,56 @@ const Shipping = () => {
   <View style={styles.shipping_method_header_container}>
     <Text style={styles.shipping_method_header}>Shipping Method</Text>
   </View>
-  <View style={styles.parcel_Service_container}>
-    <View style={styles.parcel_Service_header_container}>
-      <Text style={styles.parcel_Service_header}>United Parcel Service</Text>
-    </View>
-    <CheckBox
-        title="UPS Ground  $13.24"
-        checked={true}
-        containerStyle={styles.checkBoxContainer}
-        textStyle={styles.checkBoxText}
-        checkedColor="#2a2e7e"
-        uncheckedColor="#7F7F7F"
-      />
-       <CheckBox
-      
-        title="UPS Three-Day Select  $17.81"
-        checked={false}
-        containerStyle={styles.checkBoxContainer}
-        textStyle={styles.checkBoxText}
-        checkedColor="#2a2e7e"
-        uncheckedColor="#7F7F7F"
-      />
-       <CheckBox
-       
-        title="UPS Secound Day Air  $27.16"
-        checked={false}
-        containerStyle={styles.checkBoxContainer}
-        textStyle={styles.checkBoxText}
-        checkedColor="#2a2e7e"
-        uncheckedColor="#7F7F7F"
-      />
-       <CheckBox
-       
-        title="UPS Next Day Air  $41.31"
-        checked={false}
-        containerStyle={styles.checkBoxContainer}
-        textStyle={styles.checkBoxText}
-        checkedColor="#2a2e7e"
-        uncheckedColor="#7F7F7F"
-      />
-    
-  </View>
-
-  <View style={styles.postal_service_container}>
-  <View style={styles.postal_Service_header_container}>
-      <Text style={styles.postal_Service_header}>United State Postal Service</Text>
-    </View>
-    <CheckBox
-    
-        title="Periority Mail  $13.24"
-        checked={true}
-        containerStyle={styles.checkBoxContainer}
-        textStyle={styles.checkBoxText}
-        checkedColor="#2a2e7e"
-        uncheckedColor="#7F7F7F"
-      />
-  </View>
-
-  <View style={styles.store_pickup_container}>
-  <View style={styles.store_pickup_header_container}>
-      <Text style={styles.store_pickup_header}>Store Pick Up</Text>
-    </View>
-    <CheckBox
-
-        title="Store Pickup  $0.00"
-        checked={true}
-        containerStyle={styles.checkBoxContainer}
-        textStyle={styles.checkBoxText}
-        checkedColor="#2a2e7e"
-        uncheckedColor="#7F7F7F"
-      />
-  </View>
-
+<RadioButton.Group onValueChange={(value) => setChecked(value)} value={checked}>
+        {/* ................. */}
+        <View style={styles.parcel_Service_container}>
+          <View style={styles.parcel_Service_header_container}>
+          <Text style={styles.parcel_Service_header}>United Parcel Service</Text>
+         </View>
+         <View style={styles.radiobutton_container}>
+            <RadioButton value="13.24" />
+            <Text style={styles.radiobutton_text}>UPS Ground  $13.24</Text>
+        </View>
+        <View style={styles.radiobutton_container}>
+          <RadioButton value="17.81" />
+          <Text style={styles.radiobutton_text}>UPS Three-Day Select  $17.81</Text>
+        </View>
+        <View style={styles.radiobutton_container}>
+          <RadioButton value="27.16" />
+          <Text style={styles.radiobutton_text}>UPS Secound Day Air  $27.16</Text>
+        </View>
+        <View style={styles.radiobutton_container}>
+          <RadioButton value="41.31" />
+          <Text style={styles.radiobutton_text}>UPS Next Day Air  $41.31</Text>
+        </View>
+        </View>
+         {/* ............... */}
+          {/* --------------------- */}
+         <View style={styles.postal_service_container}>
+         <View style={styles.postal_Service_header_container}>
+         <Text style={styles.postal_Service_header}>United State Postal Service</Text>
+         </View>
+          <View style={styles.radiobutton_container}>
+                <RadioButton value="9.95" />
+                <Text style={styles.radiobutton_text}>Periority Mail  $9.95</Text>
+              </View>
+         </View>
+          {/* --------------------- */}
+         {/* .............. */}
+         <View style={styles.store_pickup_container}>
+         <View style={styles.store_pickup_header_container}>
+        <Text style={styles.store_pickup_header}>Store Pick Up</Text>
+        </View>
+        <View style={styles.radiobutton_container}>
+                <RadioButton value='0' />
+                <Text style={styles.radiobutton_text}>Store Pickup  $0.00</Text>
+         </View>
+         </View> 
+  {/* ............. */}
+      </RadioButton.Group>
 
  </View>
-
+        
           </ScrollView>
 {/* --------------------------------------------------------------------------------------------------------------- */}
 
@@ -142,7 +120,7 @@ const Shipping = () => {
                 <Text style={styles.shipping_footer_button_text}>Continue To payment</Text>
               </TouchableOpacity>
             </View>
-            <Tab/>
+            {/* <Tab/> */}
           </View>
 
         </View>
@@ -156,7 +134,7 @@ const styles=StyleSheet.create({
   },
   shipping_container:{
     width:'100%',
-    height:'90%',
+    height:'100%',
     // backgroundColor:'red',
     justifyContent:'space-between',
 
@@ -282,14 +260,6 @@ const styles=StyleSheet.create({
     fontSize:18,
     fontWeight:'bold',
   },
-  checkBoxContainer: {
-    backgroundColor: 'transparent',
-    borderWidth: 0,
-  },
-  checkBoxText: {
-    fontSize: 18,
-    fontWeight: 'normal',
-  },
   postal_service_container:{
 
   },
@@ -305,6 +275,14 @@ const styles=StyleSheet.create({
   },
   store_pickup_header_container:{
     padding:10
+  },
+  radiobutton_container:{
+   flexDirection:'row',
+   marginLeft:10,
+   alignItems:'center'
+  },
+  radiobutton_text:{
+    fontSize:15
   },
   store_pickup_header:{
     fontSize:18,
