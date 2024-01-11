@@ -3,8 +3,9 @@ import { Text, View,StyleSheet,TouchableOpacity,Image,ScrollView ,Platform} from
 import { RadioButton } from 'react-native-paper';
 import Tab from '../../Tab/Tab';
 import { useState } from 'react';
+import ProductTotal from '../Sub-components/ProductTotal';
 
-const Shipping = () => {
+const Shipping = ({navigation}) => {
    const [checked, setChecked] = useState('first');
   //  console.log(checked)
   return (
@@ -17,44 +18,7 @@ const Shipping = () => {
 {/* ------------------------------------------------------------------------------------------------------------------- */}
           <ScrollView style={styles.shipping_detail_container}>
              
-             <View style={styles.shipping_item_card_container}>
-              <View style={styles.shipping_item_card}>
-
-                <View style={styles.image_container}>
-                  <Image style={{width:'100%',height:'100%'}} source={require("../../assets/images/texaslogo.png")}/>
-                </View>
-                 
-                 <View style={styles.card_detail_container}>
-                  <View style={styles.card_title_container}>
-                    <Text style={styles.card_title}>Favorite Chefs Santoku With CRYO (BL547)</Text>
-                    </View>
-                    <Text style={styles.card_price}>1 * 32.95</Text>
-                    <Text style={styles.card_total}>Total Price:$ 32.95</Text>
-                 
-                 </View>
-
-              </View>
-             
-  
-            <View style={styles.shipping_total_conatiner}>
-              <View style={styles.shipping_subtotal_container}>
-                <Text style={styles.total_text}>Sub Total</Text>
-                <Text style={styles.total_amount_text}>$52.90</Text>
-              </View>
-              <View style={styles.shipping_subtotal_container}>
-                <Text style={styles.total_text}>Shipping</Text>
-                <Text style={styles.total_amount_text}>${checked}</Text>
-              </View>
-              <View style={styles.shipping_subtotal_container}>
-                <Text style={styles.total_text}>Estimated Sales Tax</Text>
-                <Text style={styles.total_amount_text}>$5.90</Text>
-              </View>
-            <View style={styles.shipping_subtotal_container_Total}>
-                <Text style={styles.total_text}>Total</Text>
-                <Text style={styles.total_amount_text}>$200.20</Text>
-              </View>
-            </View>
-          </View>
+           <ProductTotal/>
 
  
  <View style={styles.shipping_method_container}>
@@ -116,7 +80,7 @@ const Shipping = () => {
 
           <View style={styles.shipping_footer_container}>
             <View style={styles.shipping_footer_button_container}>
-              <TouchableOpacity style={styles.shipping_footer_button}>
+              <TouchableOpacity style={styles.shipping_footer_button} onPress={()=>navigation.navigate("checkout")}>
                 <Text style={styles.shipping_footer_button_text}>Continue To payment</Text>
               </TouchableOpacity>
             </View>
@@ -303,7 +267,8 @@ const styles=StyleSheet.create({
     margin: 10,
   },
   shipping_footer_button_text:{
-  color:'white'
+  color:'white',
+  fontWeight:'bold'
   }
 })
 export default Shipping
