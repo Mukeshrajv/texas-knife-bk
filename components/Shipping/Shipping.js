@@ -1,12 +1,13 @@
 import React from 'react'
 import { Text, View,StyleSheet,TouchableOpacity,Image,ScrollView ,Platform} from 'react-native'
-import { RadioButton } from 'react-native-paper';
+import { RadioButton,useTheme  } from 'react-native-paper';
 import Tab from '../../Tab/Tab';
 import { useState } from 'react';
 import ProductTotal from '../Sub-components/ProductTotal';
 
 const Shipping = ({navigation}) => {
    const [checked, setChecked] = useState('first');
+  
   //  console.log(checked)
   return (
     <View style={styles.shipping}>
@@ -32,7 +33,7 @@ const Shipping = ({navigation}) => {
           <Text style={styles.parcel_Service_header}>United Parcel Service</Text>
          </View>
          <View style={styles.radiobutton_container}>
-            <RadioButton value="13.24" />
+            <RadioButton value="13.24"/>
             <Text style={styles.radiobutton_text}>UPS Ground  $13.24</Text>
         </View>
         <View style={styles.radiobutton_container}>
@@ -80,7 +81,9 @@ const Shipping = ({navigation}) => {
 
           <View style={styles.shipping_footer_container}>
             <View style={styles.shipping_footer_button_container}>
+
               <TouchableOpacity style={styles.shipping_footer_button} onPress={()=>navigation.navigate("checkout")}>
+
                 <Text style={styles.shipping_footer_button_text}>Continue To payment</Text>
               </TouchableOpacity>
             </View>
@@ -99,7 +102,7 @@ const styles=StyleSheet.create({
   shipping_container:{
     width:'100%',
     height:'100%',
-    // backgroundColor:'red',
+    //  backgroundColor:'red',
     justifyContent:'space-between',
 
   },
@@ -243,7 +246,7 @@ const styles=StyleSheet.create({
   radiobutton_container:{
    flexDirection:'row',
    marginLeft:10,
-   alignItems:'center'
+   alignItems:'center',
   },
   radiobutton_text:{
     fontSize:15
