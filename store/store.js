@@ -2,6 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import loginSlice from "../Slice/loginSlice";
 import categorySlice from "../Slice/categorySlice";
 import  ProductDetailsSlice  from "../Slice/ProductDetailsSlice";
+import addressSlice from "../Slice/addressSlice";
+
 
 
 export const store=configureStore({
@@ -9,6 +11,8 @@ export const store=configureStore({
         login:loginSlice,
         product:ProductDetailsSlice,
         category:categorySlice,
+        address:addressSlice,
+       
        
     }
 })
