@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 const initialState={
-  address:[],
+  shippingAddress:[],
+  billingAddress:[]
 }
 
 
@@ -12,13 +13,16 @@ export const addressSlice=createSlice({
     initialState,
     reducers:{
      getaddressdata:(state,action)=>{
-        state.address=action.payload;  
-        console.log(state.address)
+        state.shippingAddress=action.payload;  
+        // console.log(state.address);
+     },
+     getbillingdata:(state,action)=>{
+      state.billingAddress=action.payload
      }
 
     }
 });
 
-export const{getaddressdata}=addressSlice.actions;
+export const{getaddressdata,getbillingdata}=addressSlice.actions;
 
 export default addressSlice.reducer;

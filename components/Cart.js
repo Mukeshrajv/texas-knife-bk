@@ -9,6 +9,8 @@ import { getCartReload } from '../Slice/ProductDetailsSlice';
  import Loader from '../components/Sub-components/Loader'
 import { getButtonShown } from '../Slice/ProductDetailsSlice';
 import { getProductDetails } from '../Slice/ProductDetailsSlice';
+import { getCartTotal } from '../Slice/cartDataSlice';
+import { getCartList } from '../Slice/cartDataSlice';
  
 
 
@@ -37,9 +39,14 @@ const dispatch=useDispatch();
      const TotalAmount=(data)=>{
       // const s = cartItem.reduce((s,{amount}) => s+parseInt(amount),0)
       // console.log(s)
+    
       let t = 0;
       data.map(({total}) => t = t + total)
      setTotalPrice(t.toFixed(2));
+     dispatch(getCartTotal(t.toFixed(2)))
+     }
+     const sendCartData=(data)=>{
+      dispatch(getCartdata(data))
      }
    
    useEffect(()=>{
@@ -52,9 +59,10 @@ const dispatch=useDispatch();
         const response = await axios.get(CartAPI);
         if(response){
           setCartItem(response.data.data);
-          TotalAmount(response.data.data)
-        
+          TotalAmount(response.data.data);
+          dispatch(getCartList(response.data.data))
           setLoader(true);
+          console.log(response.data.data)
         }
        }catch(error){
            console.log("Cart item  not get yet in list")
