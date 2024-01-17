@@ -6,6 +6,7 @@ import {  useDispatch,useSelector } from 'react-redux';
 import axios from 'axios';
 import Loader from '../Sub-components/Loader'
 import  { getaddressdata } from '../../Slice/addressSlice';
+import { getbillingdata } from '../../Slice/addressSlice';
 
 
 const Address = ({ navigation }) => {
@@ -131,36 +132,38 @@ const Address = ({ navigation }) => {
    fetchdata()
   }
 
-  const Ef2Email=encodeURIComponent(f2email);
-  const Ef2firstName=encodeURIComponent(f2firstName);
-  const Ef2lastName=encodeURIComponent(f2lastName);
-  const Ef2address=encodeURIComponent(f2address);
-  const Ef2city=encodeURIComponent(f2city);
-  const Ef2country=encodeURIComponent(f2country);
-  const Ef2state=encodeURIComponent(f2state);
-  const Ef2zipCode=encodeURIComponent(f2zipCode);
-  const Ef2phoneNumber=encodeURIComponent(f2phoneNumber);
-  const Ef2companyName=encodeURIComponent(f2companyName);
-  const Ef2apartment=encodeURIComponent(f2apartment);
+  // const Ef2Email=encodeURIComponent(f2email);
+  // const Ef2firstName=encodeURIComponent(f2firstName);
+  // const Ef2lastName=encodeURIComponent(f2lastName);
+  // const Ef2address=encodeURIComponent(f2address);
+  // const Ef2city=encodeURIComponent(f2city);
+  // const Ef2country=encodeURIComponent(f2country);
+  // const Ef2state=encodeURIComponent(f2state);
+  // const Ef2zipCode=encodeURIComponent(f2zipCode);
+  // const Ef2phoneNumber=encodeURIComponent(f2phoneNumber);
+  // const Ef2companyName=encodeURIComponent(f2companyName);
+  // const Ef2apartment=encodeURIComponent(f2apartment);
 
 
   const fetchForm2Data=()=>{
-    const formApi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=insert_update_checkoutship&bill_name='+Ef2firstName+'&bill_l_name='+Ef2lastName+'&bill_address1='+Ef2address+'&bill_address2='+Ef2apartment+'&bill_town_city='+Ef2city+'&bill_state_region1='+Ef2state+'&bill_zip_code='+Ef2zipCode+'&bill_country='+Ef2country+'&bill_phone='+Ef2phoneNumber+'&bill_email1='+Ef2Email+'&customer_id='+customer_id+'&sessions_id=123456&rurl=&ship_amt=&tx_amount=&check_out_total_amount=&payment_type=&shipment_name=&bill_company='+Ef2companyName
-    setLoading(true)
-    const fetchdata=async ()=>{
-      try{
-        const response=await axios.get(formApi)
-        if(response){
-        const data={emai:f2email,firstName:f2firstName,lastName:f2lastName,companyName:f2companyName,address:f2address,apartment:f2apartment,city:f2city,country:f2country,state:f2state,zipCode:f2zipCode,phoneNumber:f2phoneNumber}
-        dispatch(getaddressdata(data))
-          navigation.navigate("shipping")
-          setLoading(false)
-        }
-      }catch(error){
-        console.log("form2 data not updated");
-      }
-     }
-     fetchdata()
+    // const formApi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=insert_update_checkoutship&bill_name='+Ef2firstName+'&bill_l_name='+Ef2lastName+'&bill_address1='+Ef2address+'&bill_address2='+Ef2apartment+'&bill_town_city='+Ef2city+'&bill_state_region1='+Ef2state+'&bill_zip_code='+Ef2zipCode+'&bill_country='+Ef2country+'&bill_phone='+Ef2phoneNumber+'&bill_email1='+Ef2Email+'&customer_id='+customer_id+'&sessions_id=123456&rurl=&ship_amt=&tx_amount=&check_out_total_amount=&payment_type=&shipment_name=&bill_company='+Ef2companyName
+    // setLoading(true)
+    // const fetchdata=async ()=>{
+    //   try{
+    //     const response=await axios.get(formApi)
+    //     if(response){
+    //     const data={emai:f2email,firstName:f2firstName,lastName:f2lastName,companyName:f2companyName,address:f2address,apartment:f2apartment,city:f2city,country:f2country,state:f2state,zipCode:f2zipCode,phoneNumber:f2phoneNumber}
+    //  dispatch(getbillingdata(data))
+    //       navigation.navigate("shipping")
+    //       setLoading(false)
+    //     }
+    //   }catch(error){
+    //     console.log("form2 data not updated");
+    //   }
+    //  }
+    //  fetchdata()
+    dispatch(getbillingdata(data))
+    navigation.navigate("shipping")
   
   }
 

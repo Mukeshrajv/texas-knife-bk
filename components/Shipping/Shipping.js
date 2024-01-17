@@ -1,12 +1,99 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Text, View,StyleSheet,TouchableOpacity,Image,ScrollView ,Platform} from 'react-native'
 import { RadioButton,useTheme  } from 'react-native-paper';
 import Tab from '../../Tab/Tab';
 import { useState } from 'react';
 import ProductTotal from '../Sub-components/ProductTotal';
+import { UseSelector,useDispatch } from 'react-redux';
+import axios from 'axios';
+import { getShippingTax } from '../../Slice/cartDataSlice';
+import { getBasePriceExact } from '../../Slice/cartDataSlice';
+import { getStateTax } from '../../Slice/cartDataSlice';
+import { getNetAmount } from '../../Slice/cartDataSlice';
+import { getOverAllTotal } from '../../Slice/cartDataSlice';
 
 const Shipping = ({navigation}) => {
-   const [checked, setChecked] = useState('first');
+  const dispatch=useDispatch();
+
+   const [checked, setChecked] = useState();
+   const[shippingTax,setShippingTax]=useState([])
+
+  
+   const customer_id=encodeURIComponent('88985')
+   const customer_state=encodeURIComponent("Texas")
+   const shipping_city=encodeURIComponent('Katy');
+   const shipping_state=encodeURIComponent('Texas');
+   const shipping_zip=encodeURIComponent('77494');
+   const ship_country=encodeURIComponent('United States');
+
+   const sendTaxValue=(value)=>{
+    
+    setChecked(value)
+    const string=[value]
+    // console.log(string[0].replace('$', ''))
+      dispatch(getShippingTax(string[0].replace('$', '')));
+      dispatch(getNetAmount());
+      dispatch(getOverAllTotal());
+   }
+
+   useEffect(()=>{
+    const url='https://texasknife.com/dynamic/texasknifeapi.php?action=ups_shippment_ys&pounds=2&shipping_city='+shipping_city+'&shipping_state='+shipping_state+'&shipping_zip='+shipping_zip+'&ship_country='+ship_country;
+    const fetchdata=async ()=>{
+    try{
+      const responce=await axios.get(url)
+      if(responce){
+        const shippingData=responce.data.data[0].shipping;
+       // Split the string into an array of shipping options
+    const optionsArray = shippingData.split(',');
+
+    // Map over the array to create an array of objects
+    const optionsObjects = optionsArray.map(option => {
+      const [name, price] = option.split('||');
+      return { name, price };
+    });
+
+    setShippingTax(optionsObjects);
+    setChecked(optionsObjects[0].price)
+    const string=[optionsObjects[0].price]
+      dispatch(getShippingTax(string[0].replace('$', '')))
+      dispatch(getNetAmount())
+      dispatch(getOverAllTotal());
+      }
+    }catch(error){
+    console.log("shipping Parcel service taxs not shown");
+    }
+    }
+    // dispatch(getShippingTax(optionsObjects[0].price))
+    fetchdata();
+// ----------------------------------------------
+    const basePriceUrl="https://www.texasknife.com/dynamic/texasknifeapi.php?action=final_tax_rate&store_id=1&customer_id="+customer_id;
+     const fetchgetBasePrice=async()=>{
+      try{
+       const response=await axios.get(basePriceUrl);
+       if(response){
+       dispatch( getBasePriceExact(response.data.data[0].base_price_exact))
+        // console.log(response.data.data[0].base_price_exact)
+       }
+      }catch(error){
+       console.log("base price exact not getting ")
+      }
+     }
+ fetchgetBasePrice()
+ //-----------------------------------------------
+    const stateTax="https://www.texasknife.com/dynamic/texasknifeapi.php?action=get_tax_details&shipping_state="+customer_state;
+    const fetchStateTax=async()=>{
+      try{
+        const response=await axios.get(stateTax)
+        if (response){
+      dispatch(getStateTax(response.data.data[0].combined_rate))
+        }
+
+      }catch(error){
+        console.log("State Tax Not Getting")
+      }
+    }
+    fetchStateTax()
+   },[])
   
   //  console.log(checked)
   return (
@@ -26,28 +113,18 @@ const Shipping = ({navigation}) => {
   <View style={styles.shipping_method_header_container}>
     <Text style={styles.shipping_method_header}>Shipping Method</Text>
   </View>
-<RadioButton.Group onValueChange={(value) => setChecked(value)} value={checked}>
+<RadioButton.Group onValueChange={(value) =>sendTaxValue(value)} value={checked}>
         {/* ................. */}
         <View style={styles.parcel_Service_container}>
           <View style={styles.parcel_Service_header_container}>
           <Text style={styles.parcel_Service_header}>United Parcel Service</Text>
          </View>
-         <View style={styles.radiobutton_container}>
-            <RadioButton value="13.24"/>
-            <Text style={styles.radiobutton_text}>UPS Ground  $13.24</Text>
+        {shippingTax.slice(0, 4).map((option, index) => (
+        <View key={index} style={styles.radiobutton_container}>
+           <RadioButton value={option.price}/>
+          <Text style={styles.radiobutton_text}>{option.name} {option.price}</Text>
         </View>
-        <View style={styles.radiobutton_container}>
-          <RadioButton value="17.81" />
-          <Text style={styles.radiobutton_text}>UPS Three-Day Select  $17.81</Text>
-        </View>
-        <View style={styles.radiobutton_container}>
-          <RadioButton value="27.16" />
-          <Text style={styles.radiobutton_text}>UPS Secound Day Air  $27.16</Text>
-        </View>
-        <View style={styles.radiobutton_container}>
-          <RadioButton value="41.31" />
-          <Text style={styles.radiobutton_text}>UPS Next Day Air  $41.31</Text>
-        </View>
+             ))}
         </View>
          {/* ............... */}
           {/* --------------------- */}
@@ -55,10 +132,12 @@ const Shipping = ({navigation}) => {
          <View style={styles.postal_Service_header_container}>
          <Text style={styles.postal_Service_header}>United State Postal Service</Text>
          </View>
-          <View style={styles.radiobutton_container}>
-                <RadioButton value="9.95" />
-                <Text style={styles.radiobutton_text}>Periority Mail  $9.95</Text>
-              </View>
+         {shippingTax.slice(4, 5).map((option, index) => (
+        <View key={index} style={styles.radiobutton_container}>
+           <RadioButton value={option.price}/>
+          <Text style={styles.radiobutton_text}>{option.name} {option.price}</Text>
+        </View>
+             ))}
          </View>
           {/* --------------------- */}
          {/* .............. */}
@@ -66,10 +145,12 @@ const Shipping = ({navigation}) => {
          <View style={styles.store_pickup_header_container}>
         <Text style={styles.store_pickup_header}>Store Pick Up</Text>
         </View>
-        <View style={styles.radiobutton_container}>
-                <RadioButton value='0' />
-                <Text style={styles.radiobutton_text}>Store Pickup  $0.00</Text>
-         </View>
+        {shippingTax.slice(5,6).map((option, index) => (
+        <View key={index} style={styles.radiobutton_container}>
+           <RadioButton value={option.price}/>
+          <Text style={styles.radiobutton_text}>{option.name} {option.price}</Text>
+        </View>
+             ))}
          </View> 
   {/* ............. */}
       </RadioButton.Group>
