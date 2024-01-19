@@ -1,72 +1,64 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, StyleSheet, FlatList, Icon, Text, Platform ,TouchableOpacity,ScrollView} from 'react-native';
+import { View, TextInput, StyleSheet, FlatList, Icon, Text, Platform ,TouchableOpacity,ScrollView,ActivityIndicator} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import HTMLView from 'react-native-htmlview';
 import { useDispatch } from 'react-redux'; 
 import { getProductDetails } from '../../Slice/ProductDetailsSlice';
+import filter from 'lodash.filter';
+import debounce from 'lodash/debounce';
+
 
 const SearchBar = ({ navigation }) => {
     const dispatch=useDispatch();
-    const [searchTerm, setSearchTerm] = useState('');  
-   const[searchbarData,setSearchbarData]=useState([]);
-   const[filtered,setFiltred]=useState([]);
+    const [data, setData] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const[fullData,setFullData]=useState([])
+   const [page, setPage] = useState(1);
 
     useEffect(()=>{
     const searchbarapi="https://www.texasknife.com/dynamic/texasknifeapi.php?action=get_product_like"
     const fetchdata=async()=>{
      try{
         const response=await axios.get(searchbarapi);
-        setSearchbarData(response.data.data)
+        setData(response.data.data)
+        setFullData(response.data.data)
 
      }catch(error){
         console.log(error)
      }
     }
     fetchdata()
+    },[page])
+
+    const handleEndReached = () => {
+        // Load more data when the end of the list is reached
+        setPage(page + 1);
+      };
+
+   const handleSearch=(text)=>{
+    setSearchQuery(text)
+    const formattedQuery=text.toLowerCase();
+    const filteredData=filter(fullData,(product)=>{
+        return contains(product,formattedQuery)
     })
+    setData(filteredData)
+   }
 
-  
-    const filterProducts = () => {
-        setFiltred(searchbarData.filter((product) =>
-            product.sku.includes(searchTerm)
-           
-        ));
-    };
+   const contains=({sku},query)=>{
+    if(sku.toLowerCase().includes(query)){
+        return true
+    }else{
+        return false
+    }
+   }
 
-    // const filterProducts = (searchTerm) => {
-    //     // Filter the original data based on the search text
-    //     const filteredList =searchbarData.filter(item =>
-    //       item.sku.toLowerCase().includes(searchTerm)
-    //     );
-    
-    //     // Update the state with the filtered list
-    //     setFiltred(filteredList);
-    //   };
   const onClickHandle=(item)=>{
     navigation.navigate('pop')
     dispatch(getProductDetails(item.sku))
   }
 
-    const renderItem = ({ item }) => {
-        return (
-            <TouchableOpacity key={item.sku} keyExtractor style={styles.list_container} onPress={()=>onClickHandle(item)}>
-                <View style={styles.label}>
-                    <Text style={{ color: 'black', fontSize:16, width: '40%',fontWeight:'bold' }}>Product Code:</Text>
-                    <Text style={{ color: '#2f2e7e', fontSize: 16, width: '60%' }}>{item.sku}</Text>
-                </View>
-                <View style={styles.label}>
-                    <Text style={{ color: 'black', fontSize: 16, width: '40%',fontWeight:'bold' }}>Description:</Text>
-                    <ScrollView style={styles.htmlcontainer}>
-                    <HTMLView   value={item.description}  stylesheet={customStyles} />
-                    </ScrollView>
-                  
-                    {/* <Text style={{ color: 'red', fontSize: 20, width: '60%' }} numberOfLines={2}>{item.description}</Text> */}
-                </View>
-            </TouchableOpacity>
-        );
-    };
 
 
     return (
@@ -75,19 +67,38 @@ const SearchBar = ({ navigation }) => {
                 <TextInput
                     style={styles.searchInput}
                     placeholder="Search Barcode"
-                    onChangeText={setSearchTerm}
-                    onChange={filterProducts}
-                    value={searchTerm}
+                    onChangeText={(text)=>handleSearch(text)}
+                    autoCapitalize='none'
+                    autoCorrect={false}
+                    value={searchQuery}
                 />
                 <AntDesign name="search1" size={24} marginLeft={10} color="black" />
             </View>
             <View style={styles.flatlist_container}>
 
-                {searchTerm?( <FlatList
+                {searchQuery?( <FlatList
                     showsVerticalScrollIndicator={false}
-                    data={filtered}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.sku}
+                    data={data}
+                    keyExtractor={(item) => item.sku.toString()}
+                    renderItem ={ ({item} ) => (
+                            <TouchableOpacity key={item.sku} keyExtractor style={styles.list_container} onPress={()=>onClickHandle(item)}>
+                                <View style={styles.label}>
+                                    <Text style={{ color: 'black', fontSize:16, width: '40%',fontWeight:'bold' }}>Product Code:</Text>
+                                    <Text style={{ color: '#2f2e7e', fontSize: 16, width: '60%' }}>{item.sku}</Text>
+                                </View>
+                                <View style={styles.label}>
+                                    <Text style={{ color: 'black', fontSize: 16, width: '40%',fontWeight:'bold' }}>Description:</Text>
+                                    <ScrollView style={styles.htmlcontainer}>
+                                    <HTMLView   value={item.description}  stylesheet={customStyles} />
+                                    </ScrollView>
+                                  
+                                    {/* <Text style={{ color: 'red', fontSize: 20, width: '60%' }} numberOfLines={2}>{item.description}</Text> */}
+                                </View>
+                            </TouchableOpacity>
+                        )}
+                
+                        onEndReached={handleEndReached}
+                        onEndReachedThreshold={0.1}
 
                 />):(<View></View>)}
                
@@ -122,7 +133,6 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: 16,
         fontWeight: 'bold',
-        textTransform:'uppercase'
     },
     search_container: {
         height: '92%',
