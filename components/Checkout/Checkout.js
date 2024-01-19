@@ -1,8 +1,26 @@
 import React from 'react'
 import { Text, View ,StyleSheet,ScrollView, TextInput,TouchableOpacity,Platform} from 'react-native'
 import ProductTotal from '../Sub-components/ProductTotal'
+import { useSelector } from 'react-redux'
 
 const Checkout = () => {
+  const shipping_email=encodeURIComponent(useSelector((state)=>state.payment.newShippingAddress.email));
+  const customer_Id=encodeURIComponent(useSelector((state)=>state.login.logindata.id));
+  const shipping_firstName=encodeURIComponent(useSelector((state)=>state.payment.newShippingAddress.firstName));
+  const shipping_lastName=encodeURIComponent(useSelector((state)=>state.payment.newShippingAddress.lastName));
+  const shipping_address1=encodeURIComponent(useSelector((state)=>state.payment.newShippingAddress.address));
+  const shipping_address2=encodeURIComponent(useSelector((state)=>state.payment.newShippingAddress.apartment));
+  const shipping_City=encodeURIComponent(useSelector((state)=>state.payment.newShippingAddress.city));
+  const shipping_State=encodeURIComponent(useSelector((state)=>state.payment.newShippingAddress.state));
+  const shipping_zipCode=encodeURIComponent(useSelector((state)=>state.payment.newShippingAddress.zipCode));
+  const shipping_Country=encodeURIComponent(useSelector((state)=>state.payment.newShippingAddress.country));
+  const shipping_phoneNumber=encodeURIComponent(useSelector((state)=>state.payment.newShippingAddress.phoneNumber));
+  const shipping_amount=encodeURIComponent(useSelector((state)=>state.cartdata.shippingTax));
+  const TaxAmount=encodeURIComponent(useSelector((state)=>state.cartdata.netAmount));
+  const TotalAmount=encodeURIComponent(useSelector((state)=>state.cartdata.overAllTotal));
+  const shippment_name=encodeURIComponent(useSelector((state)=>state.cartdata.taxFullData.name));
+  const shippment_tax=encodeURIComponent(useSelector((state)=>state.cartdata.taxFullData.price));
+  const billCompany=encodeURIComponent(useSelector((state)=>state.payment.newShippingAddress.companyName));
   return (
     <View style={styles.checkout}>
       <View style={styles.checkout_container}>
@@ -17,37 +35,39 @@ const Checkout = () => {
 
             <View style={styles.contact_container}>
               <Text style={styles.contact}>Contact</Text>
-              <Text style={styles.contact_value}>Dess@gmail.com</Text>
+              <Text style={styles.contact_value}>{useSelector((state)=>state.payment.newShippingAddress.email)}</Text>
             </View>
 
             <View style={styles.shippingto_container}>
               <Text style={styles.shippingto}>Shipping To</Text>
               <View style={styles.shippingto_address_container}>
-              <Text style={styles.shippingto_address}>First Name</Text>
-              <Text style={styles.shippingto_address}>secound Name</Text>
-              <Text style={styles.shippingto_address}>Address</Text>
-              <Text style={styles.shippingto_address}>state</Text>
-              <Text style={styles.shippingto_address}>City</Text>
-              <Text style={styles.shippingto_address}>country</Text>
-                <Text style={styles.shippingto_address}>Region</Text>
+              <Text style={styles.shippingto_address}>{useSelector((state)=>state.payment.newShippingAddress.firstName)}</Text>
+              <Text style={styles.shippingto_address}>{useSelector((state)=>state.payment.newShippingAddress.lastName)}</Text>
+              <Text style={styles.shippingto_address}>{useSelector((state)=>state.payment.newShippingAddress.address)}</Text>
+              <Text style={styles.shippingto_address}>{useSelector((state)=>state.payment.newShippingAddress.apartment)}</Text>
+              <Text style={styles.shippingto_address}>{useSelector((state)=>state.payment.newShippingAddress.state)}</Text>
+              <Text style={styles.shippingto_address}>{useSelector((state)=>state.payment.newShippingAddress.city)}</Text>
+              <Text style={styles.shippingto_address}>{useSelector((state)=>state.payment.newShippingAddress.country)}</Text>
+              <Text style={styles.shippingto_address}>{useSelector((state)=>state.payment.newShippingAddress.zipCode)}</Text>
               </View>
             </View>
 
             <View style={styles.method_container}>
               <Text style={styles.method}>Method</Text>
-              <Text style={styles.method_value}>UPS Ground -$13.32</Text>
+              <Text style={styles.method_value}>{useSelector((state)=>state.cartdata.taxFullData.name)} - {useSelector((state)=>state.cartdata.taxFullData.price)}</Text>
             </View>
 
             <View style={styles.shippingto_container}>
               <Text style={styles.shippingto}>Billing To</Text>
               <View style={styles.shippingto_address_container}>
-              <Text style={styles.shippingto_address}>First Name</Text>
-              <Text style={styles.shippingto_address}>secound Name</Text>
-              <Text style={styles.shippingto_address}>Address</Text>
-              <Text style={styles.shippingto_address}>state</Text>
-              <Text style={styles.shippingto_address}>City</Text>
-              <Text style={styles.shippingto_address}>country</Text>
-                <Text style={styles.shippingto_address}>Region</Text>
+              <Text style={styles.shippingto_address}>{useSelector((state)=>state.payment.newBillingAddress.firstName)}</Text>
+              <Text style={styles.shippingto_address}>{useSelector((state)=>state.payment.newBillingAddress.lastName)}</Text>
+              <Text style={styles.shippingto_address}>{useSelector((state)=>state.payment.newBillingAddress.address)}</Text>
+              <Text style={styles.shippingto_address}>{useSelector((state)=>state.payment.newBillingAddress.apartment)}</Text>
+              <Text style={styles.shippingto_address}>{useSelector((state)=>state.payment.newBillingAddress.state)}</Text>
+              <Text style={styles.shippingto_address}>{useSelector((state)=>state.payment.newBillingAddress.city)}</Text>
+              <Text style={styles.shippingto_address}>{useSelector((state)=>state.payment.newBillingAddress.country)}</Text>
+              <Text style={styles.shippingto_address}>{useSelector((state)=>state.payment.newBillingAddress.zipCode)}</Text>
               </View>
             </View>
  

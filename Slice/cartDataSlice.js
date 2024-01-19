@@ -9,7 +9,8 @@ const initialState={
   basePriceExact:'',
   statetax:'',
   netAmount:'',
-  overAllTotal:''
+  overAllTotal:'',
+  taxFullData:[],
 
 }
 
@@ -26,7 +27,9 @@ export const cartDataSlice=createSlice({
         state.cartList=action.payload;
      },
      getShippingTax:(state,action)=>{
-      state.shippingTax=action.payload;
+      const data=action.payload;
+
+      state.shippingTax=data.replace('$', '')
       // console.log(state.shippingTax)
      },
      getBasePriceExact:(state,action)=>{
@@ -47,10 +50,10 @@ export const cartDataSlice=createSlice({
       const Shipping_Tax=parseFloat(shippingTax);
       const Combained_Rate=parseFloat(combainedRate);
       const Net_Amount=(Combained_Rate/100)*(Base_Price+Shipping_Tax)
-      console.log("basePrice:"+Base_Price)
-      console.log("ShippingTax:"+Shipping_Tax)
-      console.log("CombainedTax:"+Combained_Rate)
-      console.log("netWort : "+(Combained_Rate/100)*(Base_Price+Shipping_Tax))
+      // console.log("basePrice:"+Base_Price)
+      // console.log("ShippingTax:"+Shipping_Tax)
+      // console.log("CombainedTax:"+Combained_Rate)
+      // console.log("netWort : "+(Combained_Rate/100)*(Base_Price+Shipping_Tax))
      
       state.netAmount=parseFloat(Net_Amount.toFixed(2))
    },
@@ -63,18 +66,22 @@ export const cartDataSlice=createSlice({
       const Net_Amount=parseFloat(netAmount);
       const Shipping_Tax=parseFloat(shippingTax);
 
-      console.log("subTotal:"+Sub_Total)
-      console.log("NetAmount:"+Net_Amount)
-      console.log("Shipping :"+Shipping_Tax)
+      // console.log("subTotal:"+Sub_Total)
+      // console.log("NetAmount:"+Net_Amount)
+      // console.log("Shipping :"+Shipping_Tax)
 
       // console.log(Sub_Total+Shipping_Tax+Net_Amount)
-      state.overAllTotal=Sub_Total+Shipping_Tax+Net_Amount;
+      state.overAllTotal=(Sub_Total+Shipping_Tax+Net_Amount).toFixed(2);
+   },
+   getTaxFullData:(state,action)=>{
+      state.taxFullData=action.payload;
+      // console.log(state.taxFullData);
    }
  
   
     }
 });
 
-export const{getCartTotal,getCartList,getShippingTax,getBasePriceExact,getStateTax,getNetAmount,getOverAllTotal}=cartDataSlice.actions;
+export const{getCartTotal,getCartList,getShippingTax,getBasePriceExact,getStateTax,getNetAmount,getOverAllTotal,getTaxFullData}=cartDataSlice.actions;
 
 export default cartDataSlice.reducer;

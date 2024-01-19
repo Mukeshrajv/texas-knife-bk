@@ -5,8 +5,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import {  useDispatch,useSelector } from 'react-redux';
 import axios from 'axios';
 import Loader from '../Sub-components/Loader'
-import  { getaddressdata } from '../../Slice/addressSlice';
-import { getbillingdata } from '../../Slice/addressSlice';
+import { getNewShippingAddress,getNewBillingAddress } from '../../Slice/paymentSlice';
+
 
 
 const Address = ({ navigation }) => {
@@ -111,6 +111,10 @@ const Address = ({ navigation }) => {
   const Ef1companyName=encodeURIComponent(f1companyName);
   const Ef1apartment=encodeURIComponent(f1apartment);
 
+  const sendForm1Data=()=>{
+   
+  }
+
   const fetchForm1Data=()=>{
  const formApi='https://www.texasknife.com/dynamic/texasknifeapi.php?action=insert_update_checkoutship&bill_name='+Ef1firstName+'&bill_l_name='+Ef1lastName+'&bill_address1='+Ef1address+'&bill_address2='+Ef1apartment+'&bill_town_city='+Ef1city+'&bill_state_region1='+Ef1state+'&bill_zip_code='+Ef1zipCode+'&bill_country='+Ef1country+'&bill_phone='+Ef1phoneNumber+'&bill_email1='+Ef1Email+'&customer_id='+customer_id+'&sessions_id=123456&rurl=&ship_amt=&tx_amount=&check_out_total_amount=&payment_type=&shipment_name=&bill_company='+Ef1companyName
 //  console.log(formApi) 
@@ -119,8 +123,9 @@ const Address = ({ navigation }) => {
     try{
       const response=await axios.get(formApi)
       if(response){
-        const data={emai:f1email,firstName:f1firstName,lastName:f1lastName,companyName:f1companyName,address:f1address,apartment:f1apartment,city:f1city,country:f1country,state:f1state,zipCode:f1zipCode,phoneNumber:f1phoneNumber}
-        dispatch(getaddressdata(data))
+        const data={email:f1email,firstName:f1firstName,lastName:f1lastName,companyName:f1companyName,address:f1address,apartment:f1apartment,city:f1city,country:f1country,state:f1state,zipCode:f1zipCode,phoneNumber:f1phoneNumber}
+        dispatch(getNewShippingAddress(data))
+        dispatch(getNewBillingAddress(data))
         navigation.navigate("shipping")
         setLoading(false)
       }
@@ -128,6 +133,7 @@ const Address = ({ navigation }) => {
       console.log("form1 data not updated");
     }
    }
+
    navigation.navigate("shipping")
    fetchdata()
   }
@@ -162,7 +168,16 @@ const Address = ({ navigation }) => {
     //   }
     //  }
     //  fetchdata()
-    dispatch(getbillingdata(data))
+
+      const data1={email:f1email,firstName:f1firstName,lastName:f1lastName,companyName:f1companyName,address:f1address,apartment:f1apartment,city:f1city,country:f1country,state:f1state,zipCode:f1zipCode,phoneNumber:f1phoneNumber}
+      dispatch(getNewBillingAddress(data1))
+
+   
+      const data2={email:f2email,firstName:f2firstName,lastName:f2lastName,companyName:f2companyName,address:f2address,apartment:f2apartment,city:f2city,country:f2country,state:f2state,zipCode:f2zipCode,phoneNumber:f2phoneNumber}
+      dispatch(getNewBillingAddress(data2))
+ 
+       
+    
     navigation.navigate("shipping")
   
   }
