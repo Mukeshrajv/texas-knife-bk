@@ -13,8 +13,8 @@ import { ToastAndroid } from 'react-native';
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
  
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('dev@desss.com');
+  const [password, setPassword] = useState('$heshU98');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
@@ -43,8 +43,9 @@ const Login = ({ navigation }) => {
     }
     else {
      
-    const apiUrl = 'https://trackappt.desss-portfolio.com/dynamic/dynamicapi.php?action=read&table=mobile_app_users&email=' + encodedEmail + '&password=' + encodedPassword;
-    const fetchData = async () => {
+    // const apiUrl = 'https://trackappt.desss-portfolio.com/dynamic/dynamicapi.php?action=read&table=mobile_app_users&email=' + encodedEmail + '&password=' + encodedPassword;
+      const apiUrl='https://www.texasknife.com/dynamic/texasknifeapi.php?action=static_login&email='+encodedEmail+'&password='+ encodedPassword;
+      const fetchData = async () => {
       setIsLoading(true);
       try {
         const response = await axios.get(apiUrl);

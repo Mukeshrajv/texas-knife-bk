@@ -127,7 +127,7 @@ const validate=()=>{
       // console.log("credit data is getten")
       const cardData={
         name:'card',
-        cardnumber:cardNumber,
+        number:cardNumber,
         cardname:cardName,
         date:date,
         cvn:cvn,
@@ -146,7 +146,7 @@ const validate=()=>{
       // console.log("moneyOrder is getting")
       const moneyOrderData={
         name:'moneyorder',
-        moneyordernumber:moneyOrder
+        number:moneyOrder
       }
       dispatch(getPaymentData(moneyOrderData))
       navigation.navigate("checkout")
@@ -157,7 +157,7 @@ const validate=()=>{
       // console.log("cheque data is getting")
       const chequeData={
         name:'cheque',
-        chequenumber:cheque
+        number:cheque
       }
       dispatch(getPaymentData(chequeData))
       navigation.navigate("checkout")

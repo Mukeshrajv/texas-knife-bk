@@ -13,7 +13,7 @@ export const loginSlice=createSlice({
     reducers:{
      getuserdata:(state,action)=>{
         state.logindata=action.payload;
-        // console.log(state.logindata)
+        // console.log(state.logindata);
      }
 
     }

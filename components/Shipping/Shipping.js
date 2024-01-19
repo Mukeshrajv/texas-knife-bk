@@ -11,20 +11,22 @@ import { getBasePriceExact } from '../../Slice/cartDataSlice';
 import { getStateTax } from '../../Slice/cartDataSlice';
 import { getNetAmount } from '../../Slice/cartDataSlice';
 import { getOverAllTotal } from '../../Slice/cartDataSlice';
+import Loader from '../Sub-components/Loader';
 
 const Shipping = ({navigation}) => {
   const dispatch=useDispatch();
 
    const [checked, setChecked] = useState();
-   const[shippingTax,setShippingTax]=useState([])
+   const[shippingTax,setShippingTax]=useState([]);
+   const[loading,setloading]=useState(true);
 
   
-   const customer_id=encodeURIComponent('88985')
-   const customer_state=encodeURIComponent("Texas")
-   const shipping_city=encodeURIComponent('Katy');
-   const shipping_state=encodeURIComponent('Texas');
-   const shipping_zip=encodeURIComponent('77494');
-   const ship_country=encodeURIComponent('United States');
+   const customer_id=encodeURIComponent( useSelector((state) => state.login.logindata.id))
+   const customer_state=encodeURIComponent( useSelector((state) => state.payment.newShippingAddress.state))
+   const shipping_city=encodeURIComponent( useSelector((state) => state.payment.newShippingAddress.city));
+   const shipping_state=encodeURIComponent(useSelector((state) => state.payment.newShippingAddress.state));
+   const shipping_zip=encodeURIComponent(useSelector((state) => state.payment.newShippingAddress.zipCode));
+   const ship_country=encodeURIComponent(useSelector((state) => state.payment.newShippingAddress.country));
 
    const sendTaxValue=(option)=>{
     
@@ -38,7 +40,7 @@ const Shipping = ({navigation}) => {
       dispatch(getTaxFullData(option));
    }
 
-  
+ 
 
    useEffect(()=>{
     const url='https://texasknife.com/dynamic/texasknifeapi.php?action=ups_shippment_ys&pounds=2&shipping_city='+shipping_city+'&shipping_state='+shipping_state+'&shipping_zip='+shipping_zip+'&ship_country='+ship_country;
@@ -47,6 +49,7 @@ const Shipping = ({navigation}) => {
       const responce=await axios.get(url)
       if(responce){
         const shippingData=responce.data.data[0].shipping;
+        setloading(false)
        // Split the string into an array of shipping options
     const optionsArray = shippingData.split(',');
 
@@ -77,6 +80,7 @@ const Shipping = ({navigation}) => {
        const response=await axios.get(basePriceUrl);
        if(response){
        dispatch( getBasePriceExact(response.data.data[0].base_price_exact))
+       
         // console.log(response.data.data[0].base_price_exact)
        }
       }catch(error){
@@ -91,6 +95,7 @@ const Shipping = ({navigation}) => {
         const response=await axios.get(stateTax)
         if (response){
       dispatch(getStateTax(response.data.data[0].combined_rate))
+
         }
 
       }catch(error){
@@ -138,6 +143,9 @@ const Shipping = ({navigation}) => {
   //  console.log(checked)
   return (
     <View style={styles.shipping}>
+      {loading?(
+   <Loader/>
+      ):(
         <View style={styles.shipping_container}>
 
           <View style={styles.shipping_header_container}>
@@ -146,7 +154,7 @@ const Shipping = ({navigation}) => {
 {/* ------------------------------------------------------------------------------------------------------------------- */}
           <ScrollView style={styles.shipping_detail_container}>
              
-           <ProductTotal/>
+           <ProductTotal />
 
  
  <View style={styles.shipping_method_container}>
@@ -212,6 +220,7 @@ const Shipping = ({navigation}) => {
           </View>
 
         </View>
+        )}
     </View>
   )
 }

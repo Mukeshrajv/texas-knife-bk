@@ -33,7 +33,7 @@ const Profile = ({ navigation }) => {
          <View style={styles.logo_container}><Image style={{width:30,height:30,marginRight:10}} source={require('../assets/images/user.png')}/></View>
          <View>
           <Text style={styles.username_header}>Username</Text>
-          <Text style={styles.username}>{useSelector((state)=>state.login.logindata.name)}</Text>
+          <Text style={styles.username}>{useSelector((state)=>state.login.logindata.user_name)}</Text>
          </View>
        </View>
 
