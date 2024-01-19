@@ -14,7 +14,7 @@ export const paymentSlice=createSlice({
     reducers:{
         getPaymentData:(state,action)=>{
             state.paymentData=action.payload
-            // console.log("payment : "+state.paymentData)
+            // console.log("payment : "+state.paymentData.name+"Number : "+state.paymentData.number)
         },
         getNewShippingAddress:(state,action)=>{
             state.newShippingAddress=action.payload

@@ -20,7 +20,7 @@ const Home = ({navigation}) => {
     <View style={styles.header_container}>
       <View style={styles.name_container}>
         <Text style={styles.hello}>Hello</Text>
-        <Text style={styles.clint_name}>{useSelector((state)=>state.login.logindata.name)}</Text>
+        <Text style={styles.clint_name}>{useSelector((state)=>state.login.logindata.user_name)}</Text>
       </View>
       <View style={styles.image_container}>
         <Image style={{width:45,height:45}} source={require('../assets/images/texaslogo.png')}/>
