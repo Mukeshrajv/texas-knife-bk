@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView, TextInput,ToastAndroid,Alert } from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, TextInput,ToastAndroid,Alert ,Platform} from 'react-native'
 import { CheckBox } from 'react-native-elements'
 import { MaterialIcons } from '@expo/vector-icons';
 import {  useDispatch,useSelector } from 'react-redux';
