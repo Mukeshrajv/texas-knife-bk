@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, Image, StyleSheet } from "react-native";
+import { Text, View, Image, StyleSheet ,Platform} from "react-native";
 import { useSelector } from "react-redux";
 const ProductTotal = () => {
   // const [cartData,setCartData]=useState([])

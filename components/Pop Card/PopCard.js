@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 
-import { Text, Image, View,StyleSheet, TouchableOpacity,ScrollView,ToastAndroid ,Alert} from 'react-native';
+import { Text, Image, View,StyleSheet, TouchableOpacity,ScrollView,ToastAndroid ,Alert,Platform} from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/FontAwesome';
