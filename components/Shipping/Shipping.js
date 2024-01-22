@@ -12,6 +12,7 @@ import { getStateTax } from '../../Slice/cartDataSlice';
 import { getNetAmount } from '../../Slice/cartDataSlice';
 import { getOverAllTotal } from '../../Slice/cartDataSlice';
 import Loader from '../Sub-components/Loader';
+import BottomTab from '../Sub-components/ButtomTab/BottomTab';
 
 const Shipping = ({navigation}) => {
   const dispatch=useDispatch();
@@ -140,7 +141,17 @@ const Shipping = ({navigation}) => {
     }
     fetchdata()
    }
-  
+  //  -----------------------------------
+  const home=()=>{
+    navigation.navigate('Home')
+  }
+  const cart=()=>{
+    navigation.navigate('cart')
+  }
+  const profile=()=>{
+    navigation.navigate('Profile')
+  }
+  //-------------------------------------
   //  console.log(checked)
   return (
     <View style={styles.shipping}>
@@ -218,6 +229,7 @@ const Shipping = ({navigation}) => {
               </TouchableOpacity>
             </View>
             {/* <Tab/> */}
+            <BottomTab home={home} cart={cart} profile={profile}/>
           </View>
 
         </View>

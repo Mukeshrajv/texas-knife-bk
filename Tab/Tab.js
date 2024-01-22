@@ -18,13 +18,12 @@ const Tab = ({navigation}) => {
          ...Platform.select({
          android:{
          backgroundColor:"#2a2e7e",
-        height:70,
-        paddingBottom:10,
+        height:55,
          ...Style.shadow
              },
              ios:{
                  alignContent:'center',
-                 padding:20,
+                 padding:15,
                  backgroundColor:"#2a2e7e",
                  height:80,
                  ...Style.shadow
