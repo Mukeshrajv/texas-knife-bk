@@ -44,6 +44,7 @@ const Shipping = ({navigation}) => {
 
    useEffect(()=>{
     const url='https://texasknife.com/dynamic/texasknifeapi.php?action=ups_shippment_ys&pounds=2&shipping_city='+shipping_city+'&shipping_state='+shipping_state+'&shipping_zip='+shipping_zip+'&ship_country='+ship_country;
+    console.log(url)
     const fetchdata=async ()=>{
     try{
       const responce=await axios.get(url)
@@ -103,7 +104,7 @@ const Shipping = ({navigation}) => {
       }
     }
     fetchStateTax()
-   },[])
+   },[customer_state])
 
    const shipping_email=encodeURIComponent(useSelector((state)=>state.payment.newShippingAddress.email));
    const customer_Id=encodeURIComponent(useSelector((state)=>state.login.logindata.id));

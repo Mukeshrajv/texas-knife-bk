@@ -62,7 +62,7 @@ const dispatch=useDispatch();
           TotalAmount(response.data.data);
           dispatch(getCartList(response.data.data))
           setLoader(true);
-          console.log(response.data.data)
+         //  console.log(response.data.data)
         }
        }catch(error){
            console.log("Cart item  not get yet in list")

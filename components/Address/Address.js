@@ -5,7 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import {  useDispatch,useSelector } from 'react-redux';
 import axios from 'axios';
 import Loader from '../Sub-components/Loader'
-import { getNewShippingAddress,getNewBillingAddress } from '../../Slice/paymentSlice';
+import { getNewShippingAddress,getNewBillingAddress,getCustomerState } from '../../Slice/paymentSlice';
 
 
 
@@ -123,6 +123,7 @@ const Address = ({ navigation }) => {
     try{
       const response=await axios.get(formApi)
       if(response){
+        dispatch(getCustomerState(f1state))
         const data={email:f1email,firstName:f1firstName,lastName:f1lastName,companyName:f1companyName,address:f1address,apartment:f1apartment,city:f1city,country:f1country,state:f1state,zipCode:f1zipCode,phoneNumber:f1phoneNumber}
         dispatch(getNewShippingAddress(data))
         dispatch(getNewBillingAddress(data))
@@ -168,9 +169,10 @@ const Address = ({ navigation }) => {
     //   }
     //  }
     //  fetchdata()
+    dispatch(getCustomerState(f1state))
 
       const data1={email:f1email,firstName:f1firstName,lastName:f1lastName,companyName:f1companyName,address:f1address,apartment:f1apartment,city:f1city,country:f1country,state:f1state,zipCode:f1zipCode,phoneNumber:f1phoneNumber}
-      dispatch(getNewBillingAddress(data1))
+      dispatch(getNewShippingAddress(data1))
 
    
       const data2={email:f2email,firstName:f2firstName,lastName:f2lastName,companyName:f2companyName,address:f2address,apartment:f2apartment,city:f2city,country:f2country,state:f2state,zipCode:f2zipCode,phoneNumber:f2phoneNumber}
@@ -243,7 +245,9 @@ const Address = ({ navigation }) => {
         setError1phoneNumber(false)
       }
 
-      
+      if(error1email==false && error1firstName==false && error1lastName==false && error1address==false && error1city==false && error1country==false && error1state==false && error1zipCode==false && error1phoneNumber==false){
+        fetchForm1Data()
+      }
 
   }
 
@@ -306,7 +310,10 @@ const Address = ({ navigation }) => {
       else{
         setError2phoneNumber(false)
       }
-
+  
+      if(error2email==false && error2firstName==false && error2lastName==false && error2address==false && error1city==false && error2country==false && error2state==false && error2zipCode==false && error2phoneNumber==false){
+        fetchForm2Data()
+      }
 
   }
 
@@ -588,6 +595,8 @@ const Address = ({ navigation }) => {
                                     style={styles.address_input_text}
                                     value={f1zipCode}
                                     onChangeText={(text)=>setF1zipCode(text)}
+                                    keyboardType='numeric'
+                                    maxLength={6}
                                     onBlur={()=>{
                                       
                                         if (!f1zipCode) {
@@ -613,6 +622,8 @@ const Address = ({ navigation }) => {
                                     style={styles.address_input_text}
                                     value={f1phoneNumber}
                                     onChangeText={(text)=>setF1phoneNumber(text)}
+                                    keyboardType='numeric'
+                                    maxLength={10}
                                     onBlur={()=>{
                                       
                                       if (!f1phoneNumber) {
@@ -868,6 +879,8 @@ const Address = ({ navigation }) => {
                                     style={styles.address_input_text}
                                     value={f2zipCode}
                                     onChangeText={(text)=>setF2zipCode(text)}
+                                    keyboardType='numeric'
+                                    maxLength={6}
                                     onBlur={()=>{
                                       if (!f2zipCode) {
                                         setError2zipCode(true)
@@ -892,6 +905,8 @@ const Address = ({ navigation }) => {
                                     style={styles.address_input_text}
                                     value={f2phoneNumber}
                                     onChangeText={(text)=>setF2phoneNumber(text)}
+                                    keyboardType='numeric'
+                                    maxLength={10}
                                     onBlur={()=>{
                                       if (!f2phoneNumber) {
                                         setError2phoneNumber(true)
