@@ -4,7 +4,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState={
     paymentData:[],
     newShippingAddress:[],
-    newBillingAddress:[]
+    newBillingAddress:[],
+    customerState:''
 
 }
 
@@ -23,9 +24,13 @@ export const paymentSlice=createSlice({
         getNewBillingAddress:(state,action)=>{
             state.newBillingAddress=action.payload
             // console.log("Billing Address : "+ state.newBillingAddress)
+        },
+        getCustomerState:(state,action)=>{
+            state.customerState=action.payload;
+            console.log("customer state"+state.customerState)
         }
     }
 })
 
-export const {getPaymentData,getNewShippingAddress,getNewBillingAddress}=paymentSlice.actions;
+export const {getPaymentData,getNewShippingAddress,getNewBillingAddress,getCustomerState}=paymentSlice.actions;
 export default paymentSlice.reducer;

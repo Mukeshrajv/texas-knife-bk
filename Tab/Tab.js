@@ -55,7 +55,7 @@ const Tab = ({navigation}) => {
      <Tabs.Screen name='cart' component={Cart}
       options={{
          tabBarIcon:({focused})=>(
-             <View>
+             <TouchableOpacity >
                <View style={{backgroundColor:'#FF0000',borderRadius:50,width:15,height:15}}>
                  <Text style={{color:"#ffffff",textAlign:"center",fontSize:10}}>0</Text>
                </View>
@@ -68,7 +68,7 @@ const Tab = ({navigation}) => {
                      tintColor:focused?'#ffffff':'#748c94'
                   } }
                  />
-             </View>
+             </TouchableOpacity>
          )
      }}
     />

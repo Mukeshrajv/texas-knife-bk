@@ -8,6 +8,8 @@ import { useDispatch } from 'react-redux';
 import { getsubcategoryname } from '../../Slice/categorySlice';
 import Nocategory from '../No category/Nocategory';
 import Loader from '../Sub-components/Loader'
+import { getButtonShown } from '../../Slice/ProductDetailsSlice'
+import { getProductDetails } from '../../Slice/ProductDetailsSlice'
 
 const SubCategory = ({navigation}) => {
     const dispatch=useDispatch();
@@ -64,8 +66,15 @@ const SubCategory = ({navigation}) => {
     const calldata=(item)=>{
         navigation.navigate('subcategorylist');
         dispatch(getsubcategoryname(item.name));
-
     }
+
+    const handleChange=(item)=>{
+        dispatch(getButtonShown(true));
+        navigation.navigate('pop')
+        dispatch(getProductDetails(item.sku))
+       
+      }
+    
 
   return (
    <View style={styles.subcategory}>
@@ -125,7 +134,7 @@ const SubCategory = ({navigation}) => {
             renderItem={({item})=>{
              return(
             
-              <TouchableOpacity keyExtractor key={item.id} onPress={()=>navigation.navigate('pop')} >
+              <TouchableOpacity keyExtractor key={item.id} onPress={()=>handleChange(item)} >
               <View style={styles.list}>
                  <View style={styles.image_container}>
                   <Image style={{width:'100%',height:'100%',resizeMode:'stretch'}}  source={{ uri: item.product_image }}/>

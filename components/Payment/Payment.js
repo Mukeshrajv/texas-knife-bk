@@ -11,7 +11,7 @@ import { useState } from "react";
 import Tab from "../../Tab/Tab";
 import { MaterialIcons } from "@expo/vector-icons";
 import { getPaymentData } from "../../Slice/paymentSlice";
-import { UseDispatch, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const Payment = ({navigation}) => {
   const dispatch=useDispatch();
@@ -426,7 +426,7 @@ const continueToPayment=()=>{
             </Text>
           </TouchableOpacity>
         </View>
-        <Tab />
+      <Tab/>
       </View>
     </View>
   );
