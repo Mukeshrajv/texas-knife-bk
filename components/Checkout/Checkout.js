@@ -13,6 +13,7 @@ import ProductTotal from "../Sub-components/ProductTotal";
 import { useSelector,useDispatch } from "react-redux";
 import axios from "axios";
 import { getCartReload } from "../../Slice/ProductDetailsSlice";
+import BottomTab from "../Sub-components/ButtomTab/BottomTab";
 
 const Checkout = ({navigation}) => {
  
@@ -152,6 +153,17 @@ const Checkout = ({navigation}) => {
     };
     fetchData();
   };
+  
+ //  -----------------------------------
+ const home=()=>{
+  navigation.navigate('Home')
+}
+const cart=()=>{
+  navigation.navigate('cart')
+}
+const profile=()=>{
+  navigation.navigate('Profile')
+}
 
   useEffect(() => {
     const apiUrl =
@@ -314,6 +326,7 @@ const Checkout = ({navigation}) => {
                 Place Order
               </Text>
             </TouchableOpacity>
+            <BottomTab home={home} cart={cart} profile={profile}/>
           </View>
           {/* <Tab/> */}
         </View>

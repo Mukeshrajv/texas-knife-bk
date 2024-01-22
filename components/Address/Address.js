@@ -6,6 +6,8 @@ import {  useDispatch,useSelector } from 'react-redux';
 import axios from 'axios';
 import Loader from '../Sub-components/Loader'
 import { getNewShippingAddress,getNewBillingAddress,getCustomerState } from '../../Slice/paymentSlice';
+import BottomTab from '../Sub-components/ButtomTab/BottomTab';
+
 
 
 
@@ -372,6 +374,16 @@ const Address = ({ navigation }) => {
 
   },[])
 
+  const home=()=>{
+    navigation.navigate('Home')
+  }
+  const cart=()=>{
+    navigation.navigate('cart')
+  }
+  const profile=()=>{
+    navigation.navigate('Profile')
+  }
+
 
     return (
         <View style={styles.address}>
@@ -381,12 +393,14 @@ const Address = ({ navigation }) => {
 
         
             <View style={styles.address_container}>
-                <View style={styles.address_content}>
 
-                    <View style={styles.header_conatiner}>
+              <View style={styles.header_conatiner}>
                         <Text style={styles.title}>Address</Text>
                     </View>
 
+                <View style={styles.address_content}>
+
+                    
                     <ScrollView showsVerticalScrollIndicator={false} style={styles.address_scrollview}>
 
                         <View style={styles.contact_information_container}>
@@ -933,33 +947,50 @@ const Address = ({ navigation }) => {
                         </View>
 
                     </ScrollView>
-
-                </View>
-
-
+                    
                 <View style={styles.footer_button_conatiner}>
                     <TouchableOpacity style={styles.footer_button} onPress={()=>handleSaveChange()}>
                         <Text style={{ fontWeight: 'bold', fontSize: 16 }}>Continue to Shipping</Text>
                     </TouchableOpacity>
+                    <View style={{marginLeft:-20,marginRight:-20}}>
+                <BottomTab home={home} cart={cart} profile={profile}/>
+                </View>       
                 </View>
+
+                </View>
+
+
+
+               
+
+              
             </View>
  )}
+
+  
         </View>
+    
+  
     )
 }
 const styles = StyleSheet.create({
     address: {
-        flex: 1,
-        // width: '100%',
-        // height: '100%',
+        width: '100%',
+        height: '100%',
         backgroundColor: 'white'
     },
     address_scrollview: {
-        height: '84%',
+        height: '70%',
     },
     address_container: {
         margin: 20,
+        height: '100%',
+    
 
+    },
+    address_content:{
+      height: '90%',
+      
     },
     input_text: {
         flexDirection: 'row',
@@ -985,12 +1016,9 @@ const styles = StyleSheet.create({
         fontSize: 16,
         borderWidth: 2,
         borderColor: '#959595',
-        // borderColor: '#eee',
         borderRadius: 5,
         width: '44%',
         margin: 10,
-        // padding: 10,
-        // backgroundColor:'orange'
     },
     header: {
         fontSize: 20,

@@ -12,6 +12,7 @@ import Tab from "../../Tab/Tab";
 import { MaterialIcons } from "@expo/vector-icons";
 import { getPaymentData } from "../../Slice/paymentSlice";
 import { useDispatch } from "react-redux";
+import BottomTab from "../Sub-components/ButtomTab/BottomTab";
 
 const Payment = ({navigation}) => {
   const dispatch=useDispatch();
@@ -189,6 +190,18 @@ const continueToPayment=()=>{
   const handleRadioPress = (radioId) => {
     setSelectedRadio(radioId);
   };
+
+   //  -----------------------------------
+   const home=()=>{
+    navigation.navigate('Home')
+  }
+  const cart=()=>{
+    navigation.navigate('cart')
+  }
+  const profile=()=>{
+    navigation.navigate('Profile')
+  }
+
   return (
     <View style={styles.payment}>
       <View style={styles.payment_container}>
@@ -425,9 +438,11 @@ const continueToPayment=()=>{
               Continue To payment
             </Text>
           </TouchableOpacity>
+      <BottomTab home={home} cart={cart} profile={profile}/>
         </View>
-      <Tab/>
+     
       </View>
+     
     </View>
   );
 };
@@ -462,7 +477,7 @@ const styles = StyleSheet.create({
   },
   payment: {
     width: "100%",
-    height: "90%",
+    height: "100%",
     justifyContent: "space-between",
   },
   payment_container: {},
