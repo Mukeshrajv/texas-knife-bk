@@ -46,6 +46,7 @@ const Category = ({navigation}) => {
   
    <View style={styles.category}>
    <Text style={styles.header}>Catagories</Text>
+   <View>
     <View style={styles.category_container}>
         
         {
@@ -73,6 +74,10 @@ const Category = ({navigation}) => {
           )
             
         }
+        {/* <View style={{height:90,backgroundColor:'yellow'}}></View> */}
+        
+    </View>
+    
     </View>
    </View>
    </>
@@ -85,10 +90,10 @@ category:{
 header:{
     paddingLeft:15,
     color:'#2a2e7e',
-    fontSize:17,
-    paddingLeft:15,  
+    fontSize:17,  
     fontWeight:'bold',
-    paddingBottom:10
+   
+    
 },
 category_container:{
     // backgroundColor:'yellow',
@@ -102,14 +107,19 @@ category_container:{
           // Styles for iOS
         },
         android: {
-            height:370,
+            height:'72 %',
+            // paddingBottom:-50
           // Styles for Android
         },
       }),
+      // backgroundColor:'green',
+      alignItems:'center',
+      justifyContent:'center',
+     
+     
 
 },
 category_list:{
-    margin:15,
     backgroundColor:"#F2F2F7",
     width:150,
     padding:5,
@@ -117,7 +127,7 @@ category_list:{
     borderRadius:10,
     alignItems:'center',
     justifyContent:'center',
-    
+    margin:10 
 },
 image_container:{
     width:60,

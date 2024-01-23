@@ -38,12 +38,15 @@ const Home = ({navigation}) => {
        </TouchableOpacity>
     </View>
 
-    {/* FeatureProduct */}
-    <FeatureProduct navigation={navigation}/>
-    
+<View style={styles.featureproduct}> 
+ {/* FeatureProduct */}
+ <FeatureProduct navigation={navigation}/>
+</View>
+   
+   <View style={styles.Category}>
      {/* categoryProduct */}
-       <Category navigation={navigation}/>
-
+     <Category navigation={navigation}/>
+   </View>
 
   </View>
  </View>
@@ -115,6 +118,10 @@ enter:{
 fontSize:16,
 color:'#2a2e7e',
 paddingRight:5
+},
+Category:{
+  // backgroundColor:'red',
+  height:'90%'
 }
 })
 
