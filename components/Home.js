@@ -1,16 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View,Text,StyleSheet,Image,TouchableOpacity} from 'react-native';
 import FeatureProduct from './Sub-components/FeatureProduct';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Category from './Sub-components/Category';
 
-import { useSelector } from 'react-redux'
+
+import { useSelector,useDispatch } from 'react-redux'
+import { getCartCount } from '../Slice/cartDataSlice';
+import axios from 'axios';
 
 
 const Home = ({navigation}) => {
- 
+  const dispatch=useDispatch();
+  const encodedCustomerId = encodeURIComponent( useSelector((state)=>state.login.logindata.id));
+  const reload=useSelector((state)=>state.product.cartload);
+useEffect(()=>{
+  const CartAPI='https://www.texasknife.com/dynamic/texasknifeapi.php?action=final_cart_details&store_id=1&customer_id='+encodedCustomerId;
+   console.log(CartAPI)  
+  const fetchData = async () => {
   
-
+   try{
+    const response = await axios.get(CartAPI);
+    if(response){
+     const data=response.data.data
+     dispatch(getCartCount(data.length))
+     console.log(data.length)
+    }
+   }catch(error){
+       console.log("Cart count  not get yet in home page api call")
+      
+   }
+  }
+  fetchData()
+},[reload])
 
 
   return (
@@ -28,11 +50,11 @@ const Home = ({navigation}) => {
     </View>
 
     <View style={styles.barcode_container}>
-       <TouchableOpacity onPress={()=>navigation.navigate('SearchBar')} style={styles.scan_barcode}>
+       <TouchableOpacity onPress={()=>navigation.navigate('ScanBar')} style={styles.scan_barcode}>
        <Icon name="barcode-sharp" size={30} color="#2a2e7e"  />
          <Text style={styles.scan}>Scan</Text>
        </TouchableOpacity>
-       <TouchableOpacity style={styles.enter_barcode}>
+       <TouchableOpacity  onPress={()=>navigation.navigate('SearchBar')} style={styles.enter_barcode}>
        <Icon name="barcode-sharp" size={30} color="red" />
          <Text style={styles.enter}>Enter Code</Text>  
        </TouchableOpacity>

@@ -17,7 +17,11 @@ import Address from './components/Address/Address';
 import Shipping from './components/Shipping/Shipping';
 import Payment from './components/Payment/Payment';
 import Checkout from './components/Checkout/Checkout';
+
 import MyOrder from './components/MyOrder/MyOrder';
+
+import ScanBar from './components/ScanBar/ScanBar';
+
 
 
 
@@ -40,6 +44,7 @@ export default function App() {
           <Stack.Screen name="subcategorylist" component={SubList}/>
           <Stack.Screen name="pop" component={PopCard}/>
           <Stack.Screen name="SearchBar" component={SearchBar}/>
+          <Stack.Screen name="ScanBar" component={ScanBar}/>
           <Stack.Screen name="address" component={Address}/>
           <Stack.Screen name='shipping'component={Shipping}/>
           <Stack.Screen name='payment' component={Payment}/>
