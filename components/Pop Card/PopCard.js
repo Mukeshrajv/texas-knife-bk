@@ -12,6 +12,8 @@ import { getCartReload } from '../../Slice/ProductDetailsSlice';
 import { useDispatch } from 'react-redux';
 import Loader from '../Sub-components/Loader';
 import { getButtonShown } from '../../Slice/ProductDetailsSlice';
+import BottomTab from "../Sub-components/ButtomTab/BottomTab";
+
 
 
 
@@ -130,7 +132,15 @@ const PopCard = ({ navigation }) => {
     
     }, []);
     //   console.log(useSelector((state)=>state.login.logindata))
-  
+    const home = () => {
+        navigation.navigate('Home')
+    }
+    const cart = () => {
+        navigation.navigate('cart')
+    }
+    const profile = () => {
+        navigation.navigate('Profile')
+    }
   
     return (
         <>
@@ -212,6 +222,7 @@ const PopCard = ({ navigation }) => {
                 </View>
                 </View>
             </View>
+            <BottomTab home={home} cart={cart} profile={profile} />
         </View>
         ):(
             <Loader/>
@@ -233,7 +244,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         width: '100%',
         height: '100%',
-        padding: 10,
+        // padding: 10,
         marginTop: 15,
         // width: 350,
 
@@ -245,7 +256,8 @@ const styles = StyleSheet.create({
     },
     product_detail_container:{
         width: '100%',
-        height: 700,
+        height: '86.5%',
+        padding: 10,
         justifyContent:'center',
         // alignItems:'center',
         // backgroundColor:'yellow'

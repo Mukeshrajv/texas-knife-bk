@@ -8,6 +8,8 @@ import { useDispatch } from 'react-redux';
 import { getProductDetails } from '../../Slice/ProductDetailsSlice';
 import filter from 'lodash.filter';
 import debounce from 'lodash/debounce';
+import BottomTab from "../Sub-components/ButtomTab/BottomTab";
+
 
 
 const SearchBar = ({ navigation }) => {
@@ -59,9 +61,18 @@ const SearchBar = ({ navigation }) => {
     dispatch(getProductDetails(item.sku))
   }
 
-
+  const home = () => {
+    navigation.navigate('Home')
+}
+const cart = () => {
+    navigation.navigate('cart')
+}
+const profile = () => {
+    navigation.navigate('Profile')
+}
 
     return (
+        <View>
         <View style={styles.SearchBar_container}>
             <View style={styles.container}>
                 <TextInput
@@ -103,6 +114,10 @@ const SearchBar = ({ navigation }) => {
                 />):(<View></View>)}
                
             </View>
+            
+
+        </View>
+        <BottomTab home={home} cart={cart} profile={profile} />
         </View>
     );
 };
@@ -116,7 +131,7 @@ const customStyles = StyleSheet.create({
 const styles = StyleSheet.create({
     SearchBar_container: {
         width: '100%',
-        height: "100%",
+        height: "93.5%",
         paddingTop: 30,
         backgroundColor: 'white',
     },

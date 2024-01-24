@@ -9,6 +9,8 @@ import { useDispatch } from 'react-redux';
 import { getProductDetails } from '../../Slice/ProductDetailsSlice'
 import Loader from '../Sub-components/Loader'
 import { getButtonShown } from '../../Slice/ProductDetailsSlice'
+import BottomTab from "../Sub-components/ButtomTab/BottomTab";
+
 
 const SubList = ({navigation}) => {
   const dispatch=useDispatch();
@@ -53,6 +55,15 @@ const SubList = ({navigation}) => {
    
   }
 
+  const home = () => {
+    navigation.navigate('Home')
+}
+const cart = () => {
+    navigation.navigate('cart')
+}
+const profile = () => {
+    navigation.navigate('Profile')
+}
   return (
    <View style={styles.sublist}>
     <View style={styles.sublist_container}>
@@ -62,15 +73,15 @@ const SubList = ({navigation}) => {
         </TouchableOpacity>
    
         <Text  style={styles.sublist_header}>{useSelector((state)=>state.category.subcategoryname)}</Text>
+<View></View>
 
-
-        <TouchableOpacity style={{paddingLeft:10,padding:5}}  onPress={()=>navigation.navigate('cart')}>
+        {/* <TouchableOpacity style={{paddingLeft:10,padding:5}}  onPress={()=>navigation.navigate('cart')}>
          
         <Icon name="shopping-cart" size={25} color="#2f2e7e" style={{marginRight:10,position:'relative'}} onPress={()=>navigation.navigate('cart')}/>  
         <View style={styles.cart_icon_text_container}>
         <Text style={styles.cart_text}>12</Text>
         </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
        
     </View>
     
@@ -129,6 +140,8 @@ const SubList = ({navigation}) => {
       
      
     </View>
+    <BottomTab home={home} cart={cart} profile={profile} />
+
    </View>
   )
 } 
@@ -146,9 +159,11 @@ const styles=StyleSheet.create({
       ios: {
         marginTop:35,
         // Styles for iOS
+        height: '89%'
       },
       android: {
         marginTop:25,
+        height: '90%'
         // Styles for Android
       },
     }),

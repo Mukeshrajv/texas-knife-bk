@@ -17,7 +17,11 @@ import Address from './components/Address/Address';
 import Shipping from './components/Shipping/Shipping';
 import Payment from './components/Payment/Payment';
 import Checkout from './components/Checkout/Checkout';
+
+import MyOrder from './components/MyOrder/MyOrder';
+
 import ScanBar from './components/ScanBar/ScanBar';
+
 
 
 
@@ -45,6 +49,7 @@ export default function App() {
           <Stack.Screen name='shipping'component={Shipping}/>
           <Stack.Screen name='payment' component={Payment}/>
           <Stack.Screen name='checkout' component={Checkout}/>
+          <Stack.Screen name='MyOrder' component={MyOrder}/>
         </Stack.Navigator>
       </NavigationContainer>
   

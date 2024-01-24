@@ -10,6 +10,7 @@ import Nocategory from '../No category/Nocategory';
 import Loader from '../Sub-components/Loader'
 import { getButtonShown } from '../../Slice/ProductDetailsSlice'
 import { getProductDetails } from '../../Slice/ProductDetailsSlice'
+import BottomTab from "../Sub-components/ButtomTab/BottomTab";
 
 const SubCategory = ({navigation}) => {
     const dispatch=useDispatch();
@@ -74,6 +75,16 @@ const SubCategory = ({navigation}) => {
         dispatch(getProductDetails(item.sku))
        
       }
+
+      const home = () => {
+        navigation.navigate('Home')
+    }
+    const cart = () => {
+        navigation.navigate('cart')
+    }
+    const profile = () => {
+        navigation.navigate('Profile')
+    }
     
 
   return (
@@ -85,15 +96,15 @@ const SubCategory = ({navigation}) => {
         </TouchableOpacity>
    
         <Text  style={styles.subcategory_header}>{useSelector((state)=>state.category.categoryname)}</Text>
+<View></View>
 
-
-        <TouchableOpacity style={{paddingLeft:10,padding:5}}  onPress={()=>navigation.navigate('cart')}>
+        {/* <TouchableOpacity style={{paddingLeft:10,padding:5}}  onPress={()=>navigation.navigate('cart')}>
          
         <Icon name="shopping-cart" size={25} color="#2f2e7e" style={{marginRight:10,position:'relative'}} onPress={()=>navigation.navigate('cart')}/>  
         <View style={styles.cart_icon_text_container}>
         <Text style={styles.cart_text}>12</Text>
         </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
        
     </View>
 {
@@ -161,13 +172,23 @@ const SubCategory = ({navigation}) => {
 
   
    </View>
+   <BottomTab home={home} cart={cart} profile={profile} />
+
    </View>
   )
 }
 const styles=StyleSheet.create({
     subcategory:{
-        width:"100%",
-        height:"100%"
+        ...Platform.select({
+            android:{
+                width: "100%",
+                height: "93%"
+            },
+            ios:{
+                width: "100%",
+                height: "93%"
+            },
+          })
     },
     subcategory_container:{
         // backgroundColor:'red',
