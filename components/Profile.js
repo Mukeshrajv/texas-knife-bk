@@ -46,7 +46,7 @@ const Profile = ({ navigation }) => {
        </View>
        
        <View style={styles.order_btn_container}>
-        <TouchableOpacity style={styles.order_btn_oppacity}>
+        <TouchableOpacity onPress={()=>navigation.navigate('MyOrder')} style={styles.order_btn_oppacity}>
         <Text style={styles.order_btn}>My Orders</Text>
         </TouchableOpacity>
        </View>
