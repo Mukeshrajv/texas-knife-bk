@@ -1,5 +1,6 @@
 import react from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { useSelector } from 'react-redux';
 
 
 const BottomTab = ({home,cart,profile}) => {
@@ -17,7 +18,11 @@ const BottomTab = ({home,cart,profile}) => {
 
           
             <TouchableOpacity style={styles.tab} onPress={cart}>
+               <View style={{backgroundColor:'#FF0000',borderRadius:50,width:15,height:15,position:'absolute',top:-3,left:54,zIndex:1}}>
+                 <Text style={{color:"#ffffff",textAlign:"center",fontSize:10,position:'relative'}}>{useSelector((state)=>state.cartdata.cartCount)}</Text>
+               </View>
                 <Image style={styles.icon} source={require('../../../assets/images/cart.png')} />
+
             </TouchableOpacity>
         
 

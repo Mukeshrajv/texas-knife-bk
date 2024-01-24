@@ -4,6 +4,7 @@ import Home from '../components/Home';
 import Cart from '../components/Cart';
 import Profile from '../components/Profile';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { UseSelector, useSelector } from 'react-redux';
 // import { NavigationContainer } from '@react-navigation/native';
 
 const Tab = ({navigation}) => {
@@ -55,8 +56,8 @@ const Tab = ({navigation}) => {
       options={{
          tabBarIcon:({focused})=>(
              <TouchableOpacity >
-               <View style={{backgroundColor:'#FF0000',borderRadius:50,width:15,height:15}}>
-                 <Text style={{color:"#ffffff",textAlign:"center",fontSize:10}}>0</Text>
+               <View style={{backgroundColor:'#FF0000',borderRadius:50,width:15,height:15,position:'absolute',top:-3,left:8,zIndex:1}}>
+                 <Text style={{color:"#ffffff",textAlign:"center",fontSize:10}}>{useSelector((state)=>state.cartdata.cartCount)}</Text>
                </View>
                  <Image
                  source={require('../assets/images/cart.png')}
@@ -64,7 +65,9 @@ const Tab = ({navigation}) => {
                  style={{
                      width:25,
                      height:25,
-                     tintColor:focused?'#ffffff':'#748c94'
+                     tintColor:focused?'#ffffff':'#748c94',
+                     position:'relative'
+                     
                   } }
                  />
              </TouchableOpacity>
