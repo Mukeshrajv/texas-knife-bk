@@ -28,11 +28,11 @@ const Home = ({navigation}) => {
     </View>
 
     <View style={styles.barcode_container}>
-       <TouchableOpacity onPress={()=>navigation.navigate('SearchBar')} style={styles.scan_barcode}>
+       <TouchableOpacity onPress={()=>navigation.navigate('ScanBar')} style={styles.scan_barcode}>
        <Icon name="barcode-sharp" size={30} color="#2a2e7e"  />
          <Text style={styles.scan}>Scan</Text>
        </TouchableOpacity>
-       <TouchableOpacity style={styles.enter_barcode}>
+       <TouchableOpacity  onPress={()=>navigation.navigate('SearchBar')} style={styles.enter_barcode}>
        <Icon name="barcode-sharp" size={30} color="red" />
          <Text style={styles.enter}>Enter Code</Text>  
        </TouchableOpacity>
