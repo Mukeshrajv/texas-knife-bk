@@ -50,12 +50,11 @@ const Login = ({ navigation }) => {
       try {
         const response = await axios.get(apiUrl);
         if(response){
-          navigation.navigate('tab');
-          
-      
+     
           dispatch(getuserdata(response.data.data[0]))
           // console.log('API Response:', response.data.data[0]);
           setIsLoading(false)
+          navigation.navigate('tab');
         }
        
 
