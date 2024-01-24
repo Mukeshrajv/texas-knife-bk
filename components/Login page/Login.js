@@ -13,8 +13,8 @@ import { ToastAndroid } from 'react-native';
 const Login = ({ navigation }) => {
   const dispatch = useDispatch();
  
-  const [email, setEmail] = useState('dev@desss.com');
-  const [password, setPassword] = useState('$heshU98');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 

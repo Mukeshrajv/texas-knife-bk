@@ -11,6 +11,7 @@ const initialState={
   netAmount:'',
   overAllTotal:'',
   taxFullData:[],
+  cartCount:'0',
 
 }
 
@@ -76,12 +77,15 @@ export const cartDataSlice=createSlice({
    getTaxFullData:(state,action)=>{
       state.taxFullData=action.payload;
       // console.log(state.taxFullData);
+   },
+   getCartCount:(state,action)=>{
+      state.cartCount=action.payload
    }
  
   
     }
 });
 
-export const{getCartTotal,getCartList,getShippingTax,getBasePriceExact,getStateTax,getNetAmount,getOverAllTotal,getTaxFullData}=cartDataSlice.actions;
+export const{getCartTotal,getCartList,getShippingTax,getBasePriceExact,getStateTax,getNetAmount,getOverAllTotal,getTaxFullData,getCartCount}=cartDataSlice.actions;
 
 export default cartDataSlice.reducer;
