@@ -212,7 +212,8 @@ header_container:{
 },
 header_text:{
     fontSize:hp(2.1),
-    color:'#2a2e7e'
+    color:'#2a2e7e',
+    textTransform:'capitalize'
 },
 subcategory_list_container:{
     // backgroundColor:'green',
