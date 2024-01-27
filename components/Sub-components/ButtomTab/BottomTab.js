@@ -48,8 +48,8 @@ const styles = StyleSheet.create({
     innercontainer:{
         flexDirection: 'row',
         justifyContent: 'space-around',
-        paddingTop:15,
-        paddingBottom:15
+        paddingTop:16,
+        paddingBottom:16
     },
     icon: {
         width: 25,
