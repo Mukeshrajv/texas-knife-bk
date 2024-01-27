@@ -41,7 +41,7 @@ const SubCategory = ({navigation}) => {
             if(response){
          setSubCategoryData(response.data);
          setLoader(true);
-            //   console.log(response.data.data)
+            //   console.log(response.data)
             }
            }catch(error){
                console.log("sub Category product is not get yet")       
@@ -94,7 +94,12 @@ const SubCategory = ({navigation}) => {
 
         <View style={styles.header}>
           <View style={styles.header_container}>
+          {/* <TouchableOpacity style={{paddingRight:10,padding:5}} onPress={()=>navigation.navigate('Home')}>
+        <Icon name="arrow-left" size={25} color="#2f2e7e" style={{marginLeft:10}} onPress={()=>navigation.navigate('Home')}/>
+        </TouchableOpacity>
         <Text  style={styles.header_text}>{useSelector((state)=>state.category.categoryname)}</Text>
+        <View></View> */}
+       <Text  style={styles.header_text}>{useSelector((state)=>state.category.categoryname)}</Text>
           </View>
         </View>
 
@@ -128,18 +133,23 @@ const SubCategory = ({navigation}) => {
             />
         }
                 </View>):(
+                    <View style={styles.nocategory}>
+
                       <View style={styles.nocategorycontainer}>
+                     
                       <FlatList
                           data={nocategorydata}
                           keyExtractor={i=>i.id}
-                          
                           renderItem={({item})=>{
                            return(
                           
                             <TouchableOpacity keyExtractor key={item.id} onPress={()=>handleChange(item)} >
                             <View style={styles.list}>
                                <View style={styles.image_container}>
-                                <Image style={{width:'100%',height:'100%',resizeMode:'stretch'}}  source={{ uri: item.product_image }}/>
+                                {item.product_image?(
+                                    <Image style={{width:'100%',height:'100%',resizeMode:'stretch'}}  source={{ uri: item.product_image }}/>
+                                ):(<Loader/>)}
+                                
                                </View>
                                <View style={styles.name_price_container}>
                                 <Text style={styles.item_name}>{item.product_name}</Text>
@@ -151,6 +161,7 @@ const SubCategory = ({navigation}) => {
                           }}
                           />
                       </View>
+                      </View>
                   )}
             </View>
           ):(
@@ -158,7 +169,7 @@ const SubCategory = ({navigation}) => {
           )}
         </View>
         <View style={styles.footer}>
-          <BottomTab/>
+          <BottomTab  home={home} cart={cart} profile={profile}/>
         </View>
      </View>
 
@@ -169,6 +180,12 @@ const styles = StyleSheet.create({
 Subcategory:{
 flex:1,
 backgroundColor:'#ffffff'
+},
+header_container:{
+    flexDirection:'row',
+    justifyContent:'space-around',
+    alignItems:'center',
+    backgroundColor:'red'
 },
 header:{
 // backgroundColor:'yellow',
@@ -236,7 +253,50 @@ subcategory_name:{
     fontWeight:'500',
     padding:5
 },
-
+nocategory:{
+    flex:1,
+    // backgroundColor:'yellow',
+},
+nocategorycontainer:{
+    flex:1,
+},
+list:{
+    margin:5,
+    flexDirection:'row',
+    columnGap:20,
+    backgroundColor:'#e8fcfc',
+    padding:10,
+    // alignItems:'center',
+    borderRadius:10,
+    marginRight:hp(2),
+    marginLeft:hp(2)
+   },
+   image_container:{
+    width:hp(8),
+    height:hp(8),
+    // backgroundColor:'lightgreen',
+    borderRadius:5
+   },
+   name_price_container:{
+    // justifyContent:'center',
+  },
+  item_name:{
+    width:hp('28%'),
+    height:hp(5),
+    overflow:'scroll',
+    textAlign:"left",
+    // backgroundColor:'white',
+    fontSize:hp(2),
+    color:'#2f2e7e',
+    fontWeight:'bold'
+   },
+   item_price:{
+    paddingTop:hp(1),
+    fontSize:hp(2),
+    fontWeight:'bold',
+    color:'red',
+    marginLeft:hp(1)
+    },
 })
 
 export default SubCategory

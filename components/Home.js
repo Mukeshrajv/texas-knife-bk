@@ -24,7 +24,7 @@ useEffect(()=>{
     if(response){
      const data=response.data.data
      dispatch(getCartCount(data.length))
-     console.log(data.length)
+    //  console.log(data.length)
     }
    }catch(error){
        console.log("Cart count  not get yet in home page api call")
