@@ -223,8 +223,8 @@ subcategory_list_container:{
 },
 subcategory_list_touchable_opacity:{
     borderWidth:2,
-    width:hp(18),
-    height:hp(24),
+    width:hp(20),
+    // height:hp(24),
     borderColor:'#2f2e7e',
     margin:hp(1.5),
     backgroundColor:'#e8fcfc',
@@ -244,7 +244,7 @@ subcategory_image_container:{
 subcategory_name_container:{
     // backgroundColor:'yellow',
     width:'100%',
-    height:hp(8),
+    // height:hp(8),
     alignItems:'center',
     justifyContent:'center'
 },
@@ -267,7 +267,7 @@ list:{
     columnGap:20,
     backgroundColor:'#e8fcfc',
     padding:10,
-    // alignItems:'center',
+    alignItems:'center',
     borderRadius:10,
     marginRight:hp(2),
     marginLeft:hp(2)
@@ -283,7 +283,7 @@ list:{
   },
   item_name:{
     width:hp('28%'),
-    height:hp(5),
+    // height:hp(5),
     overflow:'scroll',
     textAlign:"left",
     // backgroundColor:'white',
