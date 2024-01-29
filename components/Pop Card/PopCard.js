@@ -370,8 +370,7 @@ const styles = StyleSheet.create({
         },
         content_container:{
             backgroundColor:'#e8fcfc',
-            borderBottomRightRadius:20,
-            borderBottomLeftRadius:20
+            padding:10
         }
     
     
