@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux';
 import Loader from '../Sub-components/Loader';
 import { getButtonShown } from '../../Slice/ProductDetailsSlice';
 import BottomTab from "../Sub-components/ButtomTab/BottomTab";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
 
@@ -143,41 +144,47 @@ const PopCard = ({ navigation }) => {
     }
   
     return (
-        <>
-    
-        {loader?(
-            <View style={styles.ProductDetail}>
-            <View style={styles.ProductDetail_container}>
-                <View style={styles.header_container}>
-                    <Text style={styles.header_title}>Product Details</Text>
-                </View>
-                <View style={styles.product_detail_container}>
-                <View style={styles.image_container}>
+        <View style={styles.productdetail}>
 
-                    <Image
-                        style={styles.image}
-                        source={{ uri: productImage.msg }}
-                    />
+        <View style={styles.header}>
+          <View style={styles.header_container}>
+        <Text  style={styles.header_text}>Product Details</Text>
+          </View>
+        </View>
+
+        <View style={styles.content}>
+          {loader?(
+            <ScrollView style={{flex:1}}>
+              <View style={styles.productdetail_container}>
+              <View style={styles.card}>
+
+              <View style={styles.image_container}>
+                <Image
+                    style={{width:'100%',height:'100%',resizeMode:'cover',borderTopLeftRadius:20,borderTopRightRadius:20}}
+                    source={{ uri: productImage.msg }}
+                />
                 </View>
-                <View style={styles.Product_container}>
-                    <View>
+
+                <View style={styles.content_container}>
+           
                         <Text style={styles.name}>{productData.product_name}</Text>
-                    </View>
+               
                     <View style={styles.code}>
-                        <Text style={{ color: 'white' }}>{productData.sku}</Text>
+                        <Text style={{ color: 'white' ,fontSize:wp(4.5)}}>{productData.sku}</Text>
                     </View>
+
                     <View style={styles.price_container}>
                         <Text style={styles.label}>Price:</Text>
                         <Text style={styles.price}>$ {productData.product_price}</Text>
                     </View>
+
                     <View style={styles.description_container}>
                         <Text style={styles.label} >Description:</Text>
-                        <ScrollView style={{ height: 80 }}>
-
+                        <ScrollView style={styles.scrollview} >
                             <HTMLView value={productData.description} stylesheet={customStyles} />
                         </ScrollView>
                     </View>
-                    {/* <Text style={styles.description}>{productData.description}</Text> */}
+  
                     <View style={styles.accordion}>
                         <Text style={styles.label}>Product Details</Text>
                         <TouchableOpacity onPress={() => setShow(!show)} >
@@ -211,28 +218,34 @@ const PopCard = ({ navigation }) => {
 
                     {buttonShow?(
                     <TouchableOpacity style={styles.btn} onPress={()=>AddToCart()}>                            
-                    <Text >Add To Cart</Text>
+                    <Text style={styles.btn_text} >Add To Cart</Text>
                     </TouchableOpacity>
                     ):(
                         <TouchableOpacity style={styles.btn} onPress={()=>BackToCart()}>                            
-                    <Text >Back</Text>
+                    <Text style={styles.btn_text} >Back</Text>
                     </TouchableOpacity>
                     )}
                    
                 </View>
-                </View>
-            </View>
-            <BottomTab home={home} cart={cart} profile={profile} />
+
+
+              </View>
+              </View>
+            </ScrollView>
+           
+          ):(
+             <Loader/>
+          )}
         </View>
-        ):(
-            <Loader/>
-        )}
-          </> 
+        <View style={styles.footer}>
+        <BottomTab home={home} cart={cart} profile={profile} />
+        </View>
+     </View>
     );
 }
 const customStyles = StyleSheet.create({
     p: {
-        fontSize: 14,
+        fontSize:hp(1.6),
         color: 'grey',
         marginBottom: -60
     },
@@ -240,142 +253,131 @@ const customStyles = StyleSheet.create({
 });
 
 const styles = StyleSheet.create({
-    ProductDetail: {
-        flexDirection: 'column',
-        width: '100%',
-        height: '100%',
-        // padding: 10,
-        marginTop: 15,
-        // width: 350,
-
-        backgroundColor: '#ffffff'
-    },
-    ProductDetail_container: {
-        // padding: 10,
-    //    backgroundColor:'gray'
-    },
-    product_detail_container:{
-        width: '100%',
-        height: '86.5%',
-        padding: 10,
-        justifyContent:'center',
-        // alignItems:'center',
-        // backgroundColor:'yellow'
-    },
-    image_container: {
-        alignItems: 'center',
-        width: '100%',
-        height: 150,
-        marginBottom: 10,
-    },
-    ProductDetail_container: {
-        // marginTop:15,
-        padding: 10,
-    },
-    image: {
-
-        height: "100%",
-        width: '90%',
-        resizeMode: 'contain',
-        // backgroundColor: 'blue',
-        marginBottom: 10,
-        resizeMode: 'stretch',
-        borderRadius: 20
-
-    },
-    price_container: {
-        marginBottom: 5,
-    },
-    Product_container: {
-        padding: 16,
-        backgroundColor: '#ffdbdb',
-        borderRadius: 25,
-    },
-    header_container: {
-        padding: 10
-    },
-    header_title: {
-        textAlign: 'center',
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#2f2e7e',
-        width:'100%'
-    },
-    code: {
-        backgroundColor: 'black',
-        width: '25%',
-        borderRadius: 10,
-        alignItems: 'center',
-        marginBottom: 10,
-    },
-    name: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#2f2e7e',
-        marginBottom: 10,
-    },
-    price: {
-        fontSize: 16,
-        fontWeight: '600',
-        // marginBottom: 10,
-    },
-    description_container: {
-        marginBottom: 10,
-
-    },
-    description_container:{
-        marginTop:5
+    productdetail:{
+        flex:1,
+        backgroundColor:'#ffffff'
+        },
+        header:{
         // backgroundColor:'yellow',
-    //    marginBottom:-20
-
-
-    },
-    description: {
-        fontSize: 16,
-        fontWeight: '400',
-        color: '#787878',
-        marginBottom: 16,
-        //    width:200,
-        //    height:60,
-        //    backgroundColor:'white'
-    },
-    quantity: {
-        width: 100,
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        padding: 5,
-        marginBottom: 10,
-        alignItems:'center'
-    },
-    label: {
-        color: 'red',
-        fontWeight: 'bold',
-        fontSize: 20,
-        marginBottom: 5,
-    },
-    btn: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        padding: 13,
-        width: '100%',
-        backgroundColor: '#1975d3',
-        borderRadius: 50,
-        color: 'white',
-    },
-    accordion: {
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 10,
-
-
-
-    },
-    weight: {
-        width: '100%',
-        flexDirection: 'row',
-    }   
+        flex:1,
+        justifyContent:'center',
+        alignItems:'center',
+        },
+        content:{
+        // backgroundColor:'pink',
+        flex:8,
+        },
+        footer:{
+        // backgroundColor:'white',
+        flex:0.7,
+        justifyContent:'flex-end'
+        },
+        header_container:{
+            flex:1,
+            // height:hp('30%'),
+            justifyContent:'center',
+            alignItems:'center',
+            // backgroundColor:'red',
+            paddingTop:hp(2)
+        },
+        header_text:{
+            fontSize:hp(2.1),
+            color:'#2a2e7e'
+        },
+        productdetail_container:{
+            // backgroundColor:'yellow',
+            flex:1,
+            justifyContent:'center',
+            alignItems:'center'
+        },
+        card:{
+        width:wp("90%"),
+        // height:hp('50%'),
+        // backgroundColor:'lightgreen',
+        marginTop:hp(5),
+        marginBottom:hp(5)
+        },
+        image_container:{
+            width:'100%',
+            height:hp('30%'),
+            // backgroundColor:'orange'
+        },
+        scrollview:{
+            // backgroundColor:'red',
+            // height:hp(10),
+            paddingBottom:10,
+            width:'100%'
+            // paddingLeft:hp(1),
+        },
+        name:{
+            fontSize:wp(5),
+            fontWeight: 'bold',
+            color: '#2f2e7e',
+            marginBottom:hp(1.5),
+            textAlign:'center'
+        },
+        code: {
+            backgroundColor: 'black',
+            width:wp(25),
+            borderRadius: 10,
+            alignItems: 'center',
+            marginBottom:hp(1.5),
+            padding:2
+        },
+        price: {
+            fontSize:wp(4.5),
+        },
+        quantity: {
+            width:wp('30%'),
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+            padding: 5,
+            marginBottom: 10,
+            alignItems:'center'
+        },
+        label: {
+            color: '#1975d3',
+            fontWeight: 'bold',
+            fontSize:wp(5.5),
+            marginBottom: 5,
+        },
+        btn: {
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems:'center',
+            padding: 13,
+            width: '100%',
+            backgroundColor: '#1975d3',
+            borderRadius: 50,
+            color: 'white',
+        },
+        accordion: {
+            width: '100%',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            marginBottom: 10,
+            alignItems:'center'
+        },
+        weight: {
+            width: '100%',
+            flexDirection: 'row',
+        }   ,
+        btn_text:{
+            color:'#ffffff',
+            fontSize:wp(4.5),
+            fontWeight:'bold'
+        },
+        content_container:{
+            backgroundColor:'#e8fcfc',
+            borderBottomRightRadius:20,
+            borderBottomLeftRadius:20
+        }
+    
+    
+    
+    
+      
 
 });
 export default PopCard
