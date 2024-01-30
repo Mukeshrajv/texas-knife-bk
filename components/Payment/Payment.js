@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  ScrollView,
 } from "react-native";
 import { useState } from "react";
 import Tab from "../../Tab/Tab";
@@ -13,6 +14,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { getPaymentData } from "../../Slice/paymentSlice";
 import { useDispatch } from "react-redux";
 import BottomTab from "../Sub-components/ButtomTab/BottomTab";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
 
 const Payment = ({navigation}) => {
   const dispatch=useDispatch();
@@ -203,25 +206,33 @@ const continueToPayment=()=>{
   }
 
   return (
-    <View style={styles.payment}>
-      <View style={styles.payment_container}>
-        {/* <View style={styles.headerpluscontent}> */}
-        <View style={styles.payment_header_container}>
-          <Text style={styles.payment_header}>Payment</Text>
-        </View>
-        <View style={styles.payment_card_container}>
+<View style={styles.payment}>
+
+<View style={styles.header}>
+  <View style={styles.header_container}>
+<Text  style={styles.header_text}>Payment</Text>
+  </View>
+</View>
+
+<View style={styles.content}>
+
+       <View style={styles.image_container}>
           <Image
-            style={{ width: "100%", height: "100%", resizeMode: "cover" }}
+            style={{ width:wp('60%'), height:hp('20%'), resizeMode: 'contain' }}
             source={require("../../assets/images/card_img.png")}
           />
         </View>
-        <View style={styles.payment_method_container}>
-          <View style={styles.payment_method_header_container}>
+
+        <View style={styles.payment_metod_container}>
+         <ScrollView>
+          {/* ----------------------- */}
+         <View style={styles.payment_method_header_container}>
             <Text style={styles.payment_method_header}>All Transaction</Text>
           </View>
+          {/* ------------------------------ */}
           <View style={styles.alltransaction_container}>
-            {/* .................. */}
-            <View>
+               {/* .................. */}
+               <View>
               <TouchableOpacity
                 onPress={() => handleRadioPress(1)}
                 style={styles.radioContainer}
@@ -425,12 +436,13 @@ const continueToPayment=()=>{
             </View>
             {/* ................... */}
           </View>
+         </ScrollView>
         </View>
-      </View>
-      {/* </View> */}
-      <View style={styles.payment_footer_container}>
-        <View style={styles.payment_footer_button_container}>
-          <TouchableOpacity
+
+
+</View>
+<View style={styles.footer}>
+<TouchableOpacity
             style={styles.payment_footer_button}
             onPress={() => continueToPayment()}
           >
@@ -438,15 +450,132 @@ const continueToPayment=()=>{
               Continue To payment
             </Text>
           </TouchableOpacity>
-      <BottomTab home={home} cart={cart} profile={profile}/>
-        </View>
-     
-      </View>
-     
-    </View>
+          <BottomTab  home={home} cart={cart} profile={profile}/>
+</View>
+</View>
   );
 };
 const styles = StyleSheet.create({
+  payment:{
+    flex:1,
+    backgroundColor:'#ffffff'
+    },
+    header:{
+    // backgroundColor:'yellow',
+    flex:1,
+    justifyContent:'center',
+    alignItems:'center',
+    },
+    content:{
+    // backgroundColor:'pink',
+    flex:8
+    },
+    footer:{
+    // backgroundColor:'white',
+    flex:2,
+    justifyContent:'flex-end'
+    },
+    header_container:{
+        flex:1,
+        // height:hp('30%'),
+        justifyContent:'center',
+        alignItems:'center',
+        // backgroundColor:'red',
+        paddingTop:hp(2)
+    },
+    header_text:{
+        fontSize:hp(2.1),
+        color:'#2a2e7e'
+    },
+    image_container:{
+      // backgroundColor:'yellow',
+      alignItems:'center',
+      flex:1
+    },
+    payment_metod_container:{
+      // backgroundColor:'lightblue',
+      flex:3
+    },
+    payment_method_header_container:{
+      margin: 10,
+    },
+    payment_method_header:{
+      fontSize:wp(5),
+      fontWeight: "bold",
+    },
+    payment_footer_button: {
+      backgroundColor: "#1975d3",
+      padding:wp(5),
+      justifyContent: "center",
+      alignItems: "center",
+      borderRadius: 25,
+      margin: 10,
+    },
+    payment_footer_button_text: {
+      color: "white",
+      fontSize:wp(4),
+      fontWeight:'bold'
+    },
+    alltransaction_container:{
+      backgroundColor:'#ffffff',
+      padding:10
+    },
+    transaction_headers: {
+      fontSize: wp(5),
+      fontWeight: "bold",
+      color: "#2a2e7e",
+    },
+    creditcard_container: {
+      alignItems: "center",
+      marginBottom:10,
+      zIndex:-1
+    },
+    creditcard: {
+      width:wp('80%'),
+    },
+    input_border: {
+      flexDirection: "row",
+      borderWidth: 1,
+      borderColor: "#8c8c8c",
+      marginBottom: 10,
+      alignItems: "center",
+      justifyContent: "space-between",
+    },
+    input: {
+      fontSize:wp(4),
+      padding: 5,
+      width: "90%",
+    },
+    input_border_date: {
+      flexDirection: "row",
+      width: "45%",
+      borderWidth: 1,
+      borderColor: "#8c8c8c",
+      paddingRight:15,
+      alignItems:'center',
+      zIndex:-2,
+    },
+    errorcontainer:{
+      position:'relative'
+    },
+    error:{
+      paddingRight:5
+    },
+    error_message:{
+    position:'absolute',
+    width:120,
+    left:-90,
+    top:30,
+    backgroundColor:'black',
+    textAlign:'center',
+    color:'white',
+    fontSize:12,
+    borderTopWidth:2,
+    borderTopColor:'red',
+    paddingTop:2,
+    padding:2,
+    zIndex:5
+  },
   radioContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -459,115 +588,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginRight: 8,
   },
-  payment_footer_container: {
 
-  },
-  payment_footer_button_container: {
-  },
-  payment_footer_button: {
-    backgroundColor: "#1975d3",
-    padding: 15,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 25,
-    margin: 10,
-  },
-  payment_footer_button_text: {
-    color: "white",
-  },
-  payment: {
-    width: "100%",
-    height: "100%",
-    justifyContent: "space-between",
-  },
-  payment_container: {},
-  payment_header_container: {
-    padding: 10,
-    marginTop: 30,
-  },
-  payment_header: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#2a2e7e",
-    textAlign: "center",
-    padding: 5,
-  },
-  payment_card_container: {
-    width: "100%",
-    height: 200,
-    padding: 5,
-  },
-  payment_method_container: {
-  },
-  payment_method_header_container: {
-    margin: 10,
-  },
-  payment_method_header: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  alltransaction_container: {
-    padding: 10,
-  },
-  transaction_headers: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#2a2e7e",
-  },
-  creditcard_container: {
-    alignItems: "center",
-    marginBottom:10,
-    zIndex:-1
-  },
-  creditcard: {
-    width: 300,
-  },
-  input_border: {
-    flexDirection: "row",
-    borderWidth: 1,
-    borderColor: "#8c8c8c",
-    marginBottom: 10,
-    alignItems: "center",
-    justifyContent: "space-between",
-  
-
-  
-  },
-  input: {
-    fontSize: 18,
-    padding: 5,
-    width: "90%",
-   
-  },
-  input_border_date: {
-    flexDirection: "row",
-    width: "45%",
-    borderWidth: 1,
-    borderColor: "#8c8c8c",
-    paddingRight:15,
-    alignItems:'center',
-    zIndex:-2,
-  },
-  errorcontainer:{
-    position:'relative'
-  },
-  error:{
-    paddingRight:5
-  },
-  error_message:{
-  position:'absolute',
-  width:120,
-  left:-90,
-  top:30,
-  backgroundColor:'black',
-  textAlign:'center',
-  color:'white',
-  fontSize:12,
-  borderTopWidth:2,
-  borderTopColor:'red',
-  paddingTop:2,
-  padding:2,
-  zIndex:5
-},
 });
 export default Payment;
