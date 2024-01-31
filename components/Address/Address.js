@@ -253,12 +253,82 @@ const Address = ({ navigation }) => {
 
   }
 
+  const form2Simple=()=>{
+    if(f1email!=='' || f2email!=="" ||f1firstName!=="" ||f2firstName!="" ||f1lastName!=='' ||f2lastName!==''  ||f1address!=='' ||f2address!=='' ||f1city!=='' ||f2city!=='' ||f1country!=='' ||f2country!=='' ||f1state!=='' ||f2state!=='' ||f1zipCode!=='' ||f2zipCode!=='' ||f1phoneNumber!=='' ||f2phoneNumber!==''){
+      form2Validation()
+    }
+  }
+
   const form2Validation=()=>{
+    if(!f1email){
+      setError1email(true)
+  }else if (!isValidEmail(f1email)) {
+      setError1email(true)
+    } else if(error1email==false && error1firstName==false && error1lastName==false && error1address==false && error1city==false && error1country==false && error1state==false && error1zipCode==false && error1phoneNumber==false&&error2email==false && error2firstName==false && error2lastName==false && error2address==false && error1city==false && error2country==false && error2state==false && error2zipCode==false && error2phoneNumber==false){
+      fetchForm2Data()
+    }else{
+      setError1email(false)
+    }
+
+  if (!f1firstName) {
+      setError1firstName(true)
+    }else{
+      setError1firstName(false)
+    }
+
+    if (!f1lastName) {
+      setError1lastName(true)
+    } else{
+      setError1lastName(false)
+    }
+
+    if (!f1address) {
+      setError1address(true)
+    }else{
+      setError1address(false)
+    }
+
+    if (!f1city) {
+      setError1city(true)
+    }else{
+      setError1city(false)
+    }
+
+    if (!f1country) {
+      setError1country(true)
+    }else{
+      setError1country(false)
+    }
+
+    if (!f1state) {
+      setError1state(true)
+    }else{
+      setError1state(false)
+    }
+
+    if (!f1zipCode) {
+      setError1zipCode(true)
+    }else{
+      setError1zipCode(false)
+    }
+
+    if (!f1phoneNumber) {
+      setError1phoneNumber(true)
+    }
+   else{
+      setError1phoneNumber(false)
+    }
+
+    if(error1email==false && error1firstName==false && error1lastName==false && error1address==false && error1city==false && error1country==false && error1state==false && error1zipCode==false && error1phoneNumber==false&&error2email==false && error2firstName==false && error2lastName==false && error2address==false && error1city==false && error2country==false && error2state==false && error2zipCode==false && error2phoneNumber==false){
+      fetchForm2Data()
+    }
+
+    // --------------------------------------
     if(!f2email){
         setError2email(true)
     }else if (!isValidEmail(f2email)) {
         setError2email(true)
-      } else if(error2email==false && error2firstName==false && error2lastName==false && error2address==false && error1city==false && error2country==false && error2state==false && error2zipCode==false && error2phoneNumber==false){
+      } else if(error1email==false && error1firstName==false && error1lastName==false && error1address==false && error1city==false && error1country==false && error1state==false && error1zipCode==false && error1phoneNumber==false&&error2email==false && error2firstName==false && error2lastName==false && error2address==false && error1city==false && error2country==false && error2state==false && error2zipCode==false && error2phoneNumber==false){
         fetchForm2Data()
   }else{
         setError2email(false)
@@ -313,7 +383,7 @@ const Address = ({ navigation }) => {
         setError2phoneNumber(false)
       }
   
-      if(error2email==false && error2firstName==false && error2lastName==false && error2address==false && error1city==false && error2country==false && error2state==false && error2zipCode==false && error2phoneNumber==false){
+      if(error1email==false && error1firstName==false && error1lastName==false && error1address==false && error1city==false && error1country==false && error1state==false && error1zipCode==false && error1phoneNumber==false&&error2email==false && error2firstName==false && error2lastName==false && error2address==false && error1city==false && error2country==false && error2state==false && error2zipCode==false && error2phoneNumber==false){
         fetchForm2Data()
       }
 
@@ -333,7 +403,7 @@ const Address = ({ navigation }) => {
         if(same==true){
             form1Validation()
         }else{
-            form2Validation()
+          form2Simple()
         }
     }
  
@@ -508,6 +578,7 @@ const Address = ({ navigation }) => {
                                       }else{
                                         setError1address(false)
                                       }
+
                                     }}
                                     />
                                  {error1address&&
@@ -701,6 +772,7 @@ const Address = ({ navigation }) => {
                                       }else{
                                         setError2email(false)
                                       } 
+                                  
                                     }}
 
                                     />
@@ -731,6 +803,7 @@ const Address = ({ navigation }) => {
                                       }else{
                                         setError2firstName(false)
                                       }
+                           
                                     }}
                                     />
                                          {error2firstName&&
@@ -754,6 +827,7 @@ const Address = ({ navigation }) => {
                                       } else{
                                         setError2lastName(false)
                                       }
+                                 
                                     }}
                                     />
                                     {error2lastName&&
@@ -790,6 +864,7 @@ const Address = ({ navigation }) => {
                                       }else{
                                         setError2address(false)
                                       }
+                                
                                     }}
                                     />
                                     {error2address&&
@@ -826,6 +901,7 @@ const Address = ({ navigation }) => {
                                       }else{
                                         setError2city(false)
                                       }
+                        
                                     }}
                                     />
                                     {error2city&&
@@ -851,6 +927,7 @@ const Address = ({ navigation }) => {
                                       }else{
                                         setError2country(false)
                                       }
+                               
                                     }}
                                     />
                                     {error2country&&
@@ -874,6 +951,7 @@ const Address = ({ navigation }) => {
                                       }else{
                                         setError2state(false)
                                       }
+                                  
                                     }}
                                     />
                                     {error2state&&
@@ -901,6 +979,7 @@ const Address = ({ navigation }) => {
                                       }else{
                                         setError2zipCode(false)
                                       }
+                               
                                     }}
                                     />
                                     {error2zipCode&&
@@ -928,6 +1007,7 @@ const Address = ({ navigation }) => {
                                       else{
                                         setError2phoneNumber(false)
                                       }
+                                  
                                 
                                     }}
                                     />
