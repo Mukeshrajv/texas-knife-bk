@@ -13,6 +13,8 @@ import { getNetAmount } from '../../Slice/cartDataSlice';
 import { getOverAllTotal } from '../../Slice/cartDataSlice';
 import Loader from '../Sub-components/Loader';
 import BottomTab from '../Sub-components/ButtomTab/BottomTab';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
 
 const Shipping = ({navigation}) => {
   const dispatch=useDispatch();
@@ -154,267 +156,278 @@ const Shipping = ({navigation}) => {
   //-------------------------------------
   //  console.log(checked)
   return (
-    <View style={styles.shipping}>
-      {loading?(
+    <View style={styles.Subcategory}>
+
+    <View style={styles.header}>
+      <View style={styles.header_container}>
+      <Text style={styles.shipping_header}>Shipping</Text>
+      </View>
+    </View>
+
+    <View style={styles.content}>
+    {loading?(
    <Loader/>
       ):(
-        <View style={styles.shipping_container}>
-
-          <View style={styles.shipping_header_container}>
-            <Text style={styles.shipping_header}>Shipping</Text>
-          </View>
-{/* ------------------------------------------------------------------------------------------------------------------- */}
-          <ScrollView style={styles.shipping_detail_container}>
+    <ScrollView style={styles.shipping_detail_container}>
              
-           <ProductTotal />
-
- 
- <View style={styles.shipping_method_container}>
-  <View style={styles.shipping_method_header_container}>
-    <Text style={styles.shipping_method_header}>Shipping Method</Text>
-  </View>
-<RadioButton.Group onValueChange={(value) =>sendTaxValue(value)} value={checked}>
-        {/* ................. */}
-        <View style={styles.parcel_Service_container}>
-          <View style={styles.parcel_Service_header_container}>
-          <Text style={styles.parcel_Service_header}>United Parcel Service</Text>
-         </View>
-        {shippingTax.slice(0, 4).map((option, index) => (
-        <View key={index} style={styles.radiobutton_container}>
-           <RadioButton value={option} />
-          <Text style={styles.radiobutton_text}>{option.name} {option.price}</Text>
-        </View>
-             ))}
-        </View>
-         {/* ............... */}
-          {/* --------------------- */}
-         <View style={styles.postal_service_container}>
-         <View style={styles.postal_Service_header_container}>
-         <Text style={styles.postal_Service_header}>United State Postal Service</Text>
-         </View>
-         {shippingTax.slice(4, 5).map((option, index) => (
-        <View key={index} style={styles.radiobutton_container}>
-           <RadioButton value={option}/>
-          <Text style={styles.radiobutton_text}>{option.name} {option.price}</Text>
-        </View>
-             ))}
-         </View>
-          {/* --------------------- */}
-         {/* .............. */}
-         <View style={styles.store_pickup_container}>
-         <View style={styles.store_pickup_header_container}>
-        <Text style={styles.store_pickup_header}>Store Pick Up</Text>
-        </View>
-        {shippingTax.slice(5,6).map((option, index) => (
-        <View key={index} style={styles.radiobutton_container}>
-           <RadioButton value={option}/>
-          <Text style={styles.radiobutton_text}>{option.name} {option.price}</Text>
-        </View>
-             ))}
-         </View> 
-  {/* ............. */}
-      </RadioButton.Group>
+             <ProductTotal />
+  
+   
+   <View style={styles.shipping_method_container}>
+    <View style={styles.shipping_method_header_container}>
+      <Text style={styles.shipping_method_header}>Shipping Method</Text>
+    </View>
+  <RadioButton.Group onValueChange={(value) =>sendTaxValue(value)} value={checked}>
+          {/* ................. */}
+          <View style={styles.parcel_Service_container}>
+            <View style={styles.parcel_Service_header_container}>
+            <Text style={styles.parcel_Service_header}>United Parcel Service</Text>
+           </View>
+          {shippingTax.slice(0, 4).map((option, index) => (
+          <View key={index} style={styles.radiobutton_container}>
+             <RadioButton value={option} />
+            <Text style={styles.radiobutton_text}>{option.name} {option.price}</Text>
+          </View>
+               ))}
+          </View>
+           {/* ............... */}
+            {/* --------------------- */}
+           <View style={styles.postal_service_container}>
+           <View style={styles.postal_Service_header_container}>
+           <Text style={styles.postal_Service_header}>United State Postal Service</Text>
+           </View>
+           {shippingTax.slice(4, 5).map((option, index) => (
+          <View key={index} style={styles.radiobutton_container}>
+             <RadioButton value={option}/>
+            <Text style={styles.radiobutton_text}>{option.name} {option.price}</Text>
+          </View>
+               ))}
+           </View>
+            {/* --------------------- */}
+           {/* .............. */}
+           <View style={styles.store_pickup_container}>
+           <View style={styles.store_pickup_header_container}>
+          <Text style={styles.store_pickup_header}>Store Pick Up</Text>
+          </View>
+          {shippingTax.slice(5,6).map((option, index) => (
+          <View key={index} style={styles.radiobutton_container}>
+             <RadioButton value={option}/>
+            <Text style={styles.radiobutton_text}>{option.name} {option.price}</Text>
+          </View>
+               ))}
+           </View> 
+    {/* ............. */}
+        </RadioButton.Group>
+  
+   </View>
+          
+            </ScrollView>
+      )}
+  {/* --------------------------------------------------------------------------------------------------------------- */}
+  
+            <View style={styles.shipping_footer_container}>
+              <View style={styles.shipping_footer_button_container}>
+  
+                <TouchableOpacity style={styles.shipping_footer_button} onPress={()=>handleSubmit()}>
+  
+                  <Text style={styles.shipping_footer_button_text}>Continue To payment</Text>
+                </TouchableOpacity>
+              </View>
+             
+            </View>
+    </View>
+    <View style={styles.footer}>
+      <BottomTab/>
+    </View>
 
  </View>
-        
-          </ScrollView>
-{/* --------------------------------------------------------------------------------------------------------------- */}
 
-          <View style={styles.shipping_footer_container}>
-            <View style={styles.shipping_footer_button_container}>
-
-              <TouchableOpacity style={styles.shipping_footer_button} onPress={()=>handleSubmit()}>
-
-                <Text style={styles.shipping_footer_button_text}>Continue To payment</Text>
-              </TouchableOpacity>
-            </View>
-            {/* <Tab/> */}
-            <BottomTab home={home} cart={cart} profile={profile}/>
-          </View>
-
-        </View>
-        )}
-    </View>
   )
 }
-const styles=StyleSheet.create({
-  shipping:{
-    width:'100%',
-    height:'100%'
-  },
-  shipping_container:{
-    width:'100%',
-    height:'100%',
-    //  backgroundColor:'red',
-    justifyContent:'space-between',
 
-  },
-  shipping_header_container:{
-    // backgroundColor:'green',
-    marginTop: 25,
-    textAlign: 'center',
-    alignItems: 'center',
-    paddingTop:20
-  },
-  shipping_header:{
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    color: '#2a2e7e'
-  },
-  shipping_detail_container:{
-  //  backgroundColor:'yellow',
-  //  margin:10
-  },
-  shipping_item_card_container:{
-     backgroundColor:'#ffffff',
-    margin:5,
-    padding:10,
-    borderRadius:15,
-    ...Platform.select({
-      android: {
-        shadowColor: '#000',
-        elevation: 5,
+  const styles = StyleSheet.create({
+    Subcategory:{
+    flex:1,
+    backgroundColor:'#ffffff'
     },
-    ios: {
-        shadowColor: '#171717',
-        shadowOffset: { width: 2, height: 4 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-    }
-    })
-
-  
-  },
-  shipping_item_card:{
-    backgroundColor:'#f2f2f7',
-    width:'100%',
-    height:100,
-    flexDirection:'row',
-    alignItems:'center',
+    header:{
+    // backgroundColor:'yellow',
+    flex:1,
     justifyContent:'center',
-    columnGap:10,
-    marginBottom:10,
-    borderRadius:15
-  },
-  image_container:{
-    width:80,
-    height:80,
-    // backgroundColor:'red'
-  },
-  card_detail_container:{
-    width:220,
-    height:80,
+    alignItems:'center',
+    },
+    content:{
+    // backgroundColor:'pink',
+    flex:8
+    },
+    footer:{
+    backgroundColor:'white',
+    flex:0.7,
+    justifyContent:'flex-end'
+    },
+    header_container:{
+        flex:1,
+        // height:hp('30%'),
+        justifyContent:'center',
+        alignItems:'center',
+        // backgroundColor:'red',
+        paddingTop:20,
+    },
+    shipping_header:{
+      fontSize: wp(5.5),
+      fontWeight: 'bold',
+      marginBottom: 10,
+      color: '#2a2e7e'
+    },
+    header_text:{
+        fontSize:hp(2.1),
+        color:'#2a2e7e'
+    },
+    shipping_item_card_container:{
+      backgroundColor:'#ffffff',
+     margin:5,
+     padding:10,
+     borderRadius:15,
+     ...Platform.select({
+       android: {
+         shadowColor: '#000',
+         elevation: 5,
+     },
+     ios: {
+         shadowColor: '#171717',
+         shadowOffset: { width: 2, height: 4 },
+         shadowOpacity: 0.1,
+         shadowRadius: 3,
+     }
+     })
  
-  },
-  card_title_container:{
-    height:40,
-   overflow:'hidden'
-  },
-  card_title:{
-    fontSize:16,
-    fontWeight:'bold'
-  },
-  card_price:{
- fontSize:15,
- marginTop:2
-  },
-  card_total:{
-  marginTop:5,
-  fontSize:16
-  },
-  shipping_total_conatiner:{
-      // backgroundColor:'pink',
-      borderTopWidth:2
-  },
-  shipping_subtotal_container:{
-      // backgroundColor:'lightgreen',
-      flexDirection:'row',
-      justifyContent:'space-between',
-      marginTop:10
-  },
-  total_text:{
-    fontSize:16,
-    fontWeight:"bold"
-  },
-  shipping_subtotal_container_Total:{
-    flexDirection:'row',
-    justifyContent:'space-between',
-    marginTop:10,
-    borderTopWidth:2,
-    paddingTop:10,
-    paddingBottom:10
-  },
-  total_amount_text:{
-    fontSize:16,
-    paddingRight:5
-  },
-  shipping_method_container:{
-  // backgroundColor:"yellow"
-  },
-  shipping_method_header_container:{
-  padding:10
-  },
-  shipping_method_header:{
-   fontSize:22,
-   fontWeight:'bold',
-   color:'#2a2e7e'
-  },
-  parcel_Service_container:{
+   
+   },
+   shipping_item_card:{
+     backgroundColor:'#f2f2f7',
+     width:'100%',
+     height:100,
+     flexDirection:'row',
+     alignItems:'center',
+     justifyContent:'center',
+     columnGap:10,
+     marginBottom:10,
+     borderRadius:15
+   },
+   image_container:{
+     width:80,
+     height:80,
+     // backgroundColor:'red'
+   },
+   card_detail_container:{
+     width:220,
+     height:80,
   
-  },
-  parcel_Service_header_container:{
-    padding:10
-  },
-  parcel_Service_header:{
-    fontSize:18,
+   },
+   card_title_container:{
+     height:40,
+    overflow:'hidden'
+   },
+   card_title:{
+     fontSize:16,
+     fontWeight:'bold'
+   },
+   card_price:{
+  fontSize:15,
+  marginTop:2
+   },
+   card_total:{
+   marginTop:5,
+   fontSize:16
+   },
+   shipping_total_conatiner:{
+       // backgroundColor:'pink',
+       borderTopWidth:2
+   },
+   shipping_subtotal_container:{
+       // backgroundColor:'lightgreen',
+       flexDirection:'row',
+       justifyContent:'space-between',
+       marginTop:10
+   },
+   total_text:{
+     fontSize:16,
+     fontWeight:"bold"
+   },
+   shipping_subtotal_container_Total:{
+     flexDirection:'row',
+     justifyContent:'space-between',
+     marginTop:10,
+     borderTopWidth:2,
+     paddingTop:10,
+     paddingBottom:10
+   },
+   total_amount_text:{
+     fontSize:16,
+     paddingRight:5
+   },
+   shipping_method_container:{
+   // backgroundColor:"yellow"
+   },
+   shipping_method_header_container:{
+   padding:10
+   },
+   shipping_method_header:{
+    fontSize:wp(5.5),
     fontWeight:'bold',
-  },
-  postal_service_container:{
+    color:'#2a2e7e'
+   },
+   
+   parcel_Service_header_container:{
+     padding:10
+   },
+   parcel_Service_header:{
+     fontSize:wp(4.5),
+     fontWeight:'bold',
+   },
+   
+   postal_Service_header_container:{
+     padding:10
+   },
+   postal_Service_header:{
+     fontSize:wp(4.5),
+     fontWeight:'bold',
+   },
+   
+   store_pickup_header_container:{
+     padding:10
+   },
+   radiobutton_container:{
+    flexDirection:'row',
+    marginLeft:10,
+    alignItems:'center',
+   },
+   radiobutton_text:{
+     fontSize:wp(4)
+   },
+   store_pickup_header:{
+     fontSize:18,
+     fontWeight:'bold',
+   },
+   shipping_footer_container:{
+ 
+   },
+   shipping_footer_button_container:{
+   // backgroundColor:'pink'
+   },
+   shipping_footer_button:{
+     backgroundColor: '#1975d3',
+     padding: 15,
+     justifyContent: 'center',
+     alignItems: 'center',
+     borderRadius: 25,
+     margin: 10,
+   },
+   shipping_footer_button_text:{
+   color:'white',
+   fontWeight:'bold'
+   }
+    })
+    
 
-  },
-  postal_Service_header_container:{
-    padding:10
-  },
-  postal_Service_header:{
-    fontSize:18,
-    fontWeight:'bold',
-  },
-  store_pickup_container:{
-
-  },
-  store_pickup_header_container:{
-    padding:10
-  },
-  radiobutton_container:{
-   flexDirection:'row',
-   marginLeft:10,
-   alignItems:'center',
-  },
-  radiobutton_text:{
-    fontSize:15
-  },
-  store_pickup_header:{
-    fontSize:18,
-    fontWeight:'bold',
-  },
-  shipping_footer_container:{
-
-  },
-  shipping_footer_button_container:{
-  // backgroundColor:'pink'
-  },
-  shipping_footer_button:{
-    backgroundColor: '#1975d3',
-    padding: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 25,
-    margin: 10,
-  },
-  shipping_footer_button_text:{
-  color:'white',
-  fontWeight:'bold'
-  }
-})
 export default Shipping

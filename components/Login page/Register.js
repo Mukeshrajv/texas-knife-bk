@@ -127,6 +127,7 @@ initialValues={{
                          placeholder="Enter Password"
                          autoCapitalize="none"
                          value={values.password}
+                         secureTextEntry={true}
                          onChangeText={handleChange('password')}
                          onBlur={()=>setFieldTouched('password')}
                          />
@@ -143,6 +144,7 @@ initialValues={{
                          placeholder="ReEnter Password"
                          autoCapitalize="none"
                          value={values.conformPassword}
+                         secureTextEntry={true}
                          onChangeText={handleChange('conformPassword')}
                          onBlur={()=>setFieldTouched('conformPassword')}
                          />

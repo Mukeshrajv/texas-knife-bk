@@ -227,70 +227,162 @@ const Address = ({ navigation }) => {
     }
 
   }
-
-  const form2Validation = () => {
-    if (!f2email) {
+  const form2Simple=()=>{
+    if(f1email!=='' && f2email!=="" &&f1firstName!=="" &&f2firstName!="" &&f1lastName!=='' &&f2lastName!==''  &&f1address!=='' &&f2address!=='' &&f1city!=='' &&f2city!=='' &&f1country!=='' &&f2country!=='' &&f1state!=='' &&f2state!=='' &&f1zipCode!=='' &&f2zipCode!=='' &&f1phoneNumber!=='' &&f2phoneNumber!==''){
+      form2Validation()
+      setError2email(false)
+      // setError2firstName(true)
+      // setError2lastName(true)
+      // setError2address(true)
+      // setError2country(true)
+      // setError2city(true)
+      // setError2state(true)
+      // setError2zipCode(true)
+      // setError2phoneNumber(true)
+    }else if(f2email==''){
       setError2email(true)
-    } else if (!isValidEmail(f2email)) {
-      setError2email(true)
-    } else if (error2email == false && error2firstName == false && error2lastName == false && error2address == false && error1city == false && error2country == false && error2state == false && error2zipCode == false && error2phoneNumber == false) {
-      fetchForm2Data()
-    } else {
+    // }
+      
+      // setError2firstName(true)
+      // setError2lastName(true)
+      // setError2address(true)
+      // setError2country(true)
+      // setError2city(true)
+      // setError2state(true)
+      // setError2zipCode(true)
+      // setError2phoneNumber(true)
+    }else{
       setError2email(false)
     }
+  }
 
-    if (!f2firstName) {
-      setError2firstName(true)
-    } else {
-      setError2firstName(false)
+  const form2Validation = () => {
+    if(!f1email){
+      setError1email(true)
+  }else if (!isValidEmail(f1email)) {
+      setError1email(true)
+    } else if(error1email==false && error1firstName==false && error1lastName==false && error1address==false && error1city==false && error1country==false && error1state==false && error1zipCode==false && error1phoneNumber==false&&error2email==false && error2firstName==false && error2lastName==false && error2address==false && error1city==false && error2country==false && error2state==false && error2zipCode==false && error2phoneNumber==false){
+      fetchForm2Data()
+    }else{
+      setError1email(false)
     }
 
-    if (!f2lastName) {
-      setError2lastName(true)
-    } else {
-      setError2lastName(false)
+  if (!f1firstName) {
+      setError1firstName(true)
+    }else{
+      setError1firstName(false)
     }
 
-    if (!f2address) {
-      setError2address(true)
-    } else {
-      setError2address(false)
+    if (!f1lastName) {
+      setError1lastName(true)
+    } else{
+      setError1lastName(false)
     }
 
-    if (!f2city) {
-      setError2city(true)
-    } else {
-      setError2city(false)
+    if (!f1address) {
+      setError1address(true)
+    }else{
+      setError1address(false)
     }
 
-    if (!f2country) {
-      setError2country(true)
-    } else {
-      setError2country(false)
+    if (!f1city) {
+      setError1city(true)
+    }else{
+      setError1city(false)
     }
 
-    if (!f2state) {
-      setError2state(true)
-    } else {
-      setError2state(false)
+    if (!f1country) {
+      setError1country(true)
+    }else{
+      setError1country(false)
     }
 
-    if (!f2zipCode) {
-      setError2zipCode(true)
-    } else {
-      setError2zipCode(false)
+    if (!f1state) {
+      setError1state(true)
+    }else{
+      setError1state(false)
     }
 
-    if (!f2phoneNumber) {
-      setError2phoneNumber(true)
-    }
-    else {
-      setError2phoneNumber(false)
+    if (!f1zipCode) {
+      setError1zipCode(true)
+    }else{
+      setError1zipCode(false)
     }
 
-    if (error2email == false && error2firstName == false && error2lastName == false && error2address == false && error1city == false && error2country == false && error2state == false && error2zipCode == false && error2phoneNumber == false) {
+    if (!f1phoneNumber) {
+      setError1phoneNumber(true)
+    }
+   else{
+      setError1phoneNumber(false)
+    }
+
+    if(error1email==false && error1firstName==false && error1lastName==false && error1address==false && error1city==false && error1country==false && error1state==false && error1zipCode==false && error1phoneNumber==false&&error2email==false && error2firstName==false && error2lastName==false && error2address==false && error1city==false && error2country==false && error2state==false && error2zipCode==false && error2phoneNumber==false){
       fetchForm2Data()
     }
+
+    // --------------------------------------
+    if(!f2email){
+        setError2email(true)
+    }else if (!isValidEmail(f2email)) {
+        setError2email(true)
+      } else if(error1email==false && error1firstName==false && error1lastName==false && error1address==false && error1city==false && error1country==false && error1state==false && error1zipCode==false && error1phoneNumber==false&&error2email==false && error2firstName==false && error2lastName==false && error2address==false && error1city==false && error2country==false && error2state==false && error2zipCode==false && error2phoneNumber==false){
+        fetchForm2Data()
+  }else{
+        setError2email(false)
+      } 
+
+    if (!f2firstName) {
+        setError2firstName(true)
+      }else{
+        setError2firstName(false)
+      }
+
+      if (!f2lastName) {
+        setError2lastName(true)
+      } else{
+        setError2lastName(false)
+      }
+
+      if (!f2address) {
+        setError2address(true)
+      }else{
+        setError2address(false)
+      }
+
+      if (!f2city) {
+        setError2city(true)
+      }else{
+        setError2city(false)
+      }
+
+      if (!f2country) {
+        setError2country(true)
+      }else{
+        setError2country(false)
+      }
+
+      if (!f2state) {
+        setError2state(true)
+      }else{
+        setError2state(false)
+      }
+
+      if (!f2zipCode) {
+        setError2zipCode(true)
+      }else{
+        setError2zipCode(false)
+      }
+
+      if (!f2phoneNumber) {
+        setError2phoneNumber(true)
+      }
+      else{
+        setError2phoneNumber(false)
+      }
+  
+      if(error1email==false && error1firstName==false && error1lastName==false && error1address==false && error1city==false && error1country==false && error1state==false && error1zipCode==false && error1phoneNumber==false&&error2email==false && error2firstName==false && error2lastName==false && error2address==false && error1city==false && error2country==false && error2state==false && error2zipCode==false && error2phoneNumber==false){
+        fetchForm2Data()
+      }
 
   }
 
@@ -308,7 +400,7 @@ const Address = ({ navigation }) => {
       if (same == true) {
         form1Validation()
       } else {
-        form2Validation()
+       form2Simple()
       }
     }
 
@@ -633,7 +725,7 @@ const Address = ({ navigation }) => {
 
           <View style={styles.billiing_address_container}>
             <View style={styles.billing_address_header_container}>
-              <Text style={styles.header}>Billing Address</Text>
+              <Text style={styles.contact}>Billing Address</Text>
               <Text style={styles.billing_address_header_text}>Select The Address That Matches Your Cards Or Payment Method.</Text>
             </View>
 

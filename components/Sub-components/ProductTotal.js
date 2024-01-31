@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Text, View, Image, StyleSheet ,Platform} from "react-native";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 import { useSelector } from "react-redux";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
 const ProductTotal = () => {
   // const [cartData,setCartData]=useState([])
   // useEffect(()=>{
@@ -76,7 +79,7 @@ const styles = StyleSheet.create({
   shipping_item_card: {
     backgroundColor: "#f2f2f7",
     width: "100%",
-    height: 100,
+    // height: 100,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
@@ -85,29 +88,29 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   image_container: {
-    width: 80,
-    height: 80,
+    width: wp('20%'),
+    height: wp('20%'),
     // backgroundColor:'red'
   },
   card_detail_container: {
     width: 220,
-    height: 80,
+    // height: 80,
   },
   card_title_container: {
-    height: 40,
+    // height: 40,
     overflow: "hidden",
   },
   card_title: {
-    fontSize: 16,
+    fontSize: wp(4),
     fontWeight: "bold",
   },
   card_price: {
-    fontSize: 15,
+    fontSize: wp(4),
     marginTop: 2,
   },
   card_total: {
     marginTop: 5,
-    fontSize: 16,
+    fontSize: wp(4),
   },
   shipping_total_conatiner: {
     // backgroundColor:'pink',
@@ -120,7 +123,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   total_text: {
-    fontSize: 16,
+    fontSize: wp(4.5),
     fontWeight: "bold",
   },
   shipping_subtotal_container_Total: {
@@ -132,7 +135,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   total_amount_text: {
-    fontSize: 16,
+    fontSize: wp(4),
     paddingRight: 5,
   },
 });

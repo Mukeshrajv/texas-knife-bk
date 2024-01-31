@@ -103,6 +103,7 @@ initialValues={{
                          placeholder="Enter Password"
                          autoCapitalize="none"
                          value={values.password}
+                         secureTextEntry={true}
                          onChangeText={handleChange('password')}
                          onBlur={()=>setFieldTouched('password')}
                          />
