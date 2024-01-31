@@ -6,6 +6,8 @@ import { useDispatch } from 'react-redux';
 import { getcategoryid,getcategoryname} from '../../Slice/categorySlice';
 import { getProductDetails } from '../../Slice/ProductDetailsSlice';
 import Loader from './Loader';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
 
 const Category = ({navigation}) => {
   
@@ -107,7 +109,7 @@ category_container:{
           // Styles for iOS
         },
         android: {
-            height:'72 %',
+            // height:'72 %',
             // paddingBottom:-50
           // Styles for Android
         },
