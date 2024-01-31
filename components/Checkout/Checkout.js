@@ -14,6 +14,8 @@ import { useSelector,useDispatch } from "react-redux";
 import axios from "axios";
 import { getCartReload } from "../../Slice/ProductDetailsSlice";
 import BottomTab from "../Sub-components/ButtomTab/BottomTab";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
 
 const Checkout = ({navigation}) => {
  
@@ -184,13 +186,16 @@ const profile=()=>{
     fetchApi();
   }, []);
   return (
-    <View style={styles.checkout}>
-      <View style={styles.checkout_container}>
-        <View style={styles.checkout_header_container}>
-          <Text style={styles.checkout_header}>Checkout</Text>
-        </View>
-        {/* -------------------------- */}
-        <ScrollView>
+    <View style={styles.Subcategory}>
+
+    <View style={styles.header}>
+      <View style={styles.header_container}>
+      <Text style={styles.checkout_header}>Checkout</Text>
+      </View>
+    </View>
+
+    <View style={styles.content}>
+    <ScrollView>
           <ProductTotal />
 
           <View style={styles.checkout_middle_container}>
@@ -314,10 +319,7 @@ const profile=()=>{
             </View>
           </View>
         </ScrollView>
-        {/* ------------------------------- */}
-
-        <View style={styles.checkout_footer_container}>
-          <View style={styles.checkout_footer_button_container}>
+        <View style={styles.checkout_footer_button_container}>
             <TouchableOpacity
               style={styles.checkout_footer_button}
               onPress={() => checkoutButton()}
@@ -326,35 +328,54 @@ const profile=()=>{
                 Place Order
               </Text>
             </TouchableOpacity>
-            <BottomTab home={home} cart={cart} profile={profile}/>
+            
           </View>
-          {/* <Tab/> */}
-        </View>
-      </View>
     </View>
+    <View style={styles.footer}>
+    <BottomTab />
+    </View>
+ </View>
+
   );
 };
 const styles = StyleSheet.create({
-  checkout: {
-    width: "100%",
-    height: "100%",
+  Subcategory:{
+  flex:1,
+  backgroundColor:'#ffffff'
   },
-  checkout_container: {
-    width: "100%",
-    height: "100%",
-    justifyContent: "space-between",
+  header:{
+  // backgroundColor:'yellow',
+  flex:1,
+  justifyContent:'center',
+  alignItems:'center',
   },
-  checkout_header_container: {
-    marginTop: 25,
-    textAlign: "center",
-    alignItems: "center",
-    paddingTop: 20,
+  content:{
+  // backgroundColor:'pink',
+  flex:8
+  },
+  footer:{
+  backgroundColor:'white',
+  flex:0.7,
+  justifyContent:'flex-end'
+  },
+  header_container:{
+      flex:1,
+
+      // height:hp('30%'),
+      justifyContent:'center',
+      alignItems:'center',
+      // backgroundColor:'red',
+      paddingTop:hp(2)
   },
   checkout_header: {
-    fontSize: 20,
+    fontSize: wp(4.5),
     fontWeight: "bold",
     marginBottom: 10,
     color: "#2a2e7e",
+  },
+  header_text:{
+      fontSize:hp(2.1),
+      color:'#2a2e7e'
   },
   checkout_middle_container: {
     backgroundColor: "#ffffff",
@@ -385,11 +406,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   contact: {
-    fontSize: 14,
+    fontSize: wp(4),
     fontWeight: "bold",
   },
   contact_value: {
-    fontSize: 14,
+    fontSize: wp(4),
     width: 160,
     textAlign: "right",
     color: "#2a2e7e",
@@ -403,15 +424,15 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   shippingto: {
-    fontSize: 14,
+    fontSize: wp(4),
     fontWeight: "bold",
   },
   shippingto_address_container: {
     // backgroundColor:'red',
-    width: 160,
+    width: wp('40%'),
   },
   shippingto_address: {
-    fontSize: 14,
+    fontSize: wp(4),
     textAlign: "right",
     color: "#2a2e7e",
   },
@@ -424,12 +445,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   method: {
-    fontSize: 14,
+    fontSize: wp(4),
     fontWeight: "bold",
   },
   method_value: {
-    fontSize: 14,
-    width: 160,
+    fontSize: wp(4),
+    width: wp('40%'),
     textAlign: "right",
     color: "#2a2e7e",
   },
@@ -442,12 +463,12 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
   },
   paywith: {
-    fontSize: 14,
+    fontSize:wp(4),
     fontWeight: "bold",
   },
   paywith_value: {
-    fontSize: 14,
-    width: 160,
+    fontSize: wp(4),
+    width: wp('40%'),
     textAlign: "right",
     color: "#2a2e7e",
   },
@@ -465,19 +486,19 @@ const styles = StyleSheet.create({
     textTransform: "capitalize",
     borderRadius: 5,
   },
-  checkout_footer_container: {},
-  checkout_footer_button_container: {},
+
   checkout_footer_button: {
     backgroundColor: "#1975d3",
     padding: 15,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 25,
-    margin: 10,
+    margin: 5,
   },
   checkout_footer_button_text: {
     color: "white",
     fontWeight: "bold",
   },
-});
+  })
+  
 export default Checkout;

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { View,Text,StyleSheet,Image,FlatList,TouchableOpacity,} from 'react-native';
 import { useDispatch } from 'react-redux';
 import { getProductDetails,getProductRoute} from '../../Slice/ProductDetailsSlice';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 
 const FeatureProduct = ({navigation}) => {
@@ -38,7 +39,10 @@ const FeatureProduct = ({navigation}) => {
   return (
    <>
     <View style={styles.featureproduct_container}>
+    
    <Text style={styles.featureproduct_header}>Feature Products</Text>
+
+   <View >
    <FlatList
    data={featureProduct}
    horizontal
@@ -46,7 +50,7 @@ const FeatureProduct = ({navigation}) => {
    renderItem={({item})=>{
     return(
        
-   <View keyExtractor style={styles.featureproduct_list_container}>
+  //  <View keyExtractor style={styles.featureproduct_list_container}>
      <TouchableOpacity onPress={()=>handleChange(item)}>
    <View style={styles.featureproduct_list}>
     <Text style={styles.featureproduct_name}>{item.product_name}</Text>
@@ -56,37 +60,48 @@ const FeatureProduct = ({navigation}) => {
     </View>
    </View>
    </TouchableOpacity>
-   </View>
+  //  </View>
     )
    }}
    />
+   </View>
      </View>
    </>
   )
 }
 const styles=StyleSheet.create({
     featureproduct_container:{
-    //  backgroundColor:'red',
-     marginTop:5
+    
+    justifyContent:'space-around',
+    flex:1,
+    display:'flex',
+   
     },
     featureproduct_header:{
+      // flex:1,
         // backgroundColor:'green',
-        marginTop:5,
+        // padding:hp(1),
         color:'#2a2e7e',
-        fontSize:17,
+        fontSize:wp(4.5),
         paddingLeft:15,  
         fontWeight:'bold'
     },
     featureproduct_list_container:{
-//    backgroundColor:"yellow",
-   padding:15,
-  
+  //  backgroundColor:"yellow",
+   paddingRight:10,
+  //  padding:15,
+  // paddingTop:5,
+ 
+  rowGap:5,
     },
     featureproduct_list:{
+      // flex:1,
      borderWidth:1,
-     width:150,
-     height:200,
+    //  backgroundColor:'orange',
+     width:wp('40%'),
+    //  height:hp('25%'),
      padding:5,
+     marginRight:10,
      borderColor:'#F2F2F7',
      borderCurve:'circular',
      borderRadius:10,
@@ -94,12 +109,12 @@ const styles=StyleSheet.create({
      alignItems:'center'
     },
     featureproduct_name:{
-     fontSize:14,
+     fontSize:wp(4),
      fontWeight:'bold',
-     padding:2,
-     height:60,
+    //  padding:2,
+     height:37,
      overflow:'hidden' ,
-     paddingTop:5,
+    //  paddingTop:5,
      textAlign:'center'
     },
     featureproduct_code:{
@@ -108,16 +123,14 @@ const styles=StyleSheet.create({
     price:{
      fontSize:14,
      fontWeight:"bold",
-     marginTop:5,
+    //  marginTop:5,
      textAlign:'left',
      color:'red'
     },
     image_container:{
-     width:100,
-     height:100,
-     marginTop:10,
-     marginBottom:10,
-    //  backgroundColor:'red'
+     width:'100%',
+     height:hp('15%'),
+    
     }
 })
 

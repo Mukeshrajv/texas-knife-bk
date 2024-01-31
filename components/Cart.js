@@ -337,7 +337,7 @@ const styles = StyleSheet.create({
       color: '#2a2e7e'
    },
    content: {
-      backgroundColor: 'pink',
+      // backgroundColor: 'pink',
       flex: 8
    },
    cart_item: {

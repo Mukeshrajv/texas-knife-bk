@@ -38,7 +38,7 @@ const Tab = ({navigation}) => {
      <Tabs.Screen name='Home' component={Home} 
       options={{
          tabBarIcon:({focused})=>(
-             <TouchableOpacity >
+             <View >
                  <Image
                  source={require('../assets/images/home.png')}
                  resizeMode='contain'
@@ -48,14 +48,14 @@ const Tab = ({navigation}) => {
                      tintColor:focused?'#ffffff':'#748c94'
                   } }
                  />
-             </TouchableOpacity>
+             </View>
          )
      }}
       />
      <Tabs.Screen name='cart' component={Cart}
       options={{
          tabBarIcon:({focused})=>(
-             <TouchableOpacity >
+             <View >
                <View style={{backgroundColor:'#FF0000',borderRadius:50,width:15,height:15,position:'absolute',top:-3,left:8,zIndex:1}}>
                  <Text style={{color:"#ffffff",textAlign:"center",fontSize:10}}>{useSelector((state)=>state.cartdata.cartCount)}</Text>
                </View>
@@ -70,7 +70,7 @@ const Tab = ({navigation}) => {
                      
                   } }
                  />
-             </TouchableOpacity>
+             </View>
          )
      }}
     />

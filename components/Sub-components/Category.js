@@ -87,12 +87,15 @@ const Category = ({navigation}) => {
 }
 const styles=StyleSheet.create({
 category:{
+  flex:1,
     // backgroundColor:'red'
 },
 header:{
     paddingLeft:15,
+    paddingTop:5,
+    paddingBottom:5,
     color:'#2a2e7e',
-    fontSize:17,  
+    fontSize:wp(5),  
     fontWeight:'bold',
    
     
@@ -105,7 +108,7 @@ category_container:{
    
     ...Platform.select({
         ios: {
-          height:300,
+          // height:300,
           // Styles for iOS
         },
         android: {
@@ -117,13 +120,15 @@ category_container:{
       // backgroundColor:'green',
       alignItems:'center',
       justifyContent:'center',
+      // paddingBottom:20,
+marginBottom:25,
      
      
 
 },
 category_list:{
     backgroundColor:"#F2F2F7",
-    width:150,
+    width:wp('40%'),
     padding:5,
     flexDirection:'row',
     borderRadius:10,
@@ -132,17 +137,17 @@ category_list:{
     margin:10 
 },
 image_container:{
-    width:60,
-    height:60,
+    width:wp(18),
+    height:wp(18),
     margin:2
 },
 categori_name_conatiner:{
-    width:75
+    // width:75
 },
 category_names:{
     textAlign:'center',
-    width:75,
-    height:53,
+    width:wp('20%'),
+    // height:53,
     overflow:'hidden'
 }
 })
